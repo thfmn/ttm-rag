@@ -11,6 +11,7 @@ from src.connectors.pubmed import PubMedConnector
 from src.models.source import Source
 from src.models.pubmed import PubmedArticle
 from src.utils.pubmed_query_builder import PubMedQueryBuilder
+from src.utils.exceptions import PubMedAPIError, PubMedNetworkError, PubMedParseError
 
 
 @pytest.fixture
@@ -44,7 +45,7 @@ def test_search_articles(mock_get, pubmed_connector):
             "idlist": ["123456", "789012"]
         }
     }
-    mock_response.raise_for_status.return_value = None
+    mock_response.status_code = 200
     mock_get.return_value = mock_response
     
     # Test the method
@@ -67,7 +68,7 @@ def test_search_articles_empty_result(mock_get, pubmed_connector):
             "idlist": []
         }
     }
-    mock_response.raise_for_status.return_value = None
+    mock_response.status_code = 200
     mock_get.return_value = mock_response
     
     # Test the method
@@ -79,16 +80,49 @@ def test_search_articles_empty_result(mock_get, pubmed_connector):
 
 
 @patch('src.connectors.pubmed.requests.get')
-def test_search_articles_request_exception(mock_get, pubmed_connector):
-    """Test searching for articles when request fails"""
+def test_search_articles_api_error(mock_get, pubmed_connector):
+    """Test searching for articles when API returns an error"""
+    # Mock the response
+    mock_response = Mock()
+    mock_response.status_code = 500
+    mock_response.text = "Internal Server Error"
+    mock_response.url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi"
+    mock_get.return_value = mock_response
+    
+    # Test the method - should raise PubMedAPIError
+    with pytest.raises(PubMedAPIError):
+        pubmed_connector.search_articles("traditional medicine", 10)
+    
+    mock_get.assert_called_once()
+
+
+@patch('src.connectors.pubmed.requests.get')
+def test_search_articles_network_error(mock_get, pubmed_connector):
+    """Test searching for articles when network request fails"""
     # Mock the response
     mock_get.side_effect = requests.RequestException("Network error")
     
-    # Test the method
-    pmids = pubmed_connector.search_articles("traditional medicine", 10)
+    # Test the method - should raise PubMedNetworkError
+    with pytest.raises(PubMedNetworkError):
+        pubmed_connector.search_articles("traditional medicine", 10)
     
-    # Assertions
-    assert len(pmids) == 0
+    # Should have been called multiple times due to retries
+    assert mock_get.call_count == 3
+
+
+@patch('src.connectors.pubmed.requests.get')
+def test_search_articles_json_parse_error(mock_get, pubmed_connector):
+    """Test searching for articles when JSON parsing fails"""
+    # Mock the response
+    mock_response = Mock()
+    mock_response.json.side_effect = ValueError("Invalid JSON")
+    mock_response.status_code = 200
+    mock_get.return_value = mock_response
+    
+    # Test the method - should raise PubMedParseError
+    with pytest.raises(PubMedParseError):
+        pubmed_connector.search_articles("traditional medicine", 10)
+    
     mock_get.assert_called_once()
 
 
@@ -102,7 +136,7 @@ def test_search_articles_with_query_builder(mock_get, pubmed_connector):
             "idlist": ["123456", "789012"]
         }
     }
-    mock_response.raise_for_status.return_value = None
+    mock_response.status_code = 200
     mock_get.return_value = mock_response
     
     # Create a query builder
@@ -141,7 +175,7 @@ def test_fetch_article_details(mock_get, pubmed_connector):
     
     mock_response = Mock()
     mock_response.text = sample_xml
-    mock_response.raise_for_status.return_value = None
+    mock_response.status_code = 200
     mock_get.return_value = mock_response
     
     # Test the method
@@ -166,14 +200,49 @@ def test_fetch_article_details_empty_input(mock_get, pubmed_connector):
 
 
 @patch('src.connectors.pubmed.requests.get')
-def test_fetch_article_details_request_exception(mock_get, pubmed_connector):
-    """Test fetching article details when request fails"""
+def test_fetch_article_details_network_error(mock_get, pubmed_connector):
+    """Test fetching article details when network request fails"""
     # Mock the response
     mock_get.side_effect = requests.RequestException("Network error")
     
-    # Test the method
-    articles = pubmed_connector.fetch_article_details(["123456"])
+    # Test the method - should raise PubMedNetworkError
+    with pytest.raises(PubMedNetworkError):
+        pubmed_connector.fetch_article_details(["123456"])
     
-    # Assertions
-    assert len(articles) == 0
+    # Should have been called multiple times due to retries
+    assert mock_get.call_count == 3
+
+
+@patch('src.connectors.pubmed.requests.get')
+def test_fetch_article_details_api_error(mock_get, pubmed_connector):
+    """Test fetching article details when API returns an error"""
+    # Mock the response
+    mock_response = Mock()
+    mock_response.status_code = 500
+    mock_response.text = "Internal Server Error"
+    mock_response.url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi"
+    mock_get.return_value = mock_response
+    
+    # Test the method - should raise PubMedAPIError
+    with pytest.raises(PubMedAPIError):
+        pubmed_connector.fetch_article_details(["123456"])
+    
+    mock_get.assert_called_once()
+
+
+@patch('src.connectors.pubmed.requests.get')
+def test_fetch_article_details_parse_error(mock_get, pubmed_connector):
+    """Test fetching article details when XML parsing fails"""
+    # Mock the response with invalid XML
+    mock_response = Mock()
+    mock_response.text = "Invalid XML content"
+    mock_response.status_code = 200
+    mock_get.return_value = mock_response
+    
+    # Mock the parser to raise an exception
+    with patch('src.connectors.pubmed.parse_pubmed_xml', side_effect=Exception("Parse error")):
+        # Test the method - should raise PubMedParseError
+        with pytest.raises(PubMedParseError):
+            pubmed_connector.fetch_article_details(["123456"])
+    
     mock_get.assert_called_once()
