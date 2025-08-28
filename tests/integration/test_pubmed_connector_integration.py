@@ -26,19 +26,19 @@ def test_pubmed_connector_integration():
     # Create connector
     connector = PubMedConnector(source)
     
-    # Test searching for articles
-    pmids = connector.search_articles("traditional medicine", 5)
+    # Test searching for articles with a small result set
+    pmids = connector.search_articles("traditional medicine", 3)
     
     # Assertions
     assert isinstance(pmids, list)
-    # We might not get exactly 5 results, but we should get some
-    assert len(pmids) <= 5
+    # We might not get exactly 3 results, but we should get some
+    assert len(pmids) <= 3
     
     # Test fetching article details (only for first article to keep test fast)
     if pmids:
         articles = connector.fetch_article_details([pmids[0]])
         assert isinstance(articles, list)
         assert len(articles) == 1
-        assert "pmid" in articles[0]
-        assert "raw_xml" in articles[0]
-        assert articles[0]["pmid"] == pmids[0]
+        # Now we expect PubmedArticle objects
+        assert hasattr(articles[0], 'pmid')
+        assert articles[0].pmid == pmids[0]

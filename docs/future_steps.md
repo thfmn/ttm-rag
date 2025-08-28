@@ -7,7 +7,7 @@ This section outlines our plans for future development of the project.
 In the immediate future, we plan to focus on enhancing our current implementation:
 
 ### 1. Enhanced PubMed Connector
-- Parse XML data returned by the PubMed API into structured data
+- ~~Parse XML data returned by the PubMed API into structured data~~ (Completed)
 - Extract specific fields like title, abstract, authors, publication date
 - Handle different XML formats that PubMed might return
 
@@ -109,7 +109,7 @@ We'll measure our progress using these success metrics:
 Our projected timeline for these goals:
 
 ### Phase 1: Enhancement (Weeks 1-2)
-- Enhanced PubMed connector
+- ~~Enhanced PubMed connector~~ (Completed)
 - Sophisticated search queries
 - Improved error handling
 - Rate limiting implementation

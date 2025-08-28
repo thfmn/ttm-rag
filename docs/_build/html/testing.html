@@ -18,7 +18,9 @@
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Current State" href="current_state.html" />
+    <link rel="prev" title="Implementation" href="implementation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,27 +42,35 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Testing</a><ul>
-<li><a class="reference internal" href="#unit-testing">Unit Testing</a><ul>
-<li><a class="reference internal" href="#test-structure">Test Structure</a></li>
-<li><a class="reference internal" href="#connector-tests">Connector Tests</a></li>
-<li><a class="reference internal" href="#pipeline-tests">Pipeline Tests</a></li>
-<li><a class="reference internal" href="#example-test">Example Test</a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_overview.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#unit-testing">Unit Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#test-structure">Test Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#connector-tests">Connector Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pipeline-tests">Pipeline Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-test">Example Test</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#integration-testing">Integration Testing</a><ul>
-<li><a class="reference internal" href="#integration-test-structure">Integration Test Structure</a></li>
-<li><a class="reference internal" href="#example-integration-test">Example Integration Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-testing">Integration Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ethical-considerations">Ethical Considerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Test Structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comprehensive-test-coverage">Comprehensive Test Coverage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-integration-test">Example Integration Test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#running-tests">Running Tests</a></li>
-<li><a class="reference internal" href="#test-results">Test Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-tests">Running Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-results">Test Results</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="current_state.html">Current State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future_steps.html">Future Steps</a></li>
 </ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -87,7 +97,7 @@
              
   <section class="tex2jax_ignore mathjax_ignore" id="testing">
 <h1>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h1>
-<p>Testing is a crucial part of our development process. We’ve implemented both unit tests and integration tests to ensure our code works correctly.</p>
+<p>Testing is a crucial part of our development process. We’ve implemented both unit tests and integration tests to ensure our code works correctly while respecting ethical guidelines for API usage.</p>
 <section id="unit-testing">
 <h2>Unit Testing<a class="headerlink" href="#unit-testing" title="Link to this heading"></a></h2>
 <p>We’ve created comprehensive unit tests for our PubMed connector and pipeline using pytest and unittest.mock.</p>
@@ -152,49 +162,92 @@
 </section>
 <section id="integration-testing">
 <h2>Integration Testing<a class="headerlink" href="#integration-testing" title="Link to this heading"></a></h2>
-<p>We’ve also created integration tests that verify our code works with the real PubMed API.</p>
-<section id="integration-test-structure">
-<h3>Integration Test Structure<a class="headerlink" href="#integration-test-structure" title="Link to this heading"></a></h3>
+<p>We’ve also created comprehensive integration tests that verify our code works with the real PubMed API while following ethical guidelines:</p>
+<section id="ethical-considerations">
+<h3>Ethical Considerations<a class="headerlink" href="#ethical-considerations" title="Link to this heading"></a></h3>
+<p>Our integration tests are designed with the following ethical principles:</p>
+<ol class="arabic simple">
+<li><p><strong>Rate Limiting</strong>: All tests implement respectful rate limiting to avoid overloading the PubMed API</p></li>
+<li><p><strong>Minimal Requests</strong>: Tests use small result sets (maximum 3 results) to minimize API load</p></li>
+<li><p><strong>Controlled Usage</strong>: Tests are designed to make the minimum number of API calls necessary</p></li>
+<li><p><strong>Respectful Queries</strong>: Tests use common, non-abusive search queries</p></li>
+</ol>
+</section>
+<section id="id1">
+<h3>Test Structure<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <p>Our integration tests:</p>
 <ol class="arabic simple">
 <li><p><strong>Use real API</strong>: Instead of mocking, these tests connect to the actual PubMed API</p></li>
 <li><p><strong>Verify real data</strong>: They check that we can correctly process real data from the API</p></li>
+<li><p><strong>Follow ethical guidelines</strong>: All tests implement rate limiting and minimal usage</p></li>
 <li><p><strong>Are marked appropriately</strong>: We use pytest markers to distinguish integration tests from unit tests</p></li>
+</ol>
+</section>
+<section id="comprehensive-test-coverage">
+<h3>Comprehensive Test Coverage<a class="headerlink" href="#comprehensive-test-coverage" title="Link to this heading"></a></h3>
+<p>Our new integration test suite includes tests for:</p>
+<ol class="arabic simple">
+<li><p><strong>Basic Search Functionality</strong>: Verifies the search_articles method works correctly</p></li>
+<li><p><strong>Edge Cases</strong>: Tests handling of empty queries and queries with no results</p></li>
+<li><p><strong>Single Article Fetching</strong>: Tests fetching details for a single article</p></li>
+<li><p><strong>Multiple Article Fetching</strong>: Tests fetching details for multiple articles</p></li>
+<li><p><strong>Empty Input Handling</strong>: Tests behavior with empty input lists</p></li>
+<li><p><strong>Invalid Input Handling</strong>: Tests behavior with invalid PMIDs</p></li>
+<li><p><strong>Combined Workflows</strong>: Tests the complete search-and-fetch workflow</p></li>
+<li><p><strong>Different Query Types</strong>: Tests various types of search queries</p></li>
+<li><p><strong>Ethical Usage Verification</strong>: Tests that we’re using the API respectfully</p></li>
 </ol>
 </section>
 <section id="example-integration-test">
 <h3>Example Integration Test<a class="headerlink" href="#example-integration-test" title="Link to this heading"></a></h3>
-<p>Here’s our integration test:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">integration</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">test_pubmed_connector_integration</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integration test for PubMed connector with real API&quot;&quot;&quot;</span>
-    <span class="c1"># Create a source object</span>
-    <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span>
-        <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PubMed&quot;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;academic&quot;</span><span class="p">,</span>
-        <span class="c1"># ... other fields</span>
-    <span class="p">)</span>
+<p>Here’s an example of one of our integration tests:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_search_and_fetch_combined</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pubmed_connector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test combined search and fetch workflow&quot;&quot;&quot;</span>
+    <span class="c1"># Rate limiting for search</span>
+    <span class="n">rate_limited_request</span><span class="p">()</span>
     
-    <span class="c1"># Create connector</span>
-    <span class="n">connector</span> <span class="o">=</span> <span class="n">PubMedConnector</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    <span class="c1"># Search for articles</span>
+    <span class="n">search_query</span> <span class="o">=</span> <span class="s2">&quot;medicinal plants&quot;</span>
+    <span class="n">pmids</span> <span class="o">=</span> <span class="n">pubmed_connector</span><span class="o">.</span><span class="n">search_articles</span><span class="p">(</span><span class="n">search_query</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
     
-    <span class="c1"># Test searching for articles</span>
-    <span class="n">pmids</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">search_articles</span><span class="p">(</span><span class="s2">&quot;traditional medicine&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-    
-    <span class="c1"># Assertions</span>
+    <span class="c1"># Verify search results</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">5</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">2</span>
     
-    <span class="c1"># Test fetching article details</span>
+    <span class="c1"># If we have results, fetch details</span>
     <span class="k">if</span> <span class="n">pmids</span><span class="p">:</span>
-        <span class="n">articles</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">fetch_article_details</span><span class="p">([</span><span class="n">pmids</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="c1"># Rate limiting for fetch</span>
+        <span class="n">rate_limited_request</span><span class="p">()</span>
+        
+        <span class="n">articles</span> <span class="o">=</span> <span class="n">pubmed_connector</span><span class="o">.</span><span class="n">fetch_article_details</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
+        
+        <span class="c1"># Verify fetch results</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">articles</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-        <span class="c1"># ... more assertions</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span>
+        
+        <span class="c1"># Verify article structure</span>
+        <span class="k">for</span> <span class="n">article</span> <span class="ow">in</span> <span class="n">articles</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="s2">&quot;pmid&quot;</span> <span class="ow">in</span> <span class="n">article</span>
+            <span class="k">assert</span> <span class="s2">&quot;raw_xml&quot;</span> <span class="ow">in</span> <span class="n">article</span>
+            <span class="k">assert</span> <span class="n">article</span><span class="p">[</span><span class="s2">&quot;pmid&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">pmids</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s2">&quot;raw_xml&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">article</span><span class="p">[</span><span class="s2">&quot;raw_xml&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span>
 </pre></div>
 </div>
-<p>This test verifies that our connector works correctly with the real PubMed API.</p>
+<p>This test verifies that our connector can successfully search for articles and then fetch details for those articles, all while respecting rate limits.</p>
+</section>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h3>
+<p>Our integration tests are configurable through environment variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">INTEGRATION_TEST_MIN_INTERVAL</span></code>: Minimum time between requests (default: 1.0 seconds)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTEGRATION_TEST_MAX_RESULTS</span></code>: Maximum results per search (default: 3)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTEGRATION_TEST_MAX_FETCH</span></code>: Maximum articles to fetch details for (default: 3)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTEGRATION_TEST_QUERY</span></code>: Test query to use (default: “traditional medicine”)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTEGRATION_TEST_TIMEOUT</span></code>: Request timeout in seconds (default: 30)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SKIP_INTEGRATION_TESTS</span></code>: Whether to skip integration tests (default: false)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">INTEGRATION_TEST_MAX_REQUESTS</span></code>: Maximum requests per test (default: 5)</p></li>
+</ul>
 </section>
 </section>
 <section id="running-tests">
@@ -216,16 +269,19 @@ make<span class="w"> </span>test-cov
 <p>All our tests are currently passing:</p>
 <ul class="simple">
 <li><p><strong>Unit Tests</strong>: 9/9 passing</p></li>
-<li><p><strong>Integration Tests</strong>: 1/1 passing</p></li>
+<li><p><strong>Integration Tests</strong>: 11/11 passing</p></li>
 </ul>
-<p>This gives us confidence that our implementation is working correctly.</p>
+<p>This gives us confidence that our implementation is working correctly while respecting ethical guidelines for API usage.</p>
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="implementation.html" class="btn btn-neutral float-left" title="Implementation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="current_state.html" class="btn btn-neutral float-right" title="Current State" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

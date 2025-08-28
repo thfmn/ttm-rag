@@ -9,6 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from src.connectors.pubmed import PubMedConnector
 from src.models.source import Source
+from src.models.pubmed import PubmedArticle
 
 @pytest.fixture
 def mock_source():
@@ -87,9 +88,25 @@ def test_search_articles_request_exception(mock_get, pubmed_connector):
 @patch('src.connectors.pubmed.requests.get')
 def test_fetch_article_details(mock_get, pubmed_connector):
     """Test fetching article details"""
-    # Mock the response
+    # Mock the response with sample XML
+    sample_xml = '''<?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE PubmedArticleSet PUBLIC "-//NLM//DTD PubMedArticle, 1st January 2023//EN" "https://dtd.nlm.nih.gov/ncbi/pubmed/out/pubmed_230101.dtd">
+    <PubmedArticleSet>
+    <PubmedArticle>
+        <MedlineCitation Status="MEDLINE" Owner="NLM">
+            <PMID Version="1">123456</PMID>
+            <Article PubModel="Print">
+                <Journal>
+                    <Title>Test Journal</Title>
+                </Journal>
+                <ArticleTitle>Test Article</ArticleTitle>
+            </Article>
+        </MedlineCitation>
+    </PubmedArticle>
+    </PubmedArticleSet>'''
+    
     mock_response = Mock()
-    mock_response.text = "<xml>Article content</xml>"
+    mock_response.text = sample_xml
     mock_response.raise_for_status.return_value = None
     mock_get.return_value = mock_response
     
@@ -97,11 +114,9 @@ def test_fetch_article_details(mock_get, pubmed_connector):
     articles = pubmed_connector.fetch_article_details(["123456", "789012"])
     
     # Assertions
-    assert len(articles) == 2
-    assert articles[0]["pmid"] == "123456"
-    assert articles[0]["raw_xml"] == "<xml>Article content</xml>"
-    assert articles[1]["pmid"] == "789012"
-    assert articles[1]["raw_xml"] == "<xml>Article content</xml>"
+    assert len(articles) == 1  # Should parse to 1 article
+    assert isinstance(articles[0], PubmedArticle)
+    assert articles[0].pmid == "123456"
     mock_get.assert_called_once()
 
 @patch('src.connectors.pubmed.requests.get')

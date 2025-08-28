@@ -1,6 +1,8 @@
 import requests
 from typing import Dict, List, Optional
 from src.models.source import Source
+from src.models.pubmed import PubmedArticle
+from src.utils.pubmed_parser import parse_pubmed_xml
 import logging
 
 logger = logging.getLogger(__name__)
@@ -51,15 +53,15 @@ class PubMedConnector:
             logger.error(f"Error searching PubMed: {e}")
             return []
             
-    def fetch_article_details(self, pmids: List[str]) -> List[Dict]:
+    def fetch_article_details(self, pmids: List[str]) -> List[PubmedArticle]:
         """
-        Fetch detailed information for a list of PubMed IDs
+        Fetch detailed information for a list of PubMed IDs and parse into structured data
         
         Args:
             pmids: List of PubMed IDs
             
         Returns:
-            List of article details
+            List of PubmedArticle objects with structured data
         """
         if not pmids:
             return []
@@ -78,10 +80,10 @@ class PubMedConnector:
             response = requests.get(fetch_url, params=params)
             response.raise_for_status()
             
-            # For now, we'll just return the raw XML
-            # In a more complete implementation, we'd parse this XML
-            logger.info(f"Fetched details for {len(pmids)} articles")
-            return [{"pmid": pmid, "raw_xml": response.text} for pmid in pmids]
+            # Parse the XML into structured PubmedArticle objects
+            articles = parse_pubmed_xml(response.text)
+            logger.info(f"Fetched and parsed details for {len(articles)} articles")
+            return articles
             
         except requests.RequestException as e:
             logger.error(f"Error fetching article details: {e}")

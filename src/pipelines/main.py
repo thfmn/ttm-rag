@@ -33,7 +33,15 @@ def main():
     for i, doc in enumerate(documents):
         print(f"Document {i+1}:")
         print(f"  PMID: {doc.external_id}")
+        print(f"  Title: {doc.title[:100]}{'...' if doc.title and len(doc.title) > 100 else ''}")
+        print(f"  Abstract: {doc.abstract[:100]}{'...' if doc.abstract and len(doc.abstract) > 100 else ''}")
+        print(f"  Authors: {', '.join(doc.authors) if doc.authors else 'N/A'}")
+        print(f"  Language: {doc.language}")
+        print(f"  Document Type: {doc.document_type}")
         print(f"  Content length: {len(doc.content) if doc.content else 0} characters")
+        if doc.metadata:
+            print(f"  DOI: {doc.metadata.get('doi', 'N/A')}")
+            print(f"  Journal: {doc.metadata.get('journal', 'N/A')}")
         print()
 
 if __name__ == "__main__":

@@ -1,8 +1,10 @@
 from src.connectors.pubmed import PubMedConnector
 from src.models.source import Source
 from src.models.document import Document
+from src.models.pubmed import PubmedArticle
 import logging
 from typing import List
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +37,7 @@ class PubMedPipeline:
             logger.warning("No articles found for the given query")
             return []
             
-        # Step 2: Fetch article details
+        # Step 2: Fetch article details (limited for testing)
         articles = self.connector.fetch_article_details(pmids[:10])  # Limit for testing
         
         # Step 3: Convert to Document objects
@@ -44,12 +46,12 @@ class PubMedPipeline:
         logger.info(f"PubMed pipeline completed. Processed {len(documents)} documents.")
         return documents
         
-    def _convert_to_documents(self, articles: List[dict]) -> List[Document]:
+    def _convert_to_documents(self, articles: List[PubmedArticle]) -> List[Document]:
         """
-        Convert raw article data to Document objects
+        Convert PubmedArticle objects to Document objects
         
         Args:
-            articles: List of raw article data
+            articles: List of PubmedArticle objects
             
         Returns:
             List of Document objects
@@ -57,11 +59,27 @@ class PubMedPipeline:
         documents = []
         
         for article in articles:
+            # Create a Document from the PubmedArticle
             doc = Document(
                 source_id=self.source.id,
-                external_id=article.get("pmid"),
-                content=article.get("raw_xml"),  # In a full implementation, we'd parse this
-                document_type="research_paper"
+                external_id=article.pmid,
+                title=article.title,
+                abstract=article.abstract,
+                authors=[author.name for author in article.authors] if article.authors else None,
+                publication_date=None,  # Would need to parse datetime from article.publication_date
+                language=article.language,
+                document_type=article.article_type or "research_paper",
+                content=article.raw_xml,  # Store raw XML for now, could be full text later
+                metadata={
+                    "doi": article.doi,
+                    "journal": article.journal.title if article.journal else None,
+                    "mesh_terms": article.mesh_terms,
+                    "chemicals": article.chemicals,
+                    "country": article.country
+                } if any([
+                    article.doi, article.journal, article.mesh_terms, 
+                    article.chemicals, article.country
+                ]) else None
             )
             documents.append(doc)
             

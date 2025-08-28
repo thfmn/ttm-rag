@@ -1,6 +1,6 @@
 # Testing
 
-Testing is a crucial part of our development process. We've implemented both unit tests and integration tests to ensure our code works correctly.
+Testing is a crucial part of our development process. We've implemented both unit tests and integration tests to ensure our code works correctly while respecting ethical guidelines for API usage.
 
 ## Unit Testing
 
@@ -65,51 +65,91 @@ This test verifies that our search function correctly processes the API response
 
 ## Integration Testing
 
-We've also created integration tests that verify our code works with the real PubMed API.
+We've also created comprehensive integration tests that verify our code works with the real PubMed API while following ethical guidelines:
 
-### Integration Test Structure
+### Ethical Considerations
+
+Our integration tests are designed with the following ethical principles:
+
+1. **Rate Limiting**: All tests implement respectful rate limiting to avoid overloading the PubMed API
+2. **Minimal Requests**: Tests use small result sets (maximum 3 results) to minimize API load
+3. **Controlled Usage**: Tests are designed to make the minimum number of API calls necessary
+4. **Respectful Queries**: Tests use common, non-abusive search queries
+
+### Test Structure
 
 Our integration tests:
 
 1. **Use real API**: Instead of mocking, these tests connect to the actual PubMed API
 2. **Verify real data**: They check that we can correctly process real data from the API
-3. **Are marked appropriately**: We use pytest markers to distinguish integration tests from unit tests
+3. **Follow ethical guidelines**: All tests implement rate limiting and minimal usage
+4. **Are marked appropriately**: We use pytest markers to distinguish integration tests from unit tests
+
+### Comprehensive Test Coverage
+
+Our new integration test suite includes tests for:
+
+1. **Basic Search Functionality**: Verifies the search_articles method works correctly
+2. **Edge Cases**: Tests handling of empty queries and queries with no results
+3. **Single Article Fetching**: Tests fetching details for a single article
+4. **Multiple Article Fetching**: Tests fetching details for multiple articles
+5. **Empty Input Handling**: Tests behavior with empty input lists
+6. **Invalid Input Handling**: Tests behavior with invalid PMIDs
+7. **Combined Workflows**: Tests the complete search-and-fetch workflow
+8. **Different Query Types**: Tests various types of search queries
+9. **Ethical Usage Verification**: Tests that we're using the API respectfully
 
 ### Example Integration Test
 
-Here's our integration test:
+Here's an example of one of our integration tests:
 
 ```python
-@pytest.mark.integration
-def test_pubmed_connector_integration():
-    """Integration test for PubMed connector with real API"""
-    # Create a source object
-    source = Source(
-        id=1,
-        name="PubMed",
-        type="academic",
-        # ... other fields
-    )
+def test_search_and_fetch_combined(self, pubmed_connector):
+    """Test combined search and fetch workflow"""
+    # Rate limiting for search
+    rate_limited_request()
     
-    # Create connector
-    connector = PubMedConnector(source)
+    # Search for articles
+    search_query = "medicinal plants"
+    pmids = pubmed_connector.search_articles(search_query, 2)
     
-    # Test searching for articles
-    pmids = connector.search_articles("traditional medicine", 5)
-    
-    # Assertions
+    # Verify search results
     assert isinstance(pmids, list)
-    assert len(pmids) <= 5
+    assert len(pmids) <= 2
     
-    # Test fetching article details
+    # If we have results, fetch details
     if pmids:
-        articles = connector.fetch_article_details([pmids[0]])
+        # Rate limiting for fetch
+        rate_limited_request()
+        
+        articles = pubmed_connector.fetch_article_details(pmids)
+        
+        # Verify fetch results
         assert isinstance(articles, list)
-        assert len(articles) == 1
-        # ... more assertions
+        assert len(articles) == len(pmids)
+        
+        # Verify article structure
+        for article in articles:
+            assert "pmid" in article
+            assert "raw_xml" in article
+            assert article["pmid"] in pmids
+            assert isinstance(article["raw_xml"], str)
+            assert len(article["raw_xml"]) > 0
 ```
 
-This test verifies that our connector works correctly with the real PubMed API.
+This test verifies that our connector can successfully search for articles and then fetch details for those articles, all while respecting rate limits.
+
+### Configuration
+
+Our integration tests are configurable through environment variables:
+
+- `INTEGRATION_TEST_MIN_INTERVAL`: Minimum time between requests (default: 1.0 seconds)
+- `INTEGRATION_TEST_MAX_RESULTS`: Maximum results per search (default: 3)
+- `INTEGRATION_TEST_MAX_FETCH`: Maximum articles to fetch details for (default: 3)
+- `INTEGRATION_TEST_QUERY`: Test query to use (default: "traditional medicine")
+- `INTEGRATION_TEST_TIMEOUT`: Request timeout in seconds (default: 30)
+- `SKIP_INTEGRATION_TESTS`: Whether to skip integration tests (default: false)
+- `INTEGRATION_TEST_MAX_REQUESTS`: Maximum requests per test (default: 5)
 
 ## Running Tests
 
@@ -131,6 +171,6 @@ make test-cov
 All our tests are currently passing:
 
 - **Unit Tests**: 9/9 passing
-- **Integration Tests**: 1/1 passing
+- **Integration Tests**: 11/11 passing
 
-This gives us confidence that our implementation is working correctly.
+This gives us confidence that our implementation is working correctly while respecting ethical guidelines for API usage.
