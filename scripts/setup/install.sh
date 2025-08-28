@@ -12,7 +12,7 @@ fi
 
 # Create virtual environment
 echo "📦 Creating virtual environment..."
-uv venv --python 3.11
+uv venv --python 3.13
 
 # Activate virtual environment
 echo "🔧 Activating virtual environment..."
