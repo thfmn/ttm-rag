@@ -1,7 +1,194 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "thai-traditional-medicine-rag-bot"
 version = "0.1.0"
-description = "Add your description here"
+description = "Data acquisition pipeline for Thai Traditional Medicine RAG bot"
+authors = [{ name = "Tobias Hoffmann", email = "" }]
 readme = "README.md"
-requires-python = ">=3.12"
-dependencies = []
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    # Core framework
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+
+    # Database & Storage
+    "sqlalchemy>=2.0.0",
+    "asyncpg>=0.29.0",
+    "psycopg2-binary>=2.9.0",
+    "alembic>=1.13.0",
+    "redis>=5.0.0",
+
+    # Data Processing
+    "pandas>=2.1.0",
+    "numpy>=1.25.0",
+    "scipy>=1.11.0",
+
+    # Web Scraping & APIs
+    "requests>=2.31.0",
+    "aiohttp>=3.9.0",
+    "httpx>=0.25.0",
+    "scrapy>=2.11.0",
+    "beautifulsoup4>=4.12.0",
+    "selenium>=4.15.0",
+
+    # Thai Language Processing
+    "pythainlp>=5.0.0",
+    "spacy>=3.7.0",
+    "nltk>=3.8.0",
+    "langdetect>=1.0.9",
+
+    # File Processing
+    "PyPDF2>=3.0.0",
+    "python-docx>=1.1.0",
+    "openpyxl>=3.1.0",
+    "python-magic>=0.4.27",
+    "apache-tika>=2.9.0",
+
+    # Search & Indexing
+    "elasticsearch>=8.11.0",
+    "opensearch-py>=2.4.0",
+
+    # Task Queue
+    "celery>=5.3.0",
+    "flower>=2.0.0",
+
+    # Monitoring & Logging
+    "prometheus-client>=0.19.0",
+    "structlog>=23.2.0",
+    "rich>=13.7.0",
+
+    # Configuration & Environment
+    "python-dotenv>=1.0.0",
+    "click>=8.1.0",
+    "typer>=0.9.0",
+
+    # Date/Time handling
+    "python-dateutil>=2.8.0",
+    "pytz>=2023.3",
+
+    # Validation & Schema
+    "cerberus>=1.3.4",
+    "jsonschema>=4.20.0",
+
+    # Utils
+    "tqdm>=4.66.0",
+    "tabulate>=0.9.0",
+    "colorama>=0.4.6",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.12.0",
+    "pytest-xdist>=3.5.0",
+    "factory-boy>=3.3.0",
+    "faker>=20.1.0",
+
+    # Code Quality
+    "black>=23.11.0",
+    "isort>=5.12.0",
+    "flake8>=6.1.0",
+    "mypy>=1.7.0",
+    "pre-commit>=3.6.0",
+
+    # Documentation
+    "sphinx>=7.2.0",
+    "sphinx-rtd-theme>=1.3.0",
+    "sphinx-autodoc-typehints>=1.25.0",
+    "myst-parser>=2.0.0",
+
+    # Development tools
+    "ipython>=8.17.0",
+    "jupyter>=1.0.0",
+    "notebook>=7.0.0",
+]
+
+prod = [
+    # Production monitoring
+    "gunicorn>=21.2.0",
+    "sentry-sdk>=1.38.0",
+    "newrelic>=9.2.0",
+]
+
+ml = [
+    # Machine Learning (for future RAG implementation)
+    "torch>=2.1.0",
+    "transformers>=4.35.0",
+    "sentence-transformers>=2.2.0",
+    "faiss-cpu>=1.7.4",
+    "openai>=1.3.0",
+    "langchain>=0.0.340",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["src"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short --strict-markers"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*", "*/migrations/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
