@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testing &mdash; Thai Traditional Medicine RAG Bot 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Thai Traditional Medicine RAG Bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Testing</a><ul>
+<li><a class="reference internal" href="#unit-testing">Unit Testing</a><ul>
+<li><a class="reference internal" href="#test-structure">Test Structure</a></li>
+<li><a class="reference internal" href="#connector-tests">Connector Tests</a></li>
+<li><a class="reference internal" href="#pipeline-tests">Pipeline Tests</a></li>
+<li><a class="reference internal" href="#example-test">Example Test</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#integration-testing">Integration Testing</a><ul>
+<li><a class="reference internal" href="#integration-test-structure">Integration Test Structure</a></li>
+<li><a class="reference internal" href="#example-integration-test">Example Integration Test</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-tests">Running Tests</a></li>
+<li><a class="reference internal" href="#test-results">Test Results</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Thai Traditional Medicine RAG Bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Testing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/testing.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="testing">
+<h1>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h1>
+<p>Testing is a crucial part of our development process. We’ve implemented both unit tests and integration tests to ensure our code works correctly.</p>
+<section id="unit-testing">
+<h2>Unit Testing<a class="headerlink" href="#unit-testing" title="Link to this heading"></a></h2>
+<p>We’ve created comprehensive unit tests for our PubMed connector and pipeline using pytest and unittest.mock.</p>
+<section id="test-structure">
+<h3>Test Structure<a class="headerlink" href="#test-structure" title="Link to this heading"></a></h3>
+<p>Our unit tests follow a clear structure:</p>
+<ol class="arabic simple">
+<li><p><strong>Fixtures</strong>: We use pytest fixtures to create reusable test objects</p></li>
+<li><p><strong>Mocking</strong>: We use unittest.mock to mock external dependencies like the requests library</p></li>
+<li><p><strong>Assertions</strong>: We use pytest’s assertion system to verify expected behavior</p></li>
+</ol>
+</section>
+<section id="connector-tests">
+<h3>Connector Tests<a class="headerlink" href="#connector-tests" title="Link to this heading"></a></h3>
+<p>We’ve implemented tests for all key functionality of our PubMed connector:</p>
+<ol class="arabic simple">
+<li><p><strong>test_search_articles</strong>: Verifies that the search function correctly returns article IDs</p></li>
+<li><p><strong>test_search_articles_empty_result</strong>: Tests the behavior when no articles are found</p></li>
+<li><p><strong>test_search_articles_request_exception</strong>: Tests error handling when the API request fails</p></li>
+<li><p><strong>test_fetch_article_details</strong>: Verifies that article details are correctly fetched</p></li>
+<li><p><strong>test_fetch_article_details_empty_input</strong>: Tests the behavior with empty input</p></li>
+<li><p><strong>test_fetch_article_details_request_exception</strong>: Tests error handling when fetching details fails</p></li>
+</ol>
+</section>
+<section id="pipeline-tests">
+<h3>Pipeline Tests<a class="headerlink" href="#pipeline-tests" title="Link to this heading"></a></h3>
+<p>We’ve also implemented tests for our PubMed pipeline:</p>
+<ol class="arabic simple">
+<li><p><strong>test_pubmed_pipeline_run</strong>: Tests the complete pipeline execution</p></li>
+<li><p><strong>test_pubmed_pipeline_run_no_results</strong>: Tests the pipeline behavior when no articles are found</p></li>
+<li><p><strong>test_pubmed_pipeline_run_limited_results</strong>: Tests the pipeline with a limited number of results</p></li>
+</ol>
+</section>
+<section id="example-test">
+<h3>Example Test<a class="headerlink" href="#example-test" title="Link to this heading"></a></h3>
+<p>Here’s an example of one of our unit tests:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@patch</span><span class="p">(</span><span class="s1">&#39;src.connectors.pubmed.requests.get&#39;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_search_articles</span><span class="p">(</span><span class="n">mock_get</span><span class="p">,</span> <span class="n">pubmed_connector</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test searching for articles&quot;&quot;&quot;</span>
+    <span class="c1"># Mock the response</span>
+    <span class="n">mock_response</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
+    <span class="n">mock_response</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;esearchresult&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;idlist&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;123456&quot;</span><span class="p">,</span> <span class="s2">&quot;789012&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">mock_response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">mock_get</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">mock_response</span>
+    
+    <span class="c1"># Test the method</span>
+    <span class="n">pmids</span> <span class="o">=</span> <span class="n">pubmed_connector</span><span class="o">.</span><span class="n">search_articles</span><span class="p">(</span><span class="s2">&quot;traditional medicine&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    
+    <span class="c1"># Assertions</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="s2">&quot;123456&quot;</span> <span class="ow">in</span> <span class="n">pmids</span>
+    <span class="k">assert</span> <span class="s2">&quot;789012&quot;</span> <span class="ow">in</span> <span class="n">pmids</span>
+    <span class="n">mock_get</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This test verifies that our search function correctly processes the API response and returns the expected article IDs.</p>
+</section>
+</section>
+<section id="integration-testing">
+<h2>Integration Testing<a class="headerlink" href="#integration-testing" title="Link to this heading"></a></h2>
+<p>We’ve also created integration tests that verify our code works with the real PubMed API.</p>
+<section id="integration-test-structure">
+<h3>Integration Test Structure<a class="headerlink" href="#integration-test-structure" title="Link to this heading"></a></h3>
+<p>Our integration tests:</p>
+<ol class="arabic simple">
+<li><p><strong>Use real API</strong>: Instead of mocking, these tests connect to the actual PubMed API</p></li>
+<li><p><strong>Verify real data</strong>: They check that we can correctly process real data from the API</p></li>
+<li><p><strong>Are marked appropriately</strong>: We use pytest markers to distinguish integration tests from unit tests</p></li>
+</ol>
+</section>
+<section id="example-integration-test">
+<h3>Example Integration Test<a class="headerlink" href="#example-integration-test" title="Link to this heading"></a></h3>
+<p>Here’s our integration test:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">integration</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_pubmed_connector_integration</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integration test for PubMed connector with real API&quot;&quot;&quot;</span>
+    <span class="c1"># Create a source object</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PubMed&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;academic&quot;</span><span class="p">,</span>
+        <span class="c1"># ... other fields</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># Create connector</span>
+    <span class="n">connector</span> <span class="o">=</span> <span class="n">PubMedConnector</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    
+    <span class="c1"># Test searching for articles</span>
+    <span class="n">pmids</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">search_articles</span><span class="p">(</span><span class="s2">&quot;traditional medicine&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    
+    <span class="c1"># Assertions</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pmids</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">pmids</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">5</span>
+    
+    <span class="c1"># Test fetching article details</span>
+    <span class="k">if</span> <span class="n">pmids</span><span class="p">:</span>
+        <span class="n">articles</span> <span class="o">=</span> <span class="n">connector</span><span class="o">.</span><span class="n">fetch_article_details</span><span class="p">([</span><span class="n">pmids</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">articles</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">articles</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="c1"># ... more assertions</span>
+</pre></div>
+</div>
+<p>This test verifies that our connector works correctly with the real PubMed API.</p>
+</section>
+</section>
+<section id="running-tests">
+<h2>Running Tests<a class="headerlink" href="#running-tests" title="Link to this heading"></a></h2>
+<p>We’ve set up convenient commands in our Makefile to run tests:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run unit tests</span>
+make<span class="w"> </span><span class="nb">test</span>
+
+<span class="c1"># Run integration tests</span>
+make<span class="w"> </span>test-integration
+
+<span class="c1"># Run tests with coverage</span>
+make<span class="w"> </span>test-cov
+</pre></div>
+</div>
+</section>
+<section id="test-results">
+<h2>Test Results<a class="headerlink" href="#test-results" title="Link to this heading"></a></h2>
+<p>All our tests are currently passing:</p>
+<ul class="simple">
+<li><p><strong>Unit Tests</strong>: 9/9 passing</p></li>
+<li><p><strong>Integration Tests</strong>: 1/1 passing</p></li>
+</ul>
+<p>This gives us confidence that our implementation is working correctly.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Tobias Hoffmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

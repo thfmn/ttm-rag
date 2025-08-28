@@ -1,0 +1,177 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Overview &mdash; Thai Traditional Medicine RAG Bot 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Thai Traditional Medicine RAG Bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Project Overview</a><ul>
+<li><a class="reference internal" href="#project-goals">Project Goals</a></li>
+<li><a class="reference internal" href="#technical-architecture">Technical Architecture</a></li>
+<li><a class="reference internal" href="#technology-stack">Technology Stack</a><ul>
+<li><a class="reference internal" href="#core-infrastructure">Core Infrastructure</a></li>
+<li><a class="reference internal" href="#data-processing">Data Processing</a></li>
+<li><a class="reference internal" href="#development-deployment">Development &amp; Deployment</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Thai Traditional Medicine RAG Bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Project Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/project_overview.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="project-overview">
+<h1>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading"></a></h1>
+<p>This section provides an overview of our project, including its goals, architecture, and key components.</p>
+<section id="project-goals">
+<h2>Project Goals<a class="headerlink" href="#project-goals" title="Link to this heading"></a></h2>
+<p>Our project has several key goals:</p>
+<ol class="arabic simple">
+<li><p><strong>Data Collection</strong>: Acquire comprehensive TTM data from selected high-quality sources</p></li>
+<li><p><strong>Quality Assurance</strong>: Implement multi-tier validation for data accuracy and authenticity</p></li>
+<li><p><strong>Database Architecture</strong>: Design scalable, searchable database infrastructure</p></li>
+<li><p><strong>Pipeline Automation</strong>: Create automated data ingestion and processing workflows</p></li>
+<li><p><strong>Documentation</strong>: Maintain detailed documentation for all processes and decisions</p></li>
+</ol>
+</section>
+<section id="technical-architecture">
+<h2>Technical Architecture<a class="headerlink" href="#technical-architecture" title="Link to this heading"></a></h2>
+<p>Our system follows a modular architecture with several key components:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Source APIs   │───▶│  Data Ingestion │───▶│   Validation    │───▶│    Database     │
+│   Web Scrapers  │    │    Pipeline     │    │   &amp; Quality     │    │    Storage      │
+│   File Uploads  │    │                 │    │    Control      │    │                 │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
+                                │                        │                        │
+                                ▼                        ▼                        ▼
+                       ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+                       │   Monitoring    │    │   Metadata      │    │   Search Index  │
+                       │   &amp; Tracking    │    │   Management    │    │   &amp; Analytics   │
+                       └─────────────────┘    └─────────────────┘    └─────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="technology-stack">
+<h2>Technology Stack<a class="headerlink" href="#technology-stack" title="Link to this heading"></a></h2>
+<p>We’re using a modern technology stack for our project:</p>
+<section id="core-infrastructure">
+<h3>Core Infrastructure<a class="headerlink" href="#core-infrastructure" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Database</strong>: PostgreSQL with vector extensions (pgvector)</p></li>
+<li><p><strong>Search Engine</strong>: OpenSearch (instead of ElasticSearch)</p></li>
+<li><p><strong>Queue System</strong>: Redis + Celery</p></li>
+<li><p><strong>Monitoring</strong>: Prometheus + Grafana</p></li>
+<li><p><strong>Documentation</strong>: Sphinx + GitHub Pages</p></li>
+</ul>
+</section>
+<section id="data-processing">
+<h3>Data Processing<a class="headerlink" href="#data-processing" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Language Processing</strong>: PyThaiNLP, spaCy, NLTK (Thai language support)</p></li>
+<li><p><strong>Web Scraping</strong>: Scrapy, Beautiful Soup, Selenium</p></li>
+<li><p><strong>File Processing</strong>: Apache Tika, pandas, PyPDF2</p></li>
+<li><p><strong>API Integration</strong>: requests, aiohttp, FastAPI</p></li>
+<li><p><strong>Data Validation</strong>: Pydantic, cerberus where needed</p></li>
+</ul>
+</section>
+<section id="development-deployment">
+<h3>Development &amp; Deployment<a class="headerlink" href="#development-deployment" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Version Control</strong>: Git + GitHub</p></li>
+<li><p><strong>CI/CD</strong>: GitHub Actions</p></li>
+<li><p><strong>Containerization</strong>: Docker + Docker Compose</p></li>
+<li><p><strong>Environment Management</strong>: uv</p></li>
+<li><p><strong>Testing</strong>: pytest</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Tobias Hoffmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

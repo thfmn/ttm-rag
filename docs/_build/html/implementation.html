@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Implementation &mdash; Thai Traditional Medicine RAG Bot 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Thai Traditional Medicine RAG Bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Implementation</a><ul>
+<li><a class="reference internal" href="#project-structure">Project Structure</a></li>
+<li><a class="reference internal" href="#pubmed-connector-implementation">PubMed Connector Implementation</a><ul>
+<li><a class="reference internal" href="#why-pubmed">Why PubMed?</a></li>
+<li><a class="reference internal" href="#connector-design">Connector Design</a></li>
+<li><a class="reference internal" href="#key-components">Key Components</a></li>
+<li><a class="reference internal" href="#implementation-details">Implementation Details</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pubmed-pipeline-implementation">PubMed Pipeline Implementation</a><ul>
+<li><a class="reference internal" href="#pipeline-design">Pipeline Design</a></li>
+<li><a class="reference internal" href="#id1">Key Components</a></li>
+<li><a class="reference internal" href="#id2">Implementation Details</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main-script">Main Script</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Thai Traditional Medicine RAG Bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Implementation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/implementation.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="implementation">
+<h1>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h1>
+<p>In this section, we’ll walk through our implementation process, from setting up the project structure to implementing the PubMed connector.</p>
+<section id="project-structure">
+<h2>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading"></a></h2>
+<p>We started by setting up a well-organized project structure following best practices:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>thai-traditional-medicine-rag-bot/
+├── README.md
+├── QWEN.md                    # Project Requirements Document
+├── docs/                      # Documentation
+│   ├── conf.py                # Sphinx configuration
+│   ├── index.rst              # Documentation index
+│   ├── introduction.md        # Introduction to the project
+│   ├── project_overview.md    # Project overview
+│   ├── implementation.md      # Implementation details (this file)
+│   ├── testing.md             # Testing documentation
+│   ├── current_state.md       # Current state of the project
+│   └── future_steps.md        # Future steps
+├── src/                       # Source code
+│   ├── connectors/            # Source connector implementations
+│   ├── models/                # Data models
+│   ├── pipelines/             # Data pipeline code
+│   ├── validators/            # Data validation modules
+│   └── utils/                 # Utility functions
+├── tests/                     # Tests
+│   ├── unit/                  # Unit tests
+│   ├── integration/           # Integration tests
+│   └── fixtures/              # Test data
+├── config/                    # Configuration files
+├── scripts/                   # Scripts
+├── docker/                    # Docker configurations
+├── .github/                   # GitHub Actions workflows
+└── requirements/              # Python dependencies
+</pre></div>
+</div>
+</section>
+<section id="pubmed-connector-implementation">
+<h2>PubMed Connector Implementation<a class="headerlink" href="#pubmed-connector-implementation" title="Link to this heading"></a></h2>
+<p>Our first implementation focused on creating a connector for the PubMed API, which is one of our Tier 1 sources.</p>
+<section id="why-pubmed">
+<h3>Why PubMed?<a class="headerlink" href="#why-pubmed" title="Link to this heading"></a></h3>
+<p>PubMed is a free search engine accessing primarily the MEDLINE database of references and abstracts on life sciences and biomedical topics. It’s an excellent source of academic papers related to traditional medicine, including Thai Traditional Medicine.</p>
+</section>
+<section id="connector-design">
+<h3>Connector Design<a class="headerlink" href="#connector-design" title="Link to this heading"></a></h3>
+<p>We designed our PubMed connector with the following considerations:</p>
+<ol class="arabic simple">
+<li><p><strong>Modularity</strong>: The connector is a separate module that can be easily reused</p></li>
+<li><p><strong>Error Handling</strong>: Robust error handling for network issues and API errors</p></li>
+<li><p><strong>Configuration</strong>: Easy configuration through our Source model</p></li>
+<li><p><strong>Logging</strong>: Comprehensive logging for debugging and monitoring</p></li>
+</ol>
+</section>
+<section id="key-components">
+<h3>Key Components<a class="headerlink" href="#key-components" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Source Model</strong>: A data class representing a data source with all necessary configuration</p></li>
+<li><p><strong>PubMedConnector Class</strong>: The main class that handles communication with the PubMed API</p></li>
+<li><p><strong>Methods</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">search_articles()</span></code>: Searches for articles based on a query</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch_article_details()</span></code>: Fetches detailed information for specific articles</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="implementation-details">
+<h3>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h3>
+<p>Here’s a simplified version of our PubMed connector:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PubMedConnector</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Source</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="s2">&quot;https://eutils.ncbi.nlm.nih.gov/entrez/eutils&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_key</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_key&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">metadata</span> <span class="k">else</span> <span class="kc">None</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_articles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_results</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="c1"># Implementation details...</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="nf">fetch_article_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pmids</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+        <span class="c1"># Implementation details...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="pubmed-pipeline-implementation">
+<h2>PubMed Pipeline Implementation<a class="headerlink" href="#pubmed-pipeline-implementation" title="Link to this heading"></a></h2>
+<p>We also implemented a pipeline that uses our connector to fetch and process data:</p>
+<section id="pipeline-design">
+<h3>Pipeline Design<a class="headerlink" href="#pipeline-design" title="Link to this heading"></a></h3>
+<p>Our pipeline follows a simple but effective design:</p>
+<ol class="arabic simple">
+<li><p><strong>Search</strong>: Use the connector to search for articles</p></li>
+<li><p><strong>Fetch</strong>: Retrieve detailed information for the found articles</p></li>
+<li><p><strong>Convert</strong>: Convert the raw data into our internal Document format</p></li>
+</ol>
+</section>
+<section id="id1">
+<h3>Key Components<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Document Model</strong>: A data class representing a document with all relevant fields</p></li>
+<li><p><strong>PubMedPipeline Class</strong>: The main class that orchestrates the data ingestion process</p></li>
+<li><p><strong>Methods</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">run()</span></code>: Executes the entire pipeline</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_convert_to_documents()</span></code>: Converts raw article data to Document objects</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="id2">
+<h3>Implementation Details<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>Here’s a simplified version of our PubMed pipeline:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PubMedPipeline</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Source</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connector</span> <span class="o">=</span> <span class="n">PubMedConnector</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_results</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+        <span class="c1"># Implementation details...</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="nf">_convert_to_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">articles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+        <span class="c1"># Implementation details...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="main-script">
+<h2>Main Script<a class="headerlink" href="#main-script" title="Link to this heading"></a></h2>
+<p>We created a main script to demonstrate how to use our pipeline:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Create a source object for PubMed</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">Source</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PubMed&quot;</span><span class="p">,</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;academic&quot;</span><span class="p">,</span>
+        <span class="c1"># ... other fields</span>
+    <span class="p">)</span>
+    
+    <span class="c1"># Create the pipeline</span>
+    <span class="n">pipeline</span> <span class="o">=</span> <span class="n">PubMedPipeline</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    
+    <span class="c1"># Run the pipeline with a sample query</span>
+    <span class="n">documents</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;traditional medicine&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    
+    <span class="c1"># Print results</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span><span class="si">}</span><span class="s2"> documents&quot;</span><span class="p">)</span>
+    <span class="c1"># ... print document details</span>
+</pre></div>
+</div>
+<p>This script demonstrates the end-to-end flow of our implementation, from creating a source configuration to running the pipeline and displaying results.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Tobias Hoffmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

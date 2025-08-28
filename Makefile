@@ -11,6 +11,8 @@ help:
 	@echo "  clean       - Clean temporary files"
 	@echo "  db-setup    - Setup database"
 	@echo "  docker-up   - Start docker services"
+	@echo "  docs        - Build documentation"
+	@echo "  docs-serve  - Serve documentation locally"
 
 # Environment setup
 install:
@@ -130,7 +132,7 @@ clean:
 # Documentation
 docs:
 	@echo "📚 Building documentation..."
-	cd docs && make html
+	cd docs && sphinx-build -b html . _build/html
 
 docs-serve:
 	@echo "🌐 Serving documentation..."

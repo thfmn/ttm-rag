@@ -1,0 +1,207 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Current State &mdash; Thai Traditional Medicine RAG Bot 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Thai Traditional Medicine RAG Bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Current State</a><ul>
+<li><a class="reference internal" href="#accomplishments">Accomplishments</a></li>
+<li><a class="reference internal" href="#whats-working">What’s Working</a></li>
+<li><a class="reference internal" href="#demonstration">Demonstration</a></li>
+<li><a class="reference internal" href="#code-quality">Code Quality</a></li>
+<li><a class="reference internal" href="#limitations">Limitations</a></li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Thai Traditional Medicine RAG Bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Current State</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/current_state.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="current-state">
+<h1>Current State<a class="headerlink" href="#current-state" title="Link to this heading"></a></h1>
+<p>This section describes the current state of our project, including what we’ve accomplished and what’s working.</p>
+<section id="accomplishments">
+<h2>Accomplishments<a class="headerlink" href="#accomplishments" title="Link to this heading"></a></h2>
+<p>So far, we’ve successfully completed the following:</p>
+<ol class="arabic simple">
+<li><p><strong>Project Structure</strong>: Set up a well-organized project structure following best practices</p></li>
+<li><p><strong>Dependencies</strong>: Configured project dependencies in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></p></li>
+<li><p><strong>Documentation</strong>: Created this Sphinx-based documentation</p></li>
+<li><p><strong>Core Models</strong>: Implemented basic data models (Source, Document)</p></li>
+<li><p><strong>PubMed Connector</strong>: Created a working connector for the PubMed API</p></li>
+<li><p><strong>PubMed Pipeline</strong>: Implemented a pipeline that uses the connector to fetch and process data</p></li>
+<li><p><strong>Testing</strong>: Developed comprehensive unit and integration tests</p></li>
+<li><p><strong>Main Script</strong>: Created a demonstration script that shows the pipeline in action</p></li>
+</ol>
+</section>
+<section id="whats-working">
+<h2>What’s Working<a class="headerlink" href="#whats-working" title="Link to this heading"></a></h2>
+<p>Our implementation is successfully:</p>
+<ol class="arabic simple">
+<li><p><strong>Connecting to PubMed API</strong>: Our connector can successfully communicate with the PubMed API</p></li>
+<li><p><strong>Searching for Articles</strong>: We can search for articles using keywords</p></li>
+<li><p><strong>Fetching Article Details</strong>: We can retrieve detailed information for specific articles</p></li>
+<li><p><strong>Processing Data</strong>: Our pipeline can process the fetched data into our internal Document format</p></li>
+<li><p><strong>Error Handling</strong>: Our code gracefully handles network errors and API issues</p></li>
+<li><p><strong>Testing</strong>: All our unit and integration tests are passing</p></li>
+</ol>
+</section>
+<section id="demonstration">
+<h2>Demonstration<a class="headerlink" href="#demonstration" title="Link to this heading"></a></h2>
+<p>When we run our main script, we get output like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Running</span> <span class="n">PubMed</span> <span class="n">pipeline</span><span class="o">...</span>
+<span class="n">Found</span> <span class="mi">5</span> <span class="n">documents</span>
+<span class="n">Document</span> <span class="mi">1</span><span class="p">:</span>
+  <span class="n">PMID</span><span class="p">:</span> <span class="mi">40874354</span>
+  <span class="n">Content</span> <span class="n">length</span><span class="p">:</span> <span class="mi">46286</span> <span class="n">characters</span>
+
+<span class="n">Document</span> <span class="mi">2</span><span class="p">:</span>
+  <span class="n">PMID</span><span class="p">:</span> <span class="mi">40874316</span>
+  <span class="n">Content</span> <span class="n">length</span><span class="p">:</span> <span class="mi">46286</span> <span class="n">characters</span>
+
+<span class="n">Document</span> <span class="mi">3</span><span class="p">:</span>
+  <span class="n">PMID</span><span class="p">:</span> <span class="mi">40874239</span>
+  <span class="n">Content</span> <span class="n">length</span><span class="p">:</span> <span class="mi">46286</span> <span class="n">characters</span>
+
+<span class="n">Document</span> <span class="mi">4</span><span class="p">:</span>
+  <span class="n">PMID</span><span class="p">:</span> <span class="mi">40874238</span>
+  <span class="n">Content</span> <span class="n">length</span><span class="p">:</span> <span class="mi">46286</span> <span class="n">characters</span>
+
+<span class="n">Document</span> <span class="mi">5</span><span class="p">:</span>
+  <span class="n">PMID</span><span class="p">:</span> <span class="mi">40874215</span>
+  <span class="n">Content</span> <span class="n">length</span><span class="p">:</span> <span class="mi">46286</span> <span class="n">characters</span>
+</pre></div>
+</div>
+<p>This shows that our pipeline successfully:</p>
+<ol class="arabic simple">
+<li><p>Searches PubMed for articles related to “traditional medicine”</p></li>
+<li><p>Fetches the first 5 articles</p></li>
+<li><p>Processes them into Document objects</p></li>
+<li><p>Displays basic information about each document</p></li>
+</ol>
+</section>
+<section id="code-quality">
+<h2>Code Quality<a class="headerlink" href="#code-quality" title="Link to this heading"></a></h2>
+<p>We’ve maintained good code quality practices:</p>
+<ol class="arabic simple">
+<li><p><strong>Modularity</strong>: Code is organized into separate modules with clear responsibilities</p></li>
+<li><p><strong>Documentation</strong>: Classes and methods are documented with docstrings</p></li>
+<li><p><strong>Error Handling</strong>: Robust error handling throughout the codebase</p></li>
+<li><p><strong>Logging</strong>: Comprehensive logging for debugging and monitoring</p></li>
+<li><p><strong>Testing</strong>: Comprehensive test coverage</p></li>
+</ol>
+</section>
+<section id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Link to this heading"></a></h2>
+<p>Our current implementation has some limitations:</p>
+<ol class="arabic simple">
+<li><p><strong>Data Processing</strong>: We’re currently storing raw XML data rather than parsing it into structured information</p></li>
+<li><p><strong>Limited Sources</strong>: We’ve only implemented PubMed integration so far</p></li>
+<li><p><strong>No Database</strong>: We’re not yet storing data in a database</p></li>
+<li><p><strong>No Validation</strong>: We don’t yet have data validation pipelines</p></li>
+<li><p><strong>No Advanced Features</strong>: Features like rate limiting, caching, or advanced search are not yet implemented</p></li>
+</ol>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>In the next phase of development, we plan to:</p>
+<ol class="arabic simple">
+<li><p>Enhance the PubMed connector to parse XML data into structured information</p></li>
+<li><p>Implement connectors for other data sources</p></li>
+<li><p>Set up database integration for storing fetched documents</p></li>
+<li><p>Implement data validation pipelines</p></li>
+<li><p>Add more sophisticated error handling and logging</p></li>
+<li><p>Implement rate limiting to respect API guidelines</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Tobias Hoffmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

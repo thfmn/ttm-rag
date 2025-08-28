@@ -1,5 +1,15 @@
 # Thai Traditional Medicine RAG Bot
 
+## Project Documentation
+
+You can view the project documentation by running:
+
+```bash
+python serve_docs.py
+```
+
+Then opening your browser to http://localhost:8080
+
 ## Quick Start Commands
 
 ### 1. Clone and setup

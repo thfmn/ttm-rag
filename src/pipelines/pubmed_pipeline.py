@@ -66,3 +66,6 @@ class PubMedPipeline:
             documents.append(doc)
             
         return documents
+
+if __name__ == '__main__':
+    pipeline = PubMedPipeline
