@@ -15,6 +15,7 @@ So far, we've successfully completed the following:
 7. **Testing**: Developed comprehensive unit and integration tests
 8. **Main Script**: Created a demonstration script that shows the pipeline in action
 9. **Structured Data Parsing**: Enhanced the PubMed connector to parse XML data into structured information using Pydantic models
+10. **Sophisticated Search Queries**: Implemented advanced search query building capabilities for Thai Traditional Medicine research
 
 ## What's Working
 
@@ -27,77 +28,41 @@ Our implementation is successfully:
 5. **Error Handling**: Our code gracefully handles network errors and API issues
 6. **Testing**: All our unit and integration tests are passing
 7. **Structured Data Parsing**: Our connector now parses XML into structured Pydantic models with proper validation
+8. **Advanced Search Queries**: We can construct complex, sophisticated search queries tailored for Thai Traditional Medicine research
 
 ## Demonstration
 
 When we run our main script, we get output like this:
 
 ```
-Running PubMed pipeline...
-Found 5 documents
-Document 1:
-  PMID: 40874354
-  Title: Metarhizium anisopliae as a potential biocontrol agent to suppress the tomato leafminer Phthorimaea ...
-  Abstract: Phthorimaea absoluta, an invasive pest, has recently become a devastating threat to China's tomato c...
-  Authors: Yanfei Ren, Faxi Wu, Asim Munawar, Guoxiu Li, Xing Liu, Xiaolong Liu, Ning Ding, Zhigang Ju, Komivi Senyo Akutse, Wenwu Zhou, Yaqiang Zheng
-  Language: eng
-  Document Type: Journal Article
-  Content length: 149019 characters
-  DOI: 10.1002/ps.70155
-  Journal: Pest management science
+Running PubMed pipeline with different query approaches...
 
-Document 2:
-  PMID: 40874316
-  Title: Role of Structural Versus Cellular Remodeling in Atrial Arrhythmogenesis: Insights From Personalized...
-  Abstract: Atrial fibrillation (AF) is a progressive disease involving both structural and functional remodelin...
-  Authors: Andrey V Pikunov, Roman A Syunyaev, Rheeda Ali, Adityo Prakosa, Anna Gams, Patrick M Boyle, Vanessa Steckmeister, Ingo Kutschka, Eric Rytkin, Niels Voigt, Natalia Trayanova, Igor R Efimov
-  Language: eng
-  Document Type: Journal Article
-  Content length: 149019 characters
-  DOI: 10.1161/CIRCEP.125.013898
-  Journal: Circulation. Arrhythmia and electrophysiology
+1. Basic query: 'traditional medicine'
+Found 3 documents
 
-Document 3:
-  PMID: 40874239
-  Title: The Pathogenesis and Treatment of Insomnia Combined with Depression.
-  Abstract: Under the fast pace and high pressure of modern society, many people suffer from sleep disorders suc...
-  Authors: Yifan Chang, Lu Liu, Xiaodong Xu, Shiqiang Zhang
-  Language: eng
-  Document Type: Journal Article
-  Content length: 149019 characters
-  DOI: 10.2147/IJGM.S547865
-  Journal: International journal of general medicine
+2. Thai Traditional Medicine query using query builder
 
-Document 4:
-  PMID: 40874238
-  Title: A Review of Acupuncture for the Treatment of Dry Eye Syndrome: Mechanisms, Efficacy, and Clinical Im...
-  Abstract: Dry eye disease (DED) is a prevalent ocular condition characterized by discomfort and vision impairm...
-  Authors: Ting Chen, Lu-Qi Feng, Ying Jin
-  Language: eng
-  Document Type: Journal Article
-  Content length: 149019 characters
-  DOI: 10.2147/IJGM.S526265
-  Journal: International journal of general medicine
+3. Specialized Thai Traditional Medicine query function
 
-Document 5:
-  PMID: 40874215
-  Title: Acupuncture for Parkinson's Disease: A Narrative Review of Clinical Efficacy and Mechanistic Insight...
-  Abstract: Parkinson's disease (PD) has been recognized for more than two centuries. Historically viewed as a c...
-  Authors: Nannan Yu, Dianjia Sun, Lin Ma, Qichen Han, Rui Song, Yuhao Wang
-  Language: eng
-  Document Type: Journal Article
-  Content length: 149019 characters
-  DOI: 10.2147/NDT.S532027
-  Journal: Neuropsychiatric disease and treatment
+4. Query with date range filter
+Found 3 articles with date range query: (thai medicine) AND 2020/01/01:2023/12/31[Date - Publication]
+  Article 1: Generalized lichen amyloidosis in a pregnant woman...
+  Article 2: The beneficial effects of traditional Thai massage...
+  Article 3: Dentists' Stress During the COVID-19 Pandemic: A R...
 ```
 
 This shows that our pipeline successfully:
 
 1. Searches PubMed for articles related to "traditional medicine"
-2. Fetches the first 5 articles
+2. Fetches the first 3 articles
 3. Parses the XML data into structured Pydantic models
 4. Processes them into Document objects with rich metadata
-5. Displays detailed information about each document
+5. Demonstrates advanced query building capabilities including:
+   - Complex query construction with multiple terms
+   - Exclusion of unwanted terms
+   - Article type filtering
+   - Date range filtering
+   - Specialized query functions for Thai Traditional Medicine
 
 ## Code Quality
 
@@ -109,6 +74,7 @@ We've maintained good code quality practices:
 4. **Logging**: Comprehensive logging for debugging and monitoring
 5. **Testing**: Comprehensive test coverage
 6. **Type Safety**: Using Pydantic models for type-safe data parsing and validation
+7. **Fluent Interface**: Using builder pattern for query construction
 
 ## Limitations
 

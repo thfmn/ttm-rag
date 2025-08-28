@@ -10,6 +10,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 from src.connectors.pubmed import PubMedConnector
 from src.models.source import Source
 from src.models.pubmed import PubmedArticle
+from src.utils.pubmed_query_builder import PubMedQueryBuilder
+
 
 @pytest.fixture
 def mock_source():
@@ -25,10 +27,12 @@ def mock_source():
         metadata={"api_key": "test_key"}
     )
 
+
 @pytest.fixture
 def pubmed_connector(mock_source):
     """Create a PubMedConnector instance for testing"""
     return PubMedConnector(mock_source)
+
 
 @patch('src.connectors.pubmed.requests.get')
 def test_search_articles(mock_get, pubmed_connector):
@@ -52,6 +56,7 @@ def test_search_articles(mock_get, pubmed_connector):
     assert "789012" in pmids
     mock_get.assert_called_once()
 
+
 @patch('src.connectors.pubmed.requests.get')
 def test_search_articles_empty_result(mock_get, pubmed_connector):
     """Test searching for articles with no results"""
@@ -72,6 +77,7 @@ def test_search_articles_empty_result(mock_get, pubmed_connector):
     assert len(pmids) == 0
     mock_get.assert_called_once()
 
+
 @patch('src.connectors.pubmed.requests.get')
 def test_search_articles_request_exception(mock_get, pubmed_connector):
     """Test searching for articles when request fails"""
@@ -84,6 +90,34 @@ def test_search_articles_request_exception(mock_get, pubmed_connector):
     # Assertions
     assert len(pmids) == 0
     mock_get.assert_called_once()
+
+
+@patch('src.connectors.pubmed.requests.get')
+def test_search_articles_with_query_builder(mock_get, pubmed_connector):
+    """Test searching for articles with a PubMedQueryBuilder"""
+    # Mock the response
+    mock_response = Mock()
+    mock_response.json.return_value = {
+        "esearchresult": {
+            "idlist": ["123456", "789012"]
+        }
+    }
+    mock_response.raise_for_status.return_value = None
+    mock_get.return_value = mock_response
+    
+    # Create a query builder
+    builder = PubMedQueryBuilder()
+    builder.search("traditional medicine").and_words(["thai"])
+    
+    # Test the method
+    pmids = pubmed_connector.search_articles(builder, 10)
+    
+    # Assertions
+    assert len(pmids) == 2
+    assert "123456" in pmids
+    assert "789012" in pmids
+    mock_get.assert_called_once()
+
 
 @patch('src.connectors.pubmed.requests.get')
 def test_fetch_article_details(mock_get, pubmed_connector):
@@ -119,6 +153,7 @@ def test_fetch_article_details(mock_get, pubmed_connector):
     assert articles[0].pmid == "123456"
     mock_get.assert_called_once()
 
+
 @patch('src.connectors.pubmed.requests.get')
 def test_fetch_article_details_empty_input(mock_get, pubmed_connector):
     """Test fetching article details with empty input"""
@@ -128,6 +163,7 @@ def test_fetch_article_details_empty_input(mock_get, pubmed_connector):
     # Assertions
     assert len(articles) == 0
     mock_get.assert_not_called()
+
 
 @patch('src.connectors.pubmed.requests.get')
 def test_fetch_article_details_request_exception(mock_get, pubmed_connector):

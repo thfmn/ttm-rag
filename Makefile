@@ -11,6 +11,7 @@ help:
 	@echo "  clean       - Clean temporary files"
 	@echo "  db-setup    - Setup database"
 	@echo "  docker-up   - Start docker services"
+	@echo "  api         - Start FastAPI server"
 	@echo "  docs        - Build documentation"
 	@echo "  docs-serve  - Serve documentation locally"
 
@@ -36,6 +37,11 @@ dev-worker:
 dev-flower:
 	@echo "🌸 Starting Flower (Celery monitor)..."
 	celery -A src.tasks.celery flower
+
+# API
+api:
+	@echo "📡 Starting FastAPI server..."
+	uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
 
 # Testing
 test:

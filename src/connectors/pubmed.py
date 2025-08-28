@@ -1,8 +1,9 @@
 import requests
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 from src.models.source import Source
 from src.models.pubmed import PubmedArticle
 from src.utils.pubmed_parser import parse_pubmed_xml
+from src.utils.pubmed_query_builder import PubMedQueryBuilder
 import logging
 
 logger = logging.getLogger(__name__)
@@ -17,21 +18,27 @@ class PubMedConnector:
         self.base_url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
         self.api_key = source.metadata.get("api_key") if source.metadata else None
         
-    def search_articles(self, query: str, max_results: int = 100) -> List[str]:
+    def search_articles(self, query: Union[str, PubMedQueryBuilder], max_results: int = 100) -> List[str]:
         """
         Search for articles in PubMed based on a query
         
         Args:
-            query: Search query string
+            query: Search query string or PubMedQueryBuilder object
             max_results: Maximum number of results to return
             
         Returns:
             List of PubMed IDs (PMIDs)
         """
+        # If query is a PubMedQueryBuilder, build the query string
+        if isinstance(query, PubMedQueryBuilder):
+            query_str = query.build()
+        else:
+            query_str = query
+            
         search_url = f"{self.base_url}/esearch.fcgi"
         params = {
             "db": "pubmed",
-            "term": query,
+            "term": query_str,
             "retmax": max_results,
             "retmode": "json",
             "usehistory": "y"
@@ -46,7 +53,7 @@ class PubMedConnector:
             data = response.json()
             
             pmids = data.get("esearchresult", {}).get("idlist", [])
-            logger.info(f"Found {len(pmids)} articles for query: {query}")
+            logger.info(f"Found {len(pmids)} articles for query: {query_str}")
             return pmids
             
         except requests.RequestException as e:

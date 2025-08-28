@@ -100,6 +100,7 @@
 <li><p><strong>Testing</strong>: Developed comprehensive unit and integration tests</p></li>
 <li><p><strong>Main Script</strong>: Created a demonstration script that shows the pipeline in action</p></li>
 <li><p><strong>Structured Data Parsing</strong>: Enhanced the PubMed connector to parse XML data into structured information using Pydantic models</p></li>
+<li><p><strong>Sophisticated Search Queries</strong>: Implemented advanced search query building capabilities for Thai Traditional Medicine research</p></li>
 </ol>
 </section>
 <section id="whats-working">
@@ -113,76 +114,43 @@
 <li><p><strong>Error Handling</strong>: Our code gracefully handles network errors and API issues</p></li>
 <li><p><strong>Testing</strong>: All our unit and integration tests are passing</p></li>
 <li><p><strong>Structured Data Parsing</strong>: Our connector now parses XML into structured Pydantic models with proper validation</p></li>
+<li><p><strong>Advanced Search Queries</strong>: We can construct complex, sophisticated search queries tailored for Thai Traditional Medicine research</p></li>
 </ol>
 </section>
 <section id="demonstration">
 <h2>Demonstration<a class="headerlink" href="#demonstration" title="Link to this heading"></a></h2>
 <p>When we run our main script, we get output like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Running</span> <span class="n">PubMed</span> <span class="n">pipeline</span><span class="o">...</span>
-<span class="n">Found</span> <span class="mi">5</span> <span class="n">documents</span>
-<span class="n">Document</span> <span class="mi">1</span><span class="p">:</span>
-  <span class="n">PMID</span><span class="p">:</span> <span class="mi">40874354</span>
-  <span class="n">Title</span><span class="p">:</span> <span class="n">Metarhizium</span> <span class="n">anisopliae</span> <span class="k">as</span> <span class="n">a</span> <span class="n">potential</span> <span class="n">biocontrol</span> <span class="n">agent</span> <span class="n">to</span> <span class="n">suppress</span> <span class="n">the</span> <span class="n">tomato</span> <span class="n">leafminer</span> <span class="n">Phthorimaea</span> <span class="o">...</span>
-  <span class="n">Abstract</span><span class="p">:</span> <span class="n">Phthorimaea</span> <span class="n">absoluta</span><span class="p">,</span> <span class="n">an</span> <span class="n">invasive</span> <span class="n">pest</span><span class="p">,</span> <span class="n">has</span> <span class="n">recently</span> <span class="n">become</span> <span class="n">a</span> <span class="n">devastating</span> <span class="n">threat</span> <span class="n">to</span> <span class="n">China</span><span class="s1">&#39;s tomato c...</span>
-  <span class="n">Authors</span><span class="p">:</span> <span class="n">Yanfei</span> <span class="n">Ren</span><span class="p">,</span> <span class="n">Faxi</span> <span class="n">Wu</span><span class="p">,</span> <span class="n">Asim</span> <span class="n">Munawar</span><span class="p">,</span> <span class="n">Guoxiu</span> <span class="n">Li</span><span class="p">,</span> <span class="n">Xing</span> <span class="n">Liu</span><span class="p">,</span> <span class="n">Xiaolong</span> <span class="n">Liu</span><span class="p">,</span> <span class="n">Ning</span> <span class="n">Ding</span><span class="p">,</span> <span class="n">Zhigang</span> <span class="n">Ju</span><span class="p">,</span> <span class="n">Komivi</span> <span class="n">Senyo</span> <span class="n">Akutse</span><span class="p">,</span> <span class="n">Wenwu</span> <span class="n">Zhou</span><span class="p">,</span> <span class="n">Yaqiang</span> <span class="n">Zheng</span>
-  <span class="n">Language</span><span class="p">:</span> <span class="n">eng</span>
-  <span class="n">Document</span> <span class="n">Type</span><span class="p">:</span> <span class="n">Journal</span> <span class="n">Article</span>
-  <span class="n">Content</span> <span class="n">length</span><span class="p">:</span> <span class="mi">149019</span> <span class="n">characters</span>
-  <span class="n">DOI</span><span class="p">:</span> <span class="mf">10.1002</span><span class="o">/</span><span class="n">ps</span><span class="mf">.70155</span>
-  <span class="n">Journal</span><span class="p">:</span> <span class="n">Pest</span> <span class="n">management</span> <span class="n">science</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Running</span> <span class="n">PubMed</span> <span class="n">pipeline</span> <span class="k">with</span> <span class="n">different</span> <span class="n">query</span> <span class="n">approaches</span><span class="o">...</span>
 
-<span class="n">Document</span> <span class="mi">2</span><span class="p">:</span>
-  <span class="n">PMID</span><span class="p">:</span> <span class="mi">40874316</span>
-  <span class="n">Title</span><span class="p">:</span> <span class="n">Role</span> <span class="n">of</span> <span class="n">Structural</span> <span class="n">Versus</span> <span class="n">Cellular</span> <span class="n">Remodeling</span> <span class="ow">in</span> <span class="n">Atrial</span> <span class="n">Arrhythmogenesis</span><span class="p">:</span> <span class="n">Insights</span> <span class="n">From</span> <span class="n">Personalized</span><span class="o">...</span>
-  <span class="n">Abstract</span><span class="p">:</span> <span class="n">Atrial</span> <span class="n">fibrillation</span> <span class="p">(</span><span class="n">AF</span><span class="p">)</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">progressive</span> <span class="n">disease</span> <span class="n">involving</span> <span class="n">both</span> <span class="n">structural</span> <span class="ow">and</span> <span class="n">functional</span> <span class="n">remodelin</span><span class="o">...</span>
-  <span class="n">Authors</span><span class="p">:</span> <span class="n">Andrey</span> <span class="n">V</span> <span class="n">Pikunov</span><span class="p">,</span> <span class="n">Roman</span> <span class="n">A</span> <span class="n">Syunyaev</span><span class="p">,</span> <span class="n">Rheeda</span> <span class="n">Ali</span><span class="p">,</span> <span class="n">Adityo</span> <span class="n">Prakosa</span><span class="p">,</span> <span class="n">Anna</span> <span class="n">Gams</span><span class="p">,</span> <span class="n">Patrick</span> <span class="n">M</span> <span class="n">Boyle</span><span class="p">,</span> <span class="n">Vanessa</span> <span class="n">Steckmeister</span><span class="p">,</span> <span class="n">Ingo</span> <span class="n">Kutschka</span><span class="p">,</span> <span class="n">Eric</span> <span class="n">Rytkin</span><span class="p">,</span> <span class="n">Niels</span> <span class="n">Voigt</span><span class="p">,</span> <span class="n">Natalia</span> <span class="n">Trayanova</span><span class="p">,</span> <span class="n">Igor</span> <span class="n">R</span> <span class="n">Efimov</span>
-  <span class="n">Language</span><span class="p">:</span> <span class="n">eng</span>
-  <span class="n">Document</span> <span class="n">Type</span><span class="p">:</span> <span class="n">Journal</span> <span class="n">Article</span>
-  <span class="n">Content</span> <span class="n">length</span><span class="p">:</span> <span class="mi">149019</span> <span class="n">characters</span>
-  <span class="n">DOI</span><span class="p">:</span> <span class="mf">10.1161</span><span class="o">/</span><span class="n">CIRCEP</span><span class="mf">.125.013898</span>
-  <span class="n">Journal</span><span class="p">:</span> <span class="n">Circulation</span><span class="o">.</span> <span class="n">Arrhythmia</span> <span class="ow">and</span> <span class="n">electrophysiology</span>
+<span class="mf">1.</span> <span class="n">Basic</span> <span class="n">query</span><span class="p">:</span> <span class="s1">&#39;traditional medicine&#39;</span>
+<span class="n">Found</span> <span class="mi">3</span> <span class="n">documents</span>
 
-<span class="n">Document</span> <span class="mi">3</span><span class="p">:</span>
-  <span class="n">PMID</span><span class="p">:</span> <span class="mi">40874239</span>
-  <span class="n">Title</span><span class="p">:</span> <span class="n">The</span> <span class="n">Pathogenesis</span> <span class="ow">and</span> <span class="n">Treatment</span> <span class="n">of</span> <span class="n">Insomnia</span> <span class="n">Combined</span> <span class="k">with</span> <span class="n">Depression</span><span class="o">.</span>
-  <span class="n">Abstract</span><span class="p">:</span> <span class="n">Under</span> <span class="n">the</span> <span class="n">fast</span> <span class="n">pace</span> <span class="ow">and</span> <span class="n">high</span> <span class="n">pressure</span> <span class="n">of</span> <span class="n">modern</span> <span class="n">society</span><span class="p">,</span> <span class="n">many</span> <span class="n">people</span> <span class="n">suffer</span> <span class="kn">from</span><span class="w"> </span><span class="nn">sleep</span> <span class="n">disorders</span> <span class="n">suc</span><span class="o">...</span>
-  <span class="n">Authors</span><span class="p">:</span> <span class="n">Yifan</span> <span class="n">Chang</span><span class="p">,</span> <span class="n">Lu</span> <span class="n">Liu</span><span class="p">,</span> <span class="n">Xiaodong</span> <span class="n">Xu</span><span class="p">,</span> <span class="n">Shiqiang</span> <span class="n">Zhang</span>
-  <span class="n">Language</span><span class="p">:</span> <span class="n">eng</span>
-  <span class="n">Document</span> <span class="n">Type</span><span class="p">:</span> <span class="n">Journal</span> <span class="n">Article</span>
-  <span class="n">Content</span> <span class="n">length</span><span class="p">:</span> <span class="mi">149019</span> <span class="n">characters</span>
-  <span class="n">DOI</span><span class="p">:</span> <span class="mf">10.2147</span><span class="o">/</span><span class="n">IJGM</span><span class="o">.</span><span class="n">S547865</span>
-  <span class="n">Journal</span><span class="p">:</span> <span class="n">International</span> <span class="n">journal</span> <span class="n">of</span> <span class="n">general</span> <span class="n">medicine</span>
+<span class="mf">2.</span> <span class="n">Thai</span> <span class="n">Traditional</span> <span class="n">Medicine</span> <span class="n">query</span> <span class="n">using</span> <span class="n">query</span> <span class="n">builder</span>
 
-<span class="n">Document</span> <span class="mi">4</span><span class="p">:</span>
-  <span class="n">PMID</span><span class="p">:</span> <span class="mi">40874238</span>
-  <span class="n">Title</span><span class="p">:</span> <span class="n">A</span> <span class="n">Review</span> <span class="n">of</span> <span class="n">Acupuncture</span> <span class="k">for</span> <span class="n">the</span> <span class="n">Treatment</span> <span class="n">of</span> <span class="n">Dry</span> <span class="n">Eye</span> <span class="n">Syndrome</span><span class="p">:</span> <span class="n">Mechanisms</span><span class="p">,</span> <span class="n">Efficacy</span><span class="p">,</span> <span class="ow">and</span> <span class="n">Clinical</span> <span class="n">Im</span><span class="o">...</span>
-  <span class="n">Abstract</span><span class="p">:</span> <span class="n">Dry</span> <span class="n">eye</span> <span class="n">disease</span> <span class="p">(</span><span class="n">DED</span><span class="p">)</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">prevalent</span> <span class="n">ocular</span> <span class="n">condition</span> <span class="n">characterized</span> <span class="n">by</span> <span class="n">discomfort</span> <span class="ow">and</span> <span class="n">vision</span> <span class="n">impairm</span><span class="o">...</span>
-  <span class="n">Authors</span><span class="p">:</span> <span class="n">Ting</span> <span class="n">Chen</span><span class="p">,</span> <span class="n">Lu</span><span class="o">-</span><span class="n">Qi</span> <span class="n">Feng</span><span class="p">,</span> <span class="n">Ying</span> <span class="n">Jin</span>
-  <span class="n">Language</span><span class="p">:</span> <span class="n">eng</span>
-  <span class="n">Document</span> <span class="n">Type</span><span class="p">:</span> <span class="n">Journal</span> <span class="n">Article</span>
-  <span class="n">Content</span> <span class="n">length</span><span class="p">:</span> <span class="mi">149019</span> <span class="n">characters</span>
-  <span class="n">DOI</span><span class="p">:</span> <span class="mf">10.2147</span><span class="o">/</span><span class="n">IJGM</span><span class="o">.</span><span class="n">S526265</span>
-  <span class="n">Journal</span><span class="p">:</span> <span class="n">International</span> <span class="n">journal</span> <span class="n">of</span> <span class="n">general</span> <span class="n">medicine</span>
+<span class="mf">3.</span> <span class="n">Specialized</span> <span class="n">Thai</span> <span class="n">Traditional</span> <span class="n">Medicine</span> <span class="n">query</span> <span class="n">function</span>
 
-<span class="n">Document</span> <span class="mi">5</span><span class="p">:</span>
-  <span class="n">PMID</span><span class="p">:</span> <span class="mi">40874215</span>
-  <span class="n">Title</span><span class="p">:</span> <span class="n">Acupuncture</span> <span class="k">for</span> <span class="n">Parkinson</span><span class="s1">&#39;s Disease: A Narrative Review of Clinical Efficacy and Mechanistic Insight...</span>
-  <span class="n">Abstract</span><span class="p">:</span> <span class="n">Parkinson</span><span class="s1">&#39;s disease (PD) has been recognized for more than two centuries. Historically viewed as a c...</span>
-  <span class="n">Authors</span><span class="p">:</span> <span class="n">Nannan</span> <span class="n">Yu</span><span class="p">,</span> <span class="n">Dianjia</span> <span class="n">Sun</span><span class="p">,</span> <span class="n">Lin</span> <span class="n">Ma</span><span class="p">,</span> <span class="n">Qichen</span> <span class="n">Han</span><span class="p">,</span> <span class="n">Rui</span> <span class="n">Song</span><span class="p">,</span> <span class="n">Yuhao</span> <span class="n">Wang</span>
-  <span class="n">Language</span><span class="p">:</span> <span class="n">eng</span>
-  <span class="n">Document</span> <span class="n">Type</span><span class="p">:</span> <span class="n">Journal</span> <span class="n">Article</span>
-  <span class="n">Content</span> <span class="n">length</span><span class="p">:</span> <span class="mi">149019</span> <span class="n">characters</span>
-  <span class="n">DOI</span><span class="p">:</span> <span class="mf">10.2147</span><span class="o">/</span><span class="n">NDT</span><span class="o">.</span><span class="n">S532027</span>
-  <span class="n">Journal</span><span class="p">:</span> <span class="n">Neuropsychiatric</span> <span class="n">disease</span> <span class="ow">and</span> <span class="n">treatment</span>
+<span class="mf">4.</span> <span class="n">Query</span> <span class="k">with</span> <span class="n">date</span> <span class="nb">range</span> <span class="nb">filter</span>
+<span class="n">Found</span> <span class="mi">3</span> <span class="n">articles</span> <span class="k">with</span> <span class="n">date</span> <span class="nb">range</span> <span class="n">query</span><span class="p">:</span> <span class="p">(</span><span class="n">thai</span> <span class="n">medicine</span><span class="p">)</span> <span class="n">AND</span> <span class="mi">2020</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="p">:</span><span class="mi">2023</span><span class="o">/</span><span class="mi">12</span><span class="o">/</span><span class="mi">31</span><span class="p">[</span><span class="n">Date</span> <span class="o">-</span> <span class="n">Publication</span><span class="p">]</span>
+  <span class="n">Article</span> <span class="mi">1</span><span class="p">:</span> <span class="n">Generalized</span> <span class="n">lichen</span> <span class="n">amyloidosis</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">pregnant</span> <span class="n">woman</span><span class="o">...</span>
+  <span class="n">Article</span> <span class="mi">2</span><span class="p">:</span> <span class="n">The</span> <span class="n">beneficial</span> <span class="n">effects</span> <span class="n">of</span> <span class="n">traditional</span> <span class="n">Thai</span> <span class="n">massage</span><span class="o">...</span>
+  <span class="n">Article</span> <span class="mi">3</span><span class="p">:</span> <span class="n">Dentists</span><span class="s1">&#39; Stress During the COVID-19 Pandemic: A R...</span>
 </pre></div>
 </div>
 <p>This shows that our pipeline successfully:</p>
 <ol class="arabic simple">
 <li><p>Searches PubMed for articles related to “traditional medicine”</p></li>
-<li><p>Fetches the first 5 articles</p></li>
+<li><p>Fetches the first 3 articles</p></li>
 <li><p>Parses the XML data into structured Pydantic models</p></li>
 <li><p>Processes them into Document objects with rich metadata</p></li>
-<li><p>Displays detailed information about each document</p></li>
+<li><p>Demonstrates advanced query building capabilities including:</p>
+<ul class="simple">
+<li><p>Complex query construction with multiple terms</p></li>
+<li><p>Exclusion of unwanted terms</p></li>
+<li><p>Article type filtering</p></li>
+<li><p>Date range filtering</p></li>
+<li><p>Specialized query functions for Thai Traditional Medicine</p></li>
+</ul>
+</li>
 </ol>
 </section>
 <section id="code-quality">
@@ -195,6 +163,7 @@
 <li><p><strong>Logging</strong>: Comprehensive logging for debugging and monitoring</p></li>
 <li><p><strong>Testing</strong>: Comprehensive test coverage</p></li>
 <li><p><strong>Type Safety</strong>: Using Pydantic models for type-safe data parsing and validation</p></li>
+<li><p><strong>Fluent Interface</strong>: Using builder pattern for query construction</p></li>
 </ol>
 </section>
 <section id="limitations">

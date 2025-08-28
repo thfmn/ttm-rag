@@ -8,13 +8,13 @@ In the immediate future, we plan to focus on enhancing our current implementatio
 
 ### 1. Enhanced PubMed Connector
 - ~~Parse XML data returned by the PubMed API into structured data~~ (Completed)
-- Extract specific fields like title, abstract, authors, publication date
-- Handle different XML formats that PubMed might return
+- ~~Extract specific fields like title, abstract, authors, publication date~~ (Completed)
+- ~~Handle different XML formats that PubMed might return~~ (Completed)
 
 ### 2. Sophisticated Search Queries
-- Implement more complex search queries specific to Thai Traditional Medicine
-- Add filtering options (date ranges, article types, etc.)
-- Implement search query optimization
+- ~~Implement more complex search queries specific to Thai Traditional Medicine~~ (Completed)
+- ~~Add filtering options (date ranges, article types, etc.)~~ (Completed)
+- ~~Implement search query optimization~~ (Completed)
 
 ### 3. Improved Error Handling
 - Add more comprehensive error handling and logging
@@ -110,7 +110,7 @@ Our projected timeline for these goals:
 
 ### Phase 1: Enhancement (Weeks 1-2)
 - ~~Enhanced PubMed connector~~ (Completed)
-- Sophisticated search queries
+- ~~Sophisticated search queries~~ (Completed)
 - Improved error handling
 - Rate limiting implementation
 
