@@ -101,6 +101,7 @@
 <li><p><strong>Main Script</strong>: Created a demonstration script that shows the pipeline in action</p></li>
 <li><p><strong>Structured Data Parsing</strong>: Enhanced the PubMed connector to parse XML data into structured information using Pydantic models</p></li>
 <li><p><strong>Sophisticated Search Queries</strong>: Implemented advanced search query building capabilities for Thai Traditional Medicine research</p></li>
+<li><p><strong>FastAPI Application</strong>: Created a REST API for querying PubMed and retrieving structured information</p></li>
 </ol>
 </section>
 <section id="whats-working">
@@ -115,6 +116,13 @@
 <li><p><strong>Testing</strong>: All our unit and integration tests are passing</p></li>
 <li><p><strong>Structured Data Parsing</strong>: Our connector now parses XML into structured Pydantic models with proper validation</p></li>
 <li><p><strong>Advanced Search Queries</strong>: We can construct complex, sophisticated search queries tailored for Thai Traditional Medicine research</p></li>
+<li><p><strong>REST API</strong>: We have a working FastAPI application that provides endpoints for:</p>
+<ul class="simple">
+<li><p>Basic PubMed searches</p></li>
+<li><p>Specialized Thai Traditional Medicine searches</p></li>
+<li><p>Retrieving detailed article information</p></li>
+</ul>
+</li>
 </ol>
 </section>
 <section id="demonstration">
@@ -136,6 +144,12 @@
   <span class="n">Article</span> <span class="mi">3</span><span class="p">:</span> <span class="n">Dentists</span><span class="s1">&#39; Stress During the COVID-19 Pandemic: A R...</span>
 </pre></div>
 </div>
+<p>When we run our FastAPI application, we can access endpoints like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /search?query=traditional+medicine&amp;max_results=3
+GET /thai-medicine-search?additional_terms=herbal&amp;max_results=3
+GET /article/12345678
+</pre></div>
+</div>
 <p>This shows that our pipeline successfully:</p>
 <ol class="arabic simple">
 <li><p>Searches PubMed for articles related to “traditional medicine”</p></li>
@@ -151,6 +165,7 @@
 <li><p>Specialized query functions for Thai Traditional Medicine</p></li>
 </ul>
 </li>
+<li><p>Provides a REST API for accessing this functionality</p></li>
 </ol>
 </section>
 <section id="code-quality">
@@ -164,6 +179,7 @@
 <li><p><strong>Testing</strong>: Comprehensive test coverage</p></li>
 <li><p><strong>Type Safety</strong>: Using Pydantic models for type-safe data parsing and validation</p></li>
 <li><p><strong>Fluent Interface</strong>: Using builder pattern for query construction</p></li>
+<li><p><strong>API Design</strong>: Following REST principles for our FastAPI application</p></li>
 </ol>
 </section>
 <section id="limitations">

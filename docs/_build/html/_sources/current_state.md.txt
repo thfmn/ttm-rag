@@ -16,6 +16,7 @@ So far, we've successfully completed the following:
 8. **Main Script**: Created a demonstration script that shows the pipeline in action
 9. **Structured Data Parsing**: Enhanced the PubMed connector to parse XML data into structured information using Pydantic models
 10. **Sophisticated Search Queries**: Implemented advanced search query building capabilities for Thai Traditional Medicine research
+11. **FastAPI Application**: Created a REST API for querying PubMed and retrieving structured information
 
 ## What's Working
 
@@ -29,6 +30,10 @@ Our implementation is successfully:
 6. **Testing**: All our unit and integration tests are passing
 7. **Structured Data Parsing**: Our connector now parses XML into structured Pydantic models with proper validation
 8. **Advanced Search Queries**: We can construct complex, sophisticated search queries tailored for Thai Traditional Medicine research
+9. **REST API**: We have a working FastAPI application that provides endpoints for:
+   - Basic PubMed searches
+   - Specialized Thai Traditional Medicine searches
+   - Retrieving detailed article information
 
 ## Demonstration
 
@@ -51,6 +56,14 @@ Found 3 articles with date range query: (thai medicine) AND 2020/01/01:2023/12/3
   Article 3: Dentists' Stress During the COVID-19 Pandemic: A R...
 ```
 
+When we run our FastAPI application, we can access endpoints like:
+
+```
+GET /search?query=traditional+medicine&max_results=3
+GET /thai-medicine-search?additional_terms=herbal&max_results=3
+GET /article/12345678
+```
+
 This shows that our pipeline successfully:
 
 1. Searches PubMed for articles related to "traditional medicine"
@@ -63,6 +76,7 @@ This shows that our pipeline successfully:
    - Article type filtering
    - Date range filtering
    - Specialized query functions for Thai Traditional Medicine
+6. Provides a REST API for accessing this functionality
 
 ## Code Quality
 
@@ -75,6 +89,7 @@ We've maintained good code quality practices:
 5. **Testing**: Comprehensive test coverage
 6. **Type Safety**: Using Pydantic models for type-safe data parsing and validation
 7. **Fluent Interface**: Using builder pattern for query construction
+8. **API Design**: Following REST principles for our FastAPI application
 
 ## Limitations
 
