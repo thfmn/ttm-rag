@@ -1,0 +1,671 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Internal Onboarding Guide &mdash; Thai Traditional Medicine RAG Bot 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Internal Onboarding Summary" href="onboarding_summary.html" />
+    <link rel="prev" title="Dashboard Implementation Plan" href="dashboard_plan.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Thai Traditional Medicine RAG Bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_overview.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="current_state.html">Current State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future_steps.html">Future Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cto_assessment.html">CTO Assessment Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_status.html">Project Status Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_plan.html">Dashboard Implementation Plan</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Internal Onboarding Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#security-features">Security Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#input-sanitization">Input Sanitization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-use">How to Use</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-sanitization-to-new-endpoints">Adding Sanitization to New Endpoints</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#audit-logging">Audit Logging</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">How to Use</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-audit-logging-to-new-endpoints">Adding Audit Logging to New Endpoints</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-encryption">Data Encryption</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">How to Use</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-encryption-to-new-components">Adding Encryption to New Components</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#monitoring-and-metrics">Monitoring and Metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prometheus-metrics">Prometheus Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#health-check-endpoints">Health Check Endpoints</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#using-the-health-check-endpoints">Using the Health Check Endpoints</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-custom-metrics">Adding Custom Metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#https-enforcement">HTTPS Enforcement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-it-works">How It Works</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cors-configuration">CORS Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#production-configuration">Production Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-security-features">Testing Security Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-tests-for-security-features">Adding Tests for Security Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#always-sanitize-user-input">1. Always Sanitize User Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#log-security-relevant-events">2. Log Security-Relevant Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encrypt-sensitive-data">3. Encrypt Sensitive Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#monitor-for-anomalies">4. Monitor for Anomalies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#keep-dependencies-updated">5. Keep Dependencies Updated</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-environment-variables-for-secrets">6. Use Environment Variables for Secrets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api-design-and-best-practices">API Design and Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-api-design-areas-covered">Key API Design Areas Covered</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api-architecture-styles">1. API Architecture Styles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security-and-authentication">2. Security and Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#design-principles">3. Design Principles</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#fastapi-implementation-examples">FastAPI Implementation Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-security-integration">API Security Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reference-documentation">Reference Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#best-practices-for-api-development">Best Practices for API Development</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quick-reference-links">Quick Reference Links</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding_summary.html">Internal Onboarding Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html">1. Understanding APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-styles">2. API Styles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-principles">3. API Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-their-influence">4. Protocols &amp; Their Influence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-process">5. API Design Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#restful-api-design">6. RESTful API Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#graphql-api-design">7. GraphQL API Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#authentication-authorization">8. Authentication &amp; Authorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#security-best-practices">9. Security Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-transport-layer">10. Protocols &amp; Transport Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#summary-next-steps">11. Summary &amp; Next Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#additional-resources">12. Additional Resources</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Thai Traditional Medicine RAG Bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Internal Onboarding Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/onboarding.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="internal-onboarding-guide">
+<h1>Internal Onboarding Guide<a class="headerlink" href="#internal-onboarding-guide" title="Link to this heading"></a></h1>
+<p>This guide provides detailed instructions for new team members on how to use the security and monitoring features implemented in the Thai Traditional Medicine RAG Bot project.</p>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#security-features"><span class="xref myst">Security Features</span></a></p></li>
+<li><p><a class="reference internal" href="#monitoring-and-metrics"><span class="xref myst">Monitoring and Metrics</span></a></p></li>
+<li><p><a class="reference internal" href="#audit-logging"><span class="xref myst">Audit Logging</span></a></p></li>
+<li><p><a class="reference internal" href="#data-encryption"><span class="xref myst">Data Encryption</span></a></p></li>
+<li><p><a class="reference internal" href="#https-enforcement"><span class="xref myst">HTTPS Enforcement</span></a></p></li>
+<li><p><a class="reference internal" href="#cors-configuration"><span class="xref myst">CORS Configuration</span></a></p></li>
+<li><p><a class="reference internal" href="#api-design-and-best-practices"><span class="xref myst">API Design and Best Practices</span></a></p></li>
+</ol>
+</section>
+<section id="security-features">
+<h2>Security Features<a class="headerlink" href="#security-features" title="Link to this heading"></a></h2>
+<section id="input-sanitization">
+<h3>Input Sanitization<a class="headerlink" href="#input-sanitization" title="Link to this heading"></a></h3>
+<p>The application implements input sanitization to prevent XSS attacks and other injection vulnerabilities using the <code class="docutils literal notranslate"><span class="pre">nh3</span></code> library (Python binding for the ammonia HTML sanitizer).</p>
+<section id="how-to-use">
+<h4>How to Use<a class="headerlink" href="#how-to-use" title="Link to this heading"></a></h4>
+<p>Input sanitization is automatically applied to all API endpoints. The sanitization functions are located in <code class="docutils literal notranslate"><span class="pre">src/api/sanitization.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.api.sanitization</span><span class="w"> </span><span class="kn">import</span> <span class="n">sanitize_text</span><span class="p">,</span> <span class="n">sanitize_query</span><span class="p">,</span> <span class="n">sanitize_list</span>
+
+<span class="c1"># Sanitize a single text input</span>
+<span class="n">clean_text</span> <span class="o">=</span> <span class="n">sanitize_text</span><span class="p">(</span><span class="s2">&quot;&lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt;Hello World&quot;</span><span class="p">)</span>
+<span class="c1"># Result: &quot;Hello World&quot;</span>
+
+<span class="c1"># Sanitize a search query</span>
+<span class="n">clean_query</span> <span class="o">=</span> <span class="n">sanitize_query</span><span class="p">(</span><span class="s2">&quot;medicine&lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt;&quot;</span><span class="p">)</span>
+<span class="c1"># Result: &quot;medicine&quot;</span>
+
+<span class="c1"># Sanitize a list of items</span>
+<span class="n">clean_list</span> <span class="o">=</span> <span class="n">sanitize_list</span><span class="p">([</span><span class="s2">&quot;item1&lt;script&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;item2&quot;</span><span class="p">])</span>
+<span class="c1"># Result: [&quot;item1&quot;, &quot;item2&quot;]</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-sanitization-to-new-endpoints">
+<h4>Adding Sanitization to New Endpoints<a class="headerlink" href="#adding-sanitization-to-new-endpoints" title="Link to this heading"></a></h4>
+<p>When creating new API endpoints, ensure you sanitize all user inputs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.api.sanitization</span><span class="w"> </span><span class="kn">import</span> <span class="n">sanitize_text</span><span class="p">,</span> <span class="n">sanitize_query</span><span class="p">,</span> <span class="n">sanitize_list</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/new-endpoint&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">new_endpoint</span><span class="p">(</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;User name&quot;</span><span class="p">),</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Query</span><span class="p">([],</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Tags&quot;</span><span class="p">)</span>
+<span class="p">):</span>
+    <span class="c1"># Sanitize inputs</span>
+    <span class="n">clean_name</span> <span class="o">=</span> <span class="n">sanitize_text</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">clean_tags</span> <span class="o">=</span> <span class="n">sanitize_list</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
+    
+    <span class="c1"># Use sanitized inputs in your logic</span>
+    <span class="c1"># ...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="audit-logging">
+<h3>Audit Logging<a class="headerlink" href="#audit-logging" title="Link to this heading"></a></h3>
+<p>The application implements comprehensive audit logging for compliance tracking. Logs are stored in <code class="docutils literal notranslate"><span class="pre">audit.log</span></code> during development and can be configured for production environments.</p>
+<section id="id1">
+<h4>How to Use<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>Audit logging is implemented in <code class="docutils literal notranslate"><span class="pre">src/api/audit.py</span></code>. The <code class="docutils literal notranslate"><span class="pre">AuditLogger</span></code> class provides several methods for logging different types of events:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.api.audit</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuditLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Request</span>
+
+<span class="c1"># Log a general event</span>
+<span class="n">AuditLogger</span><span class="o">.</span><span class="n">log_event</span><span class="p">(</span>
+    <span class="n">event_type</span><span class="o">=</span><span class="s2">&quot;user_action&quot;</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="s2">&quot;john_doe&quot;</span><span class="p">,</span>
+    <span class="n">ip_address</span><span class="o">=</span><span class="s2">&quot;192.168.1.1&quot;</span><span class="p">,</span>
+    <span class="n">details</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;data_export&quot;</span><span class="p">,</span> <span class="s2">&quot;record_count&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Log an HTTP request</span>
+<span class="n">AuditLogger</span><span class="o">.</span><span class="n">log_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s2">&quot;john_doe&quot;</span><span class="p">)</span>
+
+<span class="c1"># Log data access</span>
+<span class="n">AuditLogger</span><span class="o">.</span><span class="n">log_data_access</span><span class="p">(</span>
+    <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;pubmed_articles&quot;</span><span class="p">,</span>
+    <span class="n">action</span><span class="o">=</span><span class="s2">&quot;search&quot;</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="s2">&quot;john_doe&quot;</span><span class="p">,</span>
+    <span class="n">ip_address</span><span class="o">=</span><span class="s2">&quot;192.168.1.1&quot;</span><span class="p">,</span>
+    <span class="n">record_count</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+
+<span class="c1"># Log a security event</span>
+<span class="n">AuditLogger</span><span class="o">.</span><span class="n">log_security_event</span><span class="p">(</span>
+    <span class="n">event_type</span><span class="o">=</span><span class="s2">&quot;failed_login&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Failed login attempt for user john_doe&quot;</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="s2">&quot;john_doe&quot;</span><span class="p">,</span>
+    <span class="n">ip_address</span><span class="o">=</span><span class="s2">&quot;192.168.1.1&quot;</span><span class="p">,</span>
+    <span class="n">severity</span><span class="o">=</span><span class="s2">&quot;high&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-audit-logging-to-new-endpoints">
+<h4>Adding Audit Logging to New Endpoints<a class="headerlink" href="#adding-audit-logging-to-new-endpoints" title="Link to this heading"></a></h4>
+<p>When creating new API endpoints, add audit logging:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.api.audit</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuditLogger</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/sensitive-operation&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">sensitive_operation</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="c1"># Log the request</span>
+    <span class="n">AuditLogger</span><span class="o">.</span><span class="n">log_request</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Perform the operation</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">perform_sensitive_operation</span><span class="p">()</span>
+        
+        <span class="c1"># Log successful data access</span>
+        <span class="n">AuditLogger</span><span class="o">.</span><span class="n">log_data_access</span><span class="p">(</span>
+            <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;sensitive_data&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;access&quot;</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">ip_address</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">host</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">client</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">record_count</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># Log security event</span>
+        <span class="n">AuditLogger</span><span class="o">.</span><span class="n">log_security_event</span><span class="p">(</span>
+            <span class="n">event_type</span><span class="o">=</span><span class="s2">&quot;operation_failed&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Operation failed: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">ip_address</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">host</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">client</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">severity</span><span class="o">=</span><span class="s2">&quot;high&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="data-encryption">
+<h3>Data Encryption<a class="headerlink" href="#data-encryption" title="Link to this heading"></a></h3>
+<p>The application provides data encryption utilities for protecting sensitive metadata using the <code class="docutils literal notranslate"><span class="pre">cryptography</span></code> library.</p>
+<section id="id2">
+<h4>How to Use<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<p>Data encryption is implemented in <code class="docutils literal notranslate"><span class="pre">src/utils/encryption.py</span></code>. The <code class="docutils literal notranslate"><span class="pre">DataEncryption</span></code> class provides methods for encrypting and decrypting strings and dictionaries:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils.encryption</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataEncryption</span><span class="p">,</span> <span class="n">encrypt_sensitive_data</span><span class="p">,</span> <span class="n">decrypt_sensitive_data</span>
+
+<span class="c1"># Create an encryption instance</span>
+<span class="n">encryptor</span> <span class="o">=</span> <span class="n">DataEncryption</span><span class="p">()</span>
+
+<span class="c1"># Encrypt a string</span>
+<span class="n">encrypted_text</span> <span class="o">=</span> <span class="n">encryptor</span><span class="o">.</span><span class="n">encrypt_string</span><span class="p">(</span><span class="s2">&quot;sensitive data&quot;</span><span class="p">)</span>
+<span class="n">decrypted_text</span> <span class="o">=</span> <span class="n">encryptor</span><span class="o">.</span><span class="n">decrypt_string</span><span class="p">(</span><span class="n">encrypted_text</span><span class="p">)</span>
+
+<span class="c1"># Or use the global utility functions</span>
+<span class="n">encrypted_text</span> <span class="o">=</span> <span class="n">encrypt_sensitive_data</span><span class="p">(</span><span class="s2">&quot;sensitive data&quot;</span><span class="p">)</span>
+<span class="n">decrypted_text</span> <span class="o">=</span> <span class="n">decrypt_sensitive_data</span><span class="p">(</span><span class="n">encrypted_text</span><span class="p">)</span>
+
+<span class="c1"># Encrypt a dictionary</span>
+<span class="n">sensitive_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="s2">&quot;secret123&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;mypassword&quot;</span><span class="p">}</span>
+<span class="n">encrypted_dict</span> <span class="o">=</span> <span class="n">encryptor</span><span class="o">.</span><span class="n">encrypt_dict</span><span class="p">(</span><span class="n">sensitive_data</span><span class="p">)</span>
+<span class="n">decrypted_dict</span> <span class="o">=</span> <span class="n">encryptor</span><span class="o">.</span><span class="n">decrypt_dict</span><span class="p">(</span><span class="n">encrypted_dict</span><span class="p">)</span>
+
+<span class="c1"># Get the encryption key (for storage/configuration)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">encryptor</span><span class="o">.</span><span class="n">get_key</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration">
+<h4>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h4>
+<p>The encryption utility automatically uses an environment variable <code class="docutils literal notranslate"><span class="pre">ENCRYPTION_KEY</span></code> if available. If not, it generates a new key (which should be stored securely in production):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the encryption key in your environment</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ENCRYPTION_KEY</span><span class="o">=</span><span class="s2">&quot;your_base64_encoded_key_here&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-encryption-to-new-components">
+<h4>Adding Encryption to New Components<a class="headerlink" href="#adding-encryption-to-new-components" title="Link to this heading"></a></h4>
+<p>When storing sensitive data, use encryption:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils.encryption</span><span class="w"> </span><span class="kn">import</span> <span class="n">encrypt_sensitive_data</span><span class="p">,</span> <span class="n">decrypt_sensitive_data</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DatabaseConfig</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encrypted_credentials</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">store_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="c1"># Encrypt sensitive data before storage</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">password</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encrypted_credentials</span> <span class="o">=</span> <span class="n">encrypt_sensitive_data</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">credentials</span><span class="p">))</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Decrypt sensitive data when needed</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encrypted_credentials</span><span class="p">:</span>
+            <span class="n">decrypted</span> <span class="o">=</span> <span class="n">decrypt_sensitive_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encrypted_credentials</span><span class="p">)</span>
+            <span class="c1"># Parse the decrypted string back to a dictionary</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">decrypted</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="monitoring-and-metrics">
+<h2>Monitoring and Metrics<a class="headerlink" href="#monitoring-and-metrics" title="Link to this heading"></a></h2>
+<p>The application implements comprehensive monitoring using Prometheus metrics and provides health check endpoints.</p>
+<section id="prometheus-metrics">
+<h3>Prometheus Metrics<a class="headerlink" href="#prometheus-metrics" title="Link to this heading"></a></h3>
+<p>Metrics are automatically collected for all HTTP requests. The following metrics are available:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">http_requests_total</span></code>: Total HTTP requests by method, endpoint, and status code</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">http_request_duration_seconds</span></code>: HTTP request duration by method and endpoint</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">http_active_requests</span></code>: Number of active HTTP requests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">http_errors_total</span></code>: Total HTTP errors by method, endpoint, and error type</p></li>
+</ul>
+</section>
+<section id="health-check-endpoints">
+<h3>Health Check Endpoints<a class="headerlink" href="#health-check-endpoints" title="Link to this heading"></a></h3>
+<p>The application provides two health check endpoints:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/health</span></code> - Basic health check</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metrics</span></code> - Prometheus metrics endpoint</p></li>
+</ol>
+<section id="using-the-health-check-endpoints">
+<h4>Using the Health Check Endpoints<a class="headerlink" href="#using-the-health-check-endpoints" title="Link to this heading"></a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check application health</span>
+curl<span class="w"> </span>http://localhost:8000/health
+
+<span class="c1"># Get Prometheus metrics</span>
+curl<span class="w"> </span>http://localhost:8000/metrics
+</pre></div>
+</div>
+</section>
+</section>
+<section id="adding-custom-metrics">
+<h3>Adding Custom Metrics<a class="headerlink" href="#adding-custom-metrics" title="Link to this heading"></a></h3>
+<p>To add custom metrics to your components:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">Histogram</span><span class="p">,</span> <span class="n">Gauge</span>
+
+<span class="c1"># Define custom metrics</span>
+<span class="n">CUSTOM_COUNTER</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="s1">&#39;custom_events_total&#39;</span><span class="p">,</span> <span class="s1">&#39;Total custom events&#39;</span><span class="p">)</span>
+<span class="n">CUSTOM_HISTOGRAM</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span><span class="s1">&#39;custom_operation_duration_seconds&#39;</span><span class="p">,</span> <span class="s1">&#39;Duration of custom operations&#39;</span><span class="p">)</span>
+<span class="n">CUSTOM_GAUGE</span> <span class="o">=</span> <span class="n">Gauge</span><span class="p">(</span><span class="s1">&#39;custom_active_operations&#39;</span><span class="p">,</span> <span class="s1">&#39;Number of active custom operations&#39;</span><span class="p">)</span>
+
+<span class="c1"># Use the metrics in your code</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">custom_operation</span><span class="p">():</span>
+    <span class="n">CUSTOM_GAUGE</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">CUSTOM_HISTOGRAM</span><span class="o">.</span><span class="n">time</span><span class="p">():</span>
+        <span class="c1"># Perform operation</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">perform_operation</span><span class="p">()</span>
+        <span class="n">CUSTOM_COUNTER</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+    <span class="n">CUSTOM_GAUGE</span><span class="o">.</span><span class="n">dec</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="https-enforcement">
+<h2>HTTPS Enforcement<a class="headerlink" href="#https-enforcement" title="Link to this heading"></a></h2>
+<p>The application includes middleware to enforce HTTPS in production environments.</p>
+<section id="how-it-works">
+<h3>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">HTTPSMiddleware</span></code> in <code class="docutils literal notranslate"><span class="pre">src/api/security.py</span></code> automatically redirects HTTP requests to HTTPS when:</p>
+<ol class="arabic simple">
+<li><p>The environment variable <code class="docutils literal notranslate"><span class="pre">ENVIRONMENT</span></code> is set to “production”</p></li>
+<li><p>The environment variable <code class="docutils literal notranslate"><span class="pre">HTTPS_ENABLED</span></code> is set to “true”</p></li>
+</ol>
+</section>
+<section id="id3">
+<h3>Configuration<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>To enable HTTPS enforcement in production:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">ENVIRONMENT</span><span class="o">=</span><span class="s2">&quot;production&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">HTTPS_ENABLED</span><span class="o">=</span><span class="s2">&quot;true&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="cors-configuration">
+<h2>CORS Configuration<a class="headerlink" href="#cors-configuration" title="Link to this heading"></a></h2>
+<p>Cross-Origin Resource Sharing (CORS) is configured to allow requests from any origin during development. In production, you should restrict this to specific origins.</p>
+<section id="id4">
+<h3>Configuration<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>The CORS middleware is configured in <code class="docutils literal notranslate"><span class="pre">src/api/main.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span>
+    <span class="n">CORSMiddleware</span><span class="p">,</span>
+    <span class="n">allow_origins</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>  <span class="c1"># In production, replace with specific origins</span>
+    <span class="n">allow_credentials</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">allow_methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+    <span class="n">allow_headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+    <span class="n">expose_headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="production-configuration">
+<h3>Production Configuration<a class="headerlink" href="#production-configuration" title="Link to this heading"></a></h3>
+<p>For production, restrict the allowed origins:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span>
+    <span class="n">CORSMiddleware</span><span class="p">,</span>
+    <span class="n">allow_origins</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;https://yourdomain.com&quot;</span><span class="p">,</span> <span class="s2">&quot;https://app.yourdomain.com&quot;</span><span class="p">],</span>
+    <span class="n">allow_credentials</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">allow_methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+    <span class="n">allow_headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+    <span class="n">expose_headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing-security-features">
+<h2>Testing Security Features<a class="headerlink" href="#testing-security-features" title="Link to this heading"></a></h2>
+<p>All security features are tested in the unit test suite. To run the tests:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all tests</span>
+make<span class="w"> </span><span class="nb">test</span>
+
+<span class="c1"># Run only API tests</span>
+pytest<span class="w"> </span>tests/unit/test_api.py
+
+<span class="c1"># Run tests with coverage</span>
+make<span class="w"> </span>test-cov
+</pre></div>
+</div>
+<section id="adding-tests-for-security-features">
+<h3>Adding Tests for Security Features<a class="headerlink" href="#adding-tests-for-security-features" title="Link to this heading"></a></h3>
+<p>When adding new endpoints or features, include tests for security:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_new_endpoint_with_xss_input</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test that the new endpoint sanitizes XSS input.&quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/new-endpoint?name=&lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt;&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="c1"># Verify that the response does not contain the script tag</span>
+    <span class="k">assert</span> <span class="s2">&quot;&lt;script&gt;&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_new_endpoint_audit_logging</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">mocker</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test that the new endpoint logs audit events.&quot;&quot;&quot;</span>
+    <span class="c1"># Mock the audit logger</span>
+    <span class="n">mock_audit</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;src.api.audit.AuditLogger.log_request&#39;</span><span class="p">)</span>
+    
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/new-endpoint&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Verify that audit logging was called</span>
+    <span class="n">mock_audit</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<section id="always-sanitize-user-input">
+<h3>1. Always Sanitize User Input<a class="headerlink" href="#always-sanitize-user-input" title="Link to this heading"></a></h3>
+<p>Never trust user input. Always sanitize text, queries, and lists using the provided sanitization functions.</p>
+</section>
+<section id="log-security-relevant-events">
+<h3>2. Log Security-Relevant Events<a class="headerlink" href="#log-security-relevant-events" title="Link to this heading"></a></h3>
+<p>Log all security-relevant events, including failed authentication attempts, unauthorized access, and data access events.</p>
+</section>
+<section id="encrypt-sensitive-data">
+<h3>3. Encrypt Sensitive Data<a class="headerlink" href="#encrypt-sensitive-data" title="Link to this heading"></a></h3>
+<p>Always encrypt sensitive data before storing it, including API keys, passwords, and personal information.</p>
+</section>
+<section id="monitor-for-anomalies">
+<h3>4. Monitor for Anomalies<a class="headerlink" href="#monitor-for-anomalies" title="Link to this heading"></a></h3>
+<p>Regularly review metrics and logs for unusual patterns that might indicate security issues.</p>
+</section>
+<section id="keep-dependencies-updated">
+<h3>5. Keep Dependencies Updated<a class="headerlink" href="#keep-dependencies-updated" title="Link to this heading"></a></h3>
+<p>Regularly update security-related dependencies like <code class="docutils literal notranslate"><span class="pre">nh3</span></code>, <code class="docutils literal notranslate"><span class="pre">cryptography</span></code>, and <code class="docutils literal notranslate"><span class="pre">fastapi</span></code>.</p>
+</section>
+<section id="use-environment-variables-for-secrets">
+<h3>6. Use Environment Variables for Secrets<a class="headerlink" href="#use-environment-variables-for-secrets" title="Link to this heading"></a></h3>
+<p>Never hardcode sensitive information like encryption keys or API secrets in the code.</p>
+</section>
+</section>
+<section id="api-design-and-best-practices">
+<h2>API Design and Best Practices<a class="headerlink" href="#api-design-and-best-practices" title="Link to this heading"></a></h2>
+<p>For comprehensive guidance on API design, our project includes a detailed API practices study guide that covers modern API development principles and patterns.</p>
+<section id="key-api-design-areas-covered">
+<h3>Key API Design Areas Covered<a class="headerlink" href="#key-api-design-areas-covered" title="Link to this heading"></a></h3>
+<section id="api-architecture-styles">
+<h4>1. API Architecture Styles<a class="headerlink" href="#api-architecture-styles" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>REST APIs</strong>: Resource-based design with HTTP methods</p></li>
+<li><p><strong>GraphQL</strong>: Query-based APIs for flexible data fetching</p></li>
+<li><p><strong>gRPC</strong>: High-performance RPC for microservices</p></li>
+</ul>
+</section>
+<section id="security-and-authentication">
+<h4>2. Security and Authentication<a class="headerlink" href="#security-and-authentication" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Authentication Methods</strong>: Basic Auth, Bearer tokens, OAuth2, SSO</p></li>
+<li><p><strong>Authorization Models</strong>: RBAC, ABAC, ACL patterns</p></li>
+<li><p><strong>Security Best Practices</strong>: Rate limiting, input validation, CORS</p></li>
+</ul>
+</section>
+<section id="design-principles">
+<h4>3. Design Principles<a class="headerlink" href="#design-principles" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Consistency</strong>: Uniform naming and patterns</p></li>
+<li><p><strong>Performance</strong>: Caching, pagination, payload optimization</p></li>
+<li><p><strong>Maintainability</strong>: Versioning, documentation, testing</p></li>
+</ul>
+</section>
+</section>
+<section id="fastapi-implementation-examples">
+<h3>FastAPI Implementation Examples<a class="headerlink" href="#fastapi-implementation-examples" title="Link to this heading"></a></h3>
+<p>Our project uses FastAPI which aligns with modern API best practices:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span><span class="p">,</span> <span class="n">Depends</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="c1"># RESTful endpoint design</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/api/v1/articles/</span><span class="si">{article_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_article</span><span class="p">(</span><span class="n">article_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a specific article by ID - follows REST conventions&quot;&quot;&quot;</span>
+    <span class="c1"># Implementation follows resource-based URL design</span>
+    
+<span class="c1"># Input validation with Pydantic</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SearchRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">max_results</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/api/v1/search&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">search_articles</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">SearchRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search articles with validated input&quot;&quot;&quot;</span>
+    <span class="c1"># Automatic request validation and serialization</span>
+</pre></div>
+</div>
+</section>
+<section id="api-security-integration">
+<h3>API Security Integration<a class="headerlink" href="#api-security-integration" title="Link to this heading"></a></h3>
+<p>Our security features align with API security best practices:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rate limiting for API endpoints</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">middleware</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">rate_limit_middleware</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">):</span>
+    <span class="c1"># Implements token bucket rate limiting</span>
+    
+<span class="c1"># Input sanitization for all endpoints</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/api/v1/articles&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_article</span><span class="p">(</span><span class="n">article_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="c1"># Automatic sanitization of user inputs</span>
+    <span class="n">sanitized_data</span> <span class="o">=</span> <span class="n">sanitize_dict</span><span class="p">(</span><span class="n">article_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="reference-documentation">
+<h3>Reference Documentation<a class="headerlink" href="#reference-documentation" title="Link to this heading"></a></h3>
+<p>For detailed study of API design principles, authentication patterns, and implementation strategies, refer to:</p>
+<ul class="simple">
+<li><p><strong><a class="reference internal" href="#api_practices.html"><span class="xref myst">API Practices Study Guide</span></a></strong> - Comprehensive guide covering API design principles, security patterns, and best practices</p></li>
+<li><p><strong><a class="reference internal" href="#implementation.html"><span class="xref myst">Implementation Guide</span></a></strong> - Project-specific implementation details</p></li>
+<li><p><strong><a class="reference internal" href="#security-features"><span class="xref myst">Security Guide</span></a></strong> - Security features and their usage (above sections)</p></li>
+</ul>
+</section>
+<section id="best-practices-for-api-development">
+<h3>Best Practices for API Development<a class="headerlink" href="#best-practices-for-api-development" title="Link to this heading"></a></h3>
+<p>When developing new API endpoints in this project:</p>
+<ol class="arabic simple">
+<li><p><strong>Follow RESTful conventions</strong> for resource URLs and HTTP methods</p></li>
+<li><p><strong>Use Pydantic models</strong> for request/response validation</p></li>
+<li><p><strong>Implement proper error handling</strong> with meaningful HTTP status codes</p></li>
+<li><p><strong>Add rate limiting</strong> for resource-intensive endpoints</p></li>
+<li><p><strong>Include audit logging</strong> for security-sensitive operations</p></li>
+<li><p><strong>Sanitize all inputs</strong> to prevent injection attacks</p></li>
+<li><p><strong>Document endpoints</strong> with OpenAPI/Swagger annotations</p></li>
+</ol>
+</section>
+<section id="quick-reference-links">
+<h3>Quick Reference Links<a class="headerlink" href="#quick-reference-links" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="#api_practices.html"><span class="xref myst">API Practices Full Guide</span></a> - Complete API design study guide</p></li>
+<li><p><a class="reference external" href="http://localhost:8000/docs">OpenAPI Documentation</a> - Live API documentation</p></li>
+<li><p><a class="reference external" href="http://localhost:8000/health">Health Check Endpoint</a> - API health status</p></li>
+<li><p><a class="reference external" href="http://localhost:8000/metrics">Metrics Endpoint</a> - Performance metrics</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dashboard_plan.html" class="btn btn-neutral float-left" title="Dashboard Implementation Plan" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="onboarding_summary.html" class="btn btn-neutral float-right" title="Internal Onboarding Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Tobias Hoffmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

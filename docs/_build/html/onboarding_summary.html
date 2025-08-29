@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Internal Onboarding Summary &mdash; Thai Traditional Medicine RAG Bot 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. Understanding APIs" href="api_practices.html" />
+    <link rel="prev" title="Internal Onboarding Guide" href="onboarding.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Thai Traditional Medicine RAG Bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_overview.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="current_state.html">Current State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future_steps.html">Future Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cto_assessment.html">CTO Assessment Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_status.html">Project Status Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_plan.html">Dashboard Implementation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding.html">Internal Onboarding Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Internal Onboarding Summary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-security-features-implemented">Key Security Features Implemented</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#input-sanitization">1. Input Sanitization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#audit-logging">2. Audit Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-encryption">3. Data Encryption</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#https-enforcement">4. HTTPS Enforcement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cors-configuration">5. CORS Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#monitoring-and-observability">Monitoring and Observability</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prometheus-metrics">1. Prometheus Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#health-check-endpoints">2. Health Check Endpoints</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#comprehensive-onboarding-guide">1. Comprehensive Onboarding Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-practices-study-guide">2. API Practices Study Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deployment-guide">3. Deployment Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#security-feature-testing">1. Security Feature Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-tests">2. Running Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices-for-new-team-members">Best Practices for New Team Members</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#always-sanitize-user-input">1. Always Sanitize User Input</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-audit-logging-to-new-endpoints">2. Add Audit Logging to New Endpoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#encrypt-sensitive-data">3. Encrypt Sensitive Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-custom-metrics-when-needed">4. Add Custom Metrics When Needed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-links">Quick Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html">1. Understanding APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-styles">2. API Styles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-principles">3. API Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-their-influence">4. Protocols &amp; Their Influence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-process">5. API Design Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#restful-api-design">6. RESTful API Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#graphql-api-design">7. GraphQL API Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#authentication-authorization">8. Authentication &amp; Authorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#security-best-practices">9. Security Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-transport-layer">10. Protocols &amp; Transport Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#summary-next-steps">11. Summary &amp; Next Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#additional-resources">12. Additional Resources</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Thai Traditional Medicine RAG Bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Internal Onboarding Summary</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/onboarding_summary.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="internal-onboarding-summary">
+<h1>Internal Onboarding Summary<a class="headerlink" href="#internal-onboarding-summary" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This document provides a summary of the security and monitoring features implemented in the Thai Traditional Medicine RAG Bot project for new team members.</p>
+</section>
+<section id="key-security-features-implemented">
+<h2>Key Security Features Implemented<a class="headerlink" href="#key-security-features-implemented" title="Link to this heading"></a></h2>
+<section id="input-sanitization">
+<h3>1. Input Sanitization<a class="headerlink" href="#input-sanitization" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Prevent XSS attacks and injection vulnerabilities</p></li>
+<li><p><strong>Library</strong>: nh3 (Python binding for ammonia HTML sanitizer)</p></li>
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">src/api/sanitization.py</span></code></p></li>
+<li><p><strong>Usage</strong>: Automatically applied to all API endpoints</p></li>
+<li><p><strong>Functions</strong>: <code class="docutils literal notranslate"><span class="pre">sanitize_text()</span></code>, <code class="docutils literal notranslate"><span class="pre">sanitize_query()</span></code>, <code class="docutils literal notranslate"><span class="pre">sanitize_list()</span></code></p></li>
+</ul>
+</section>
+<section id="audit-logging">
+<h3>2. Audit Logging<a class="headerlink" href="#audit-logging" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Compliance tracking and security monitoring</p></li>
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">src/api/audit.py</span></code></p></li>
+<li><p><strong>Features</strong>:</p>
+<ul>
+<li><p>General event logging</p></li>
+<li><p>HTTP request logging</p></li>
+<li><p>Data access logging</p></li>
+<li><p>Security event logging with severity levels</p></li>
+</ul>
+</li>
+<li><p><strong>Storage</strong>: <code class="docutils literal notranslate"><span class="pre">audit.log</span></code> file in development</p></li>
+</ul>
+</section>
+<section id="data-encryption">
+<h3>3. Data Encryption<a class="headerlink" href="#data-encryption" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Protect sensitive metadata</p></li>
+<li><p><strong>Library</strong>: cryptography</p></li>
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">src/utils/encryption.py</span></code></p></li>
+<li><p><strong>Features</strong>:</p>
+<ul>
+<li><p>String encryption/decryption</p></li>
+<li><p>Dictionary encryption/decryption</p></li>
+<li><p>Key management</p></li>
+</ul>
+</li>
+<li><p><strong>Configuration</strong>: Uses <code class="docutils literal notranslate"><span class="pre">ENCRYPTION_KEY</span></code> environment variable</p></li>
+</ul>
+</section>
+<section id="https-enforcement">
+<h3>4. HTTPS Enforcement<a class="headerlink" href="#https-enforcement" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Ensure secure communication in production</p></li>
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">src/api/security.py</span></code></p></li>
+<li><p><strong>Activation</strong>: When <code class="docutils literal notranslate"><span class="pre">ENVIRONMENT=production</span></code> and <code class="docutils literal notranslate"><span class="pre">HTTPS_ENABLED=true</span></code></p></li>
+</ul>
+</section>
+<section id="cors-configuration">
+<h3>5. CORS Configuration<a class="headerlink" href="#cors-configuration" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Purpose</strong>: Control cross-origin requests</p></li>
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">src/api/main.py</span></code></p></li>
+<li><p><strong>Configuration</strong>: Currently allows all origins (restrict in production)</p></li>
+</ul>
+</section>
+</section>
+<section id="monitoring-and-observability">
+<h2>Monitoring and Observability<a class="headerlink" href="#monitoring-and-observability" title="Link to this heading"></a></h2>
+<section id="prometheus-metrics">
+<h3>1. Prometheus Metrics<a class="headerlink" href="#prometheus-metrics" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Library</strong>: prometheus-client</p></li>
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">src/api/monitoring.py</span></code></p></li>
+<li><p><strong>Metrics Collected</strong>:</p>
+<ul>
+<li><p>HTTP request count and duration</p></li>
+<li><p>Active requests</p></li>
+<li><p>Error rates</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="health-check-endpoints">
+<h3>2. Health Check Endpoints<a class="headerlink" href="#health-check-endpoints" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Endpoints</strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">/health</span></code> - Basic health status</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metrics</span></code> - Prometheus metrics</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h2>
+<section id="comprehensive-onboarding-guide">
+<h3>1. Comprehensive Onboarding Guide<a class="headerlink" href="#comprehensive-onboarding-guide" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">docs/onboarding.md</span></code></p></li>
+<li><p><strong>Content</strong>: Detailed instructions for using all security features</p></li>
+</ul>
+</section>
+<section id="api-practices-study-guide">
+<h3>2. API Practices Study Guide<a class="headerlink" href="#api-practices-study-guide" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">docs/api_practices.md</span></code></p></li>
+<li><p><strong>Content</strong>: Comprehensive guide on API design principles, security, authentication, and best practices</p></li>
+<li><p><strong>Coverage</strong>: REST, GraphQL, gRPC, security patterns, authentication methods</p></li>
+</ul>
+</section>
+<section id="deployment-guide">
+<h3>3. Deployment Guide<a class="headerlink" href="#deployment-guide" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Location</strong>: <code class="docutils literal notranslate"><span class="pre">docs/deployment.md</span></code></p></li>
+<li><p><strong>Content</strong>: Instructions for local, Docker, and production deployment</p></li>
+</ul>
+</section>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h2>
+<section id="security-feature-testing">
+<h3>1. Security Feature Testing<a class="headerlink" href="#security-feature-testing" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>All security features are covered by unit tests</p></li>
+<li><p>Located in <code class="docutils literal notranslate"><span class="pre">tests/unit/test_api.py</span></code></p></li>
+</ul>
+</section>
+<section id="running-tests">
+<h3>2. Running Tests<a class="headerlink" href="#running-tests" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span><span class="nb">test</span><span class="w">          </span><span class="c1"># Run all tests</span>
+make<span class="w"> </span>test-cov<span class="w">      </span><span class="c1"># Run tests with coverage report</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="environment-variables">
+<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Security</span>
+<span class="nv">ENCRYPTION_KEY</span><span class="o">=</span>your_base64_encoded_key_here
+<span class="nv">ENVIRONMENT</span><span class="o">=</span>development<span class="p">|</span>production
+<span class="nv">HTTPS_ENABLED</span><span class="o">=</span>true<span class="p">|</span><span class="nb">false</span>
+
+<span class="c1"># Database</span>
+<span class="nv">DATABASE_URL</span><span class="o">=</span>postgresql://user:password@host:port/database
+
+<span class="c1"># API Keys</span>
+<span class="nv">PUBMED_API_KEY</span><span class="o">=</span>your_pubmed_api_key
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices-for-new-team-members">
+<h2>Best Practices for New Team Members<a class="headerlink" href="#best-practices-for-new-team-members" title="Link to this heading"></a></h2>
+<section id="always-sanitize-user-input">
+<h3>1. Always Sanitize User Input<a class="headerlink" href="#always-sanitize-user-input" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.api.sanitization</span><span class="w"> </span><span class="kn">import</span> <span class="n">sanitize_text</span><span class="p">,</span> <span class="n">sanitize_query</span><span class="p">,</span> <span class="n">sanitize_list</span>
+
+<span class="c1"># Sanitize all user inputs</span>
+<span class="n">clean_name</span> <span class="o">=</span> <span class="n">sanitize_text</span><span class="p">(</span><span class="n">user_input</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="add-audit-logging-to-new-endpoints">
+<h3>2. Add Audit Logging to New Endpoints<a class="headerlink" href="#add-audit-logging-to-new-endpoints" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.api.audit</span><span class="w"> </span><span class="kn">import</span> <span class="n">AuditLogger</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/new-endpoint&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">new_endpoint</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">):</span>
+    <span class="n">AuditLogger</span><span class="o">.</span><span class="n">log_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="c1"># ... endpoint logic</span>
+</pre></div>
+</div>
+</section>
+<section id="encrypt-sensitive-data">
+<h3>3. Encrypt Sensitive Data<a class="headerlink" href="#encrypt-sensitive-data" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">src.utils.encryption</span><span class="w"> </span><span class="kn">import</span> <span class="n">encrypt_sensitive_data</span><span class="p">,</span> <span class="n">decrypt_sensitive_data</span>
+
+<span class="c1"># Encrypt before storage</span>
+<span class="n">encrypted_data</span> <span class="o">=</span> <span class="n">encrypt_sensitive_data</span><span class="p">(</span><span class="n">sensitive_info</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="add-custom-metrics-when-needed">
+<h3>4. Add Custom Metrics When Needed<a class="headerlink" href="#add-custom-metrics-when-needed" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="n">CUSTOM_EVENTS</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="s1">&#39;custom_events_total&#39;</span><span class="p">,</span> <span class="s1">&#39;Total custom events&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_function</span><span class="p">():</span>
+    <span class="n">CUSTOM_EVENTS</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+    <span class="c1"># ... function logic</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="quick-links">
+<h2>Quick Links<a class="headerlink" href="#quick-links" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://localhost:8081/onboarding.html">Onboarding Guide</a></p></li>
+<li><p><a class="reference external" href="http://localhost:8081/deployment.html">Deployment Guide</a></p></li>
+<li><p><a class="reference external" href="http://localhost:8081/index.html">API Documentation</a></p></li>
+<li><p><a class="reference external" href="http://localhost:8000/health">Health Check Endpoint</a></p></li>
+<li><p><a class="reference external" href="http://localhost:8000/metrics">Metrics Endpoint</a></p></li>
+</ul>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Review the full onboarding guide for detailed implementation examples</p></li>
+<li><p>Run the test suite to understand how security features are validated</p></li>
+<li><p>Examine existing endpoints to see how security features are integrated</p></li>
+<li><p>Check the deployment guide for production configuration details</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="onboarding.html" class="btn btn-neutral float-left" title="Internal Onboarding Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api_practices.html" class="btn btn-neutral float-right" title="1. Understanding APIs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Tobias Hoffmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

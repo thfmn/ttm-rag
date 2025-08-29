@@ -5,10 +5,13 @@ This application provides a simple REST API for searching PubMed articles
 and retrieving structured data about Thai Traditional Medicine research.
 """
 
-from fastapi import FastAPI, HTTPException, Query, Depends
+from fastapi import FastAPI, HTTPException, Query, Depends, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from typing import List, Optional
-from datetime import date
+from datetime import date, datetime
 from pydantic import BaseModel
+import os
 
 from src.models.source import Source
 from src.connectors.pubmed import PubMedConnector
@@ -20,12 +23,35 @@ from src.utils.pubmed_query_builder import (
     build_thai_traditional_medicine_query
 )
 from src.utils.rate_limiting import configure_rate_limiting, acquire_rate_limit
+from src.api.sanitization import sanitize_text, sanitize_query, sanitize_list
+from src.api.monitoring import MonitoringMiddleware, metrics_endpoint
+from src.api.security import HTTPSMiddleware
+from src.api.audit import AuditLogger
+
+# Import dashboard router
+from src.dashboard.router import router as dashboard_router
 
 app = FastAPI(
     title="Thai Traditional Medicine PubMed API",
     description="API for querying PubMed for Thai Traditional Medicine research articles",
     version="0.1.0"
 )
+
+# Add HTTPS middleware
+app.add_middleware(HTTPSMiddleware)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace with specific origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"]
+)
+
+# Add monitoring middleware
+app.add_middleware(MonitoringMiddleware)
 
 # Configure rate limiting for the API
 # Conservative limits to respect PubMed's API guidelines
@@ -46,7 +72,15 @@ source = Source(
 
 connector = PubMedConnector(source)
 
+# Include dashboard router
+app.include_router(dashboard_router)
 
+# Serve static files (including the dashboard)
+static_dir = os.path.join(os.path.dirname(__file__), "..", "dashboard")
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+# Pydantic models for request/response
 class SearchRequest(BaseModel):
     """Request model for searching PubMed articles."""
     query: str
@@ -57,7 +91,6 @@ class SearchRequest(BaseModel):
     article_types: Optional[List[str]] = []
     start_date: Optional[date] = None
     end_date: Optional[date] = None
-
 
 class ArticleResponse(BaseModel):
     """Response model for a PubMed article."""
@@ -74,13 +107,11 @@ class ArticleResponse(BaseModel):
     chemicals: Optional[List[str]]
     country: Optional[str]
 
-
 class SearchResponse(BaseModel):
     """Response model for search results."""
     query: str
     total_results: int
     articles: List[ArticleResponse]
-
 
 def convert_pubmed_article_to_response(article: PubmedArticle) -> ArticleResponse:
     """Convert a PubmedArticle to an ArticleResponse."""
@@ -99,7 +130,6 @@ def convert_pubmed_article_to_response(article: PubmedArticle) -> ArticleRespons
         country=article.country
     )
 
-
 @app.get("/")
 async def root():
     """Root endpoint with basic information about the API."""
@@ -108,13 +138,30 @@ async def root():
         "description": "API for querying PubMed for Thai Traditional Medicine research articles",
         "endpoints": {
             "search": "/search",
-            "thai_medicine_search": "/thai-medicine-search"
+            "thai_medicine_search": "/thai-medicine-search",
+            "health": "/health",
+            "metrics": "/metrics",
+            "dashboard": "/dashboard"
         }
     }
 
+@app.get("/health")
+async def health_check():
+    """Health check endpoint to verify the API is running."""
+    return {
+        "status": "healthy",
+        "timestamp": datetime.utcnow().isoformat(),
+        "service": "thai-traditional-medicine-pubmed-api"
+    }
+
+@app.get("/metrics")
+async def metrics():
+    """Metrics endpoint for Prometheus."""
+    return await metrics_endpoint()
 
 @app.get("/search", response_model=SearchResponse)
 async def search_pubmed(
+    request: Request,
     query: str = Query(..., description="Search query"),
     max_results: int = Query(10, description="Maximum number of results to return", le=100),
     include_thai_terms: bool = Query(False, description="Include Thai-specific terms in search"),
@@ -126,8 +173,22 @@ async def search_pubmed(
     """
     Search PubMed for articles based on the provided query and filters.
     """
+    # Log the request
+    AuditLogger.log_request(request)
+    
+    # Sanitize inputs
+    query = sanitize_query(query)
+    exclude_terms = sanitize_list(exclude_terms)
+    article_types = sanitize_list(article_types)
+    
     # Rate limiting for API endpoint
     if not acquire_rate_limit("api_search", 1.0, timeout=5.0):
+        AuditLogger.log_security_event(
+            event_type="rate_limit_exceeded",
+            description="Rate limit exceeded for search endpoint",
+            ip_address=request.client.host if request.client else None,
+            severity="medium"
+        )
         raise HTTPException(status_code=429, detail="Rate limit exceeded. Please try again later.")
     
     try:
@@ -163,6 +224,14 @@ async def search_pubmed(
         # Search for articles
         pmids = connector.search_articles(search_query, max_results)
         
+        # Log data access
+        AuditLogger.log_data_access(
+            data_type="pubmed_articles",
+            action="search",
+            ip_address=request.client.host if request.client else None,
+            record_count=len(pmids)
+        )
+        
         if not pmids:
             return SearchResponse(
                 query=search_query,
@@ -172,6 +241,14 @@ async def search_pubmed(
         
         # Fetch article details
         articles = connector.fetch_article_details(pmids)
+        
+        # Log data access
+        AuditLogger.log_data_access(
+            data_type="pubmed_articles",
+            action="retrieve",
+            ip_address=request.client.host if request.client else None,
+            record_count=len(articles)
+        )
         
         # Convert to response format
         article_responses = [convert_pubmed_article_to_response(article) for article in articles]
@@ -183,11 +260,17 @@ async def search_pubmed(
         )
         
     except Exception as e:
+        AuditLogger.log_security_event(
+            event_type="search_error",
+            description=f"Error searching PubMed: {str(e)}",
+            ip_address=request.client.host if request.client else None,
+            severity="high"
+        )
         raise HTTPException(status_code=500, detail=f"Error searching PubMed: {str(e)}")
-
 
 @app.get("/thai-medicine-search", response_model=SearchResponse)
 async def search_thai_traditional_medicine(
+    request: Request,
     additional_terms: List[str] = Query([], description="Additional terms to include in search"),
     exclude_terms: List[str] = Query([], description="Terms to exclude from search"),
     article_types: List[str] = Query([], description="Article types to filter by"),
@@ -198,8 +281,22 @@ async def search_thai_traditional_medicine(
     """
     Search PubMed specifically for Thai Traditional Medicine articles using a specialized query.
     """
+    # Log the request
+    AuditLogger.log_request(request)
+    
+    # Sanitize inputs
+    additional_terms = sanitize_list(additional_terms)
+    exclude_terms = sanitize_list(exclude_terms)
+    article_types = sanitize_list(article_types)
+    
     # Rate limiting for API endpoint
     if not acquire_rate_limit("api_search", 1.0, timeout=5.0):
+        AuditLogger.log_security_event(
+            event_type="rate_limit_exceeded",
+            description="Rate limit exceeded for Thai medicine search endpoint",
+            ip_address=request.client.host if request.client else None,
+            severity="medium"
+        )
         raise HTTPException(status_code=429, detail="Rate limit exceeded. Please try again later.")
     
     try:
@@ -228,6 +325,14 @@ async def search_thai_traditional_medicine(
         # Search for articles
         pmids = connector.search_articles(search_query, max_results)
         
+        # Log data access
+        AuditLogger.log_data_access(
+            data_type="pubmed_articles",
+            action="search",
+            ip_address=request.client.host if request.client else None,
+            record_count=len(pmids)
+        )
+        
         if not pmids:
             return SearchResponse(
                 query=search_query,
@@ -237,6 +342,14 @@ async def search_thai_traditional_medicine(
         
         # Fetch article details
         articles = connector.fetch_article_details(pmids)
+        
+        # Log data access
+        AuditLogger.log_data_access(
+            data_type="pubmed_articles",
+            action="retrieve",
+            ip_address=request.client.host if request.client else None,
+            record_count=len(articles)
+        )
         
         # Convert to response format
         article_responses = [convert_pubmed_article_to_response(article) for article in articles]
@@ -248,29 +361,62 @@ async def search_thai_traditional_medicine(
         )
         
     except Exception as e:
+        AuditLogger.log_security_event(
+            event_type="search_error",
+            description=f"Error searching PubMed: {str(e)}",
+            ip_address=request.client.host if request.client else None,
+            severity="high"
+        )
         raise HTTPException(status_code=500, detail=f"Error searching PubMed: {str(e)}")
 
-
 @app.get("/article/{pmid}", response_model=ArticleResponse)
-async def get_article(pmid: str):
+async def get_article(request: Request, pmid: str):
     """
     Get detailed information about a specific PubMed article by PMID.
     """
+    # Log the request
+    AuditLogger.log_request(request)
+    
     # Rate limiting for API endpoint
     if not acquire_rate_limit("api_fetch", 1.0, timeout=5.0):
+        AuditLogger.log_security_event(
+            event_type="rate_limit_exceeded",
+            description="Rate limit exceeded for article retrieval endpoint",
+            ip_address=request.client.host if request.client else None,
+            severity="medium"
+        )
         raise HTTPException(status_code=429, detail="Rate limit exceeded. Please try again later.")
     
     try:
         articles = connector.fetch_article_details([pmid])
         
+        # Log data access
+        AuditLogger.log_data_access(
+            data_type="pubmed_articles",
+            action="retrieve",
+            ip_address=request.client.host if request.client else None,
+            record_count=len(articles)
+        )
+        
         if not articles:
+            AuditLogger.log_security_event(
+                event_type="article_not_found",
+                description=f"Article with PMID {pmid} not found",
+                ip_address=request.client.host if request.client else None,
+                severity="low"
+            )
             raise HTTPException(status_code=404, detail=f"Article with PMID {pmid} not found")
         
         return convert_pubmed_article_to_response(articles[0])
         
     except Exception as e:
+        AuditLogger.log_security_event(
+            event_type="fetch_error",
+            description=f"Error fetching article: {str(e)}",
+            ip_address=request.client.host if request.client else None,
+            severity="high"
+        )
         raise HTTPException(status_code=500, detail=f"Error fetching article: {str(e)}")
-
 
 if __name__ == "__main__":
     import uvicorn

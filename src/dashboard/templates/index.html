@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thai Traditional Medicine RAG Bot - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .metric-card {
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        .metric-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .status-healthy {
+            background-color: #28a745;
+        }
+        .status-warning {
+            background-color: #ffc107;
+        }
+        .status-error {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">Thai Traditional Medicine RAG Bot Dashboard</h1>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- System Status Card -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">System Status</h5>
+                        <div class="metric-card">
+                            <span class="status-indicator status-healthy"></span>
+                            <span class="metric-value" id="system-status">Healthy</span>
+                            <div class="metric-label">Operational</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Total Documents Card -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Documents</h5>
+                        <div class="metric-card">
+                            <span class="metric-value" id="total-documents">0</span>
+                            <div class="metric-label">Processed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Active Sources Card -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Active Sources</h5>
+                        <div class="metric-card">
+                            <span class="metric-value" id="active-sources">0</span>
+                            <div class="metric-label">Sources Connected</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Processing Rate Card -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Processing Rate</h5>
+                        <div class="metric-card">
+                            <span class="metric-value" id="processing-rate">0</span>
+                            <div class="metric-label">Docs/Minute</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Processing Queue Chart -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Processing Queue</h5>
+                        <canvas id="queue-chart" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Document Sources Chart -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Document Sources</h5>
+                        <canvas id="sources-chart" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Recent Activity -->
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Recent Activity</h5>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Activity</th>
+                                    <th>Details</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activity-log">
+                                <tr>
+                                    <td colspan="4" class="text-center">No activity yet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize charts
+        const queueCtx = document.getElementById('queue-chart').getContext('2d');
+        const sourcesCtx = document.getElementById('sources-chart').getContext('2d');
+        
+        const queueChart = new Chart(queueCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Queue Depth',
+                    data: [],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+        const sourcesChart = new Chart(sourcesCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['PubMed', 'PMC OA', 'DTAM', 'Other'],
+                datasets: [{
+                    data: [0, 0, 0, 0],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+        
+        // Function to fetch dashboard metrics from backend
+        async function fetchDashboardMetrics() {
+            try {
+                const response = await fetch('/dashboard/api/metrics');
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Update metrics
+                    document.getElementById('system-status').textContent = 
+                        data.system_status.charAt(0).toUpperCase() + data.system_status.slice(1);
+                    document.getElementById('total-documents').textContent = data.total_documents;
+                    document.getElementById('active-sources').textContent = data.active_sources;
+                    document.getElementById('processing-rate').textContent = data.processing_rate.toFixed(1);
+                    
+                    // Update queue chart with new data point
+                    const now = new Date();
+                    const timeLabel = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+                    
+                    queueChart.data.labels.push(timeLabel);
+                    queueChart.data.datasets[0].data.push(data.queue_depth);
+                    
+                    // Keep only the last 10 data points
+                    if (queueChart.data.labels.length > 10) {
+                        queueChart.data.labels.shift();
+                        queueChart.data.datasets[0].data.shift();
+                    }
+                    
+                    queueChart.update();
+                    
+                    // Update sources chart
+                    sourcesChart.data.datasets[0].data = [
+                        data.sources.pubmed || 0,
+                        data.sources.pmc_oa || 0,
+                        data.sources.dtam || 0,
+                        data.sources.other || 0
+                    ];
+                    sourcesChart.update();
+                }
+            } catch (error) {
+                console.error('Error fetching dashboard metrics:', error);
+            }
+        }
+        
+        // Function to fetch recent activity from backend
+        async function fetchRecentActivity() {
+            try {
+                const response = await fetch('/dashboard/api/activity');
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Update activity log
+                    const activityLog = document.getElementById('activity-log');
+                    
+                    // Clear existing rows
+                    activityLog.innerHTML = '';
+                    
+                    // Add new activity rows
+                    data.activities.forEach(activity => {
+                        const row = document.createElement('tr');
+                        
+                        row.innerHTML = `
+                            <td>${new Date(activity.time).toLocaleTimeString()}</td>
+                            <td>${activity.activity}</td>
+                            <td>${activity.details}</td>
+                            <td><span class="badge bg-${activity.status}">${activity.status.toUpperCase()}</span></td>
+                        `;
+                        
+                        activityLog.appendChild(row);
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching recent activity:', error);
+            }
+        }
+        
+        // Update dashboard every 5 seconds
+        setInterval(() => {
+            fetchDashboardMetrics();
+            fetchRecentActivity();
+        }, 5000);
+        
+        // Initial update
+        fetchDashboardMetrics();
+        fetchRecentActivity();
+    </script>
+</body>
+</html>

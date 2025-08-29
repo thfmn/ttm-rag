@@ -150,7 +150,11 @@ docs:
 
 docs-serve:
 	@echo "🌐 Serving documentation..."
-	cd docs/_build/html && python -m http.server 8080
+	python serve_docs.py
+
+docs-rebuild:
+	@echo "🔄 Rebuilding and serving documentation..."
+	make docs && python serve_docs.py
 
 # Thai language setup
 thai-setup:

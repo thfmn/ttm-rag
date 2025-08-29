@@ -58,6 +58,25 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="future_steps.html">Future Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cto_assessment.html">CTO Assessment Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_status.html">Project Status Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_plan.html">Dashboard Implementation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding.html">Internal Onboarding Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding_summary.html">Internal Onboarding Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html">1. Understanding APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-styles">2. API Styles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-principles">3. API Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-their-influence">4. Protocols &amp; Their Influence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-process">5. API Design Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#restful-api-design">6. RESTful API Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#graphql-api-design">7. GraphQL API Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#authentication-authorization">8. Authentication &amp; Authorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#security-best-practices">9. Security Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-transport-layer">10. Protocols &amp; Transport Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#summary-next-steps">11. Summary &amp; Next Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#additional-resources">12. Additional Resources</a></li>
 </ul>
 
         </div>
@@ -105,6 +124,11 @@
 <li><p><strong>Improved Error Handling</strong>: Implemented comprehensive error handling with custom exception classes and retry mechanisms</p></li>
 <li><p><strong>Rate Limiting</strong>: Implemented rate limiting to respect PubMed’s API guidelines</p></li>
 <li><p><strong>Database Integration</strong>: Set up database integration for storing fetched documents</p></li>
+<li><p><strong>Security Enhancements</strong>: Implemented input sanitization, HTTPS enforcement, CORS, audit logging, and data encryption</p></li>
+<li><p><strong>Monitoring &amp; Health Checks</strong>: Added Prometheus monitoring middleware and health check endpoints</p></li>
+<li><p><strong>Dockerized PostgreSQL</strong>: Implemented production-ready PostgreSQL database configuration</p></li>
+<li><p><strong>CI/CD Pipeline</strong>: Created GitHub Actions workflow for testing and building</p></li>
+<li><p><strong>Deployment Documentation</strong>: Created comprehensive deployment guide and onboarding documentation</p></li>
 </ol>
 </section>
 <section id="whats-working">
@@ -128,6 +152,9 @@
 </li>
 <li><p><strong>Rate Limiting</strong>: Our application respects API rate limits and implements appropriate delays between requests</p></li>
 <li><p><strong>Database Integration</strong>: Our application can now store fetched documents in a database</p></li>
+<li><p><strong>Security Features</strong>: Our application includes input sanitization, HTTPS enforcement, audit logging, and data encryption</p></li>
+<li><p><strong>Monitoring</strong>: Our application provides health checks and Prometheus metrics</p></li>
+<li><p><strong>Dockerized PostgreSQL</strong>: Our application uses PostgreSQL for production-ready database capabilities</p></li>
 </ol>
 </section>
 <section id="demonstration">
@@ -189,6 +216,7 @@ GET /article/12345678
 <li><p><strong>API Design</strong>: Following REST principles for our FastAPI application</p></li>
 <li><p><strong>Rate Limiting</strong>: Implementing rate limiting to respect API guidelines</p></li>
 <li><p><strong>Database Integration</strong>: Using SQLAlchemy for database operations with proper connection pooling</p></li>
+<li><p><strong>Security</strong>: Implementing comprehensive security measures including input sanitization, encryption, and audit logging</p></li>
 </ol>
 </section>
 <section id="limitations">
@@ -198,6 +226,7 @@ GET /article/12345678
 <li><p><strong>Limited Sources</strong>: We’ve only implemented PubMed integration so far</p></li>
 <li><p><strong>No Validation</strong>: We don’t yet have data validation pipelines</p></li>
 <li><p><strong>No Advanced Features</strong>: Features like caching or advanced search are not yet implemented</p></li>
+<li><p><strong>No Dashboard</strong>: We don’t yet have a control center dashboard for monitoring the system</p></li>
 </ol>
 </section>
 <section id="next-steps">
@@ -208,6 +237,7 @@ GET /article/12345678
 <li><p>Implement data validation pipelines</p></li>
 <li><p>Add more sophisticated error handling and logging</p></li>
 <li><p>Implement rate limiting to respect API guidelines</p></li>
+<li><p><strong>Implement a simple dashboard for real-time monitoring and control</strong> (NEW)</p></li>
 </ol>
 </section>
 </section>

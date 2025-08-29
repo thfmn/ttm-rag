@@ -1,0 +1,504 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Implementation Plan &mdash; Thai Traditional Medicine RAG Bot 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Internal Onboarding Guide" href="onboarding.html" />
+    <link rel="prev" title="Dockerized PostgreSQL Setup Summary" href="postgresql_setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Thai Traditional Medicine RAG Bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_overview.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="current_state.html">Current State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future_steps.html">Future Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cto_assessment.html">CTO Assessment Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_status.html">Project Status Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dashboard Implementation Plan</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#technology-stack">Technology Stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#backend">Backend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#frontend">Frontend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-steps">Implementation Steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#phase-1-backend-implementation-completed">Phase 1: Backend Implementation (COMPLETED)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-2-frontend-implementation-completed">Phase 2: Frontend Implementation (COMPLETED)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-3-integration-and-testing-in-progress">Phase 3: Integration and Testing (IN PROGRESS)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#key-dashboard-features-implemented">Key Dashboard Features (IMPLEMENTED)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#system-overview">1. System Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real-time-metrics">2. Real-time Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-source-monitoring">3. Data Source Monitoring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#processing-pipeline">4. Processing Pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#alerts-and-notifications">5. Alerts and Notifications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-engineering-considerations">Data Engineering Considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#real-time-data-streaming-architecture">1. Real-time Data Streaming Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#metrics-collection">2. Metrics Collection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-aggregation">3. Data Aggregation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#implementation-timeline">Implementation Timeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#week-1-backend-foundation-completed">Week 1: Backend Foundation (COMPLETED)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#week-2-frontend-development-completed">Week 2: Frontend Development (COMPLETED)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#week-3-integration-and-testing-currently-in-progress">Week 3: Integration and Testing (CURRENTLY IN PROGRESS)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#week-4-deployment-and-documentation-upcoming">Week 4: Deployment and Documentation (UPCOMING)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#success-criteria">Success Criteria</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-has-been-implemented">What Has Been Implemented</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dashboard-home-page">1. Dashboard Home Page</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-endpoints">2. API Endpoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real-time-updates">3. Real-time Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-visualization">4. Data Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#current-status">Current Status</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding.html">Internal Onboarding Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding_summary.html">Internal Onboarding Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html">1. Understanding APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-styles">2. API Styles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-principles">3. API Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-their-influence">4. Protocols &amp; Their Influence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-process">5. API Design Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#restful-api-design">6. RESTful API Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#graphql-api-design">7. GraphQL API Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#authentication-authorization">8. Authentication &amp; Authorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#security-best-practices">9. Security Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-transport-layer">10. Protocols &amp; Transport Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#summary-next-steps">11. Summary &amp; Next Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#additional-resources">12. Additional Resources</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Thai Traditional Medicine RAG Bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Dashboard Implementation Plan</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dashboard_plan.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="dashboard-implementation-plan">
+<h1>Dashboard Implementation Plan<a class="headerlink" href="#dashboard-implementation-plan" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This document outlines the plan for implementing a simple, working dashboard for the Thai Traditional Medicine RAG Bot that serves as the control center for our API, providing real-time visibility into the system’s operations.</p>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Real-time Monitoring</strong>: Display live data about the system’s performance and status</p></li>
+<li><p><strong>Data Visualization</strong>: Charts and graphs showing key metrics</p></li>
+<li><p><strong>Control Center</strong>: Interface for monitoring data pipelines and system health</p></li>
+<li><p><strong>Open Source</strong>: Use only open-source technologies</p></li>
+<li><p><strong>Simple Implementation</strong>: Focus on a minimal viable product first</p></li>
+</ol>
+</section>
+<section id="technology-stack">
+<h2>Technology Stack<a class="headerlink" href="#technology-stack" title="Link to this heading"></a></h2>
+<section id="backend">
+<h3>Backend<a class="headerlink" href="#backend" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>FastAPI</strong>: Existing framework for API endpoints</p></li>
+<li><p><strong>WebSockets</strong>: For real-time communication</p></li>
+<li><p><strong>Prometheus</strong>: For metrics collection (already partially implemented)</p></li>
+<li><p><strong>PostgreSQL</strong>: For data storage (already implemented)</p></li>
+</ul>
+</section>
+<section id="frontend">
+<h3>Frontend<a class="headerlink" href="#frontend" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>HTML/CSS/JavaScript</strong>: Simple frontend without heavy frameworks</p></li>
+<li><p><strong>Chart.js</strong>: For data visualization</p></li>
+<li><p><strong>Bootstrap</strong>: For responsive UI components</p></li>
+<li><p><strong>Server-Sent Events (SSE)</strong>: Alternative to WebSockets for simpler real-time updates</p></li>
+</ul>
+</section>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │◄──►│   FastAPI       │◄──►│   PostgreSQL    │
+│   (HTML/JS)     │    │   (Backend)     │    │   (Database)    │
+│                 │    │                 │    │                 │
+│ ┌─────────────┐ │    │ ┌─────────────┐ │    │                 │
+│ │ Dashboard   │ │    │ │ REST API    │ │    │                 │
+│ │ Components  │ │    │ │ Endpoints   │ │    │                 │
+│ └─────────────┘ │    │ └─────────────┘ │    │                 │
+│                 │    │                 │    │                 │
+│ ┌─────────────┐ │    │ ┌─────────────┐ │    │                 │
+│ │ Real-time   │ │    │ │ Dashboard   │ │    │                 │
+│ │ Updates     │ │    │ │ Endpoints   │ │    │                 │
+│ └─────────────┘ │    │ └─────────────┘ │    │                 │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                │
+                                ▼
+                      ┌─────────────────┐
+                      │   Prometheus    │
+                      │   (Metrics)     │
+                      └─────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="implementation-steps">
+<h2>Implementation Steps<a class="headerlink" href="#implementation-steps" title="Link to this heading"></a></h2>
+<section id="phase-1-backend-implementation-completed">
+<h3>Phase 1: Backend Implementation (COMPLETED)<a class="headerlink" href="#phase-1-backend-implementation-completed" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Extend API with Dashboard Endpoints</strong></p>
+<ul class="simple">
+<li><p>Add REST endpoints for initial dashboard data</p></li>
+<li><p>Implement API endpoints for real-time updates</p></li>
+</ul>
+</li>
+<li><p><strong>Metrics Collection Enhancement</strong></p>
+<ul class="simple">
+<li><p>Extend existing Prometheus metrics</p></li>
+<li><p>Add new metrics specific to dashboard needs</p></li>
+</ul>
+</li>
+<li><p><strong>Data Aggregation Services</strong></p>
+<ul class="simple">
+<li><p>Create services to aggregate data for dashboard display</p></li>
+<li><p>Implement caching for frequently accessed data</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="phase-2-frontend-implementation-completed">
+<h3>Phase 2: Frontend Implementation (COMPLETED)<a class="headerlink" href="#phase-2-frontend-implementation-completed" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Dashboard UI Development</strong></p>
+<ul class="simple">
+<li><p>Create simple HTML dashboard with Bootstrap</p></li>
+<li><p>Implement responsive layout with Bootstrap</p></li>
+<li><p>Add navigation and basic components</p></li>
+</ul>
+</li>
+<li><p><strong>Real-time Data Integration</strong></p>
+<ul class="simple">
+<li><p>Implement periodic AJAX calls for real-time updates</p></li>
+<li><p>Connect to backend REST API endpoints</p></li>
+<li><p>Handle connection errors and reconnections</p></li>
+</ul>
+</li>
+<li><p><strong>Data Visualization</strong></p>
+<ul class="simple">
+<li><p>Implement charts using Chart.js</p></li>
+<li><p>Create components for key metrics display</p></li>
+<li><p>Add filtering and time range selection</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="phase-3-integration-and-testing-in-progress">
+<h3>Phase 3: Integration and Testing (IN PROGRESS)<a class="headerlink" href="#phase-3-integration-and-testing-in-progress" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Backend-Frontend Integration</strong></p>
+<ul class="simple">
+<li><p>Serve frontend assets through FastAPI StaticFiles</p></li>
+<li><p>Implement CORS for development</p></li>
+<li><p>Test real-time data flow</p></li>
+</ul>
+</li>
+<li><p><strong>Performance Optimization</strong></p>
+<ul class="simple">
+<li><p>Implement connection pooling</p></li>
+<li><p>Add caching mechanisms</p></li>
+<li><p>Optimize data serialization</p></li>
+</ul>
+</li>
+<li><p><strong>Testing and Validation</strong></p>
+<ul class="simple">
+<li><p>Unit tests for dashboard endpoints</p></li>
+<li><p>Integration tests for real-time features</p></li>
+<li><p>User acceptance testing</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="key-dashboard-features-implemented">
+<h2>Key Dashboard Features (IMPLEMENTED)<a class="headerlink" href="#key-dashboard-features-implemented" title="Link to this heading"></a></h2>
+<section id="system-overview">
+<h3>1. System Overview<a class="headerlink" href="#system-overview" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Current system status (healthy/degraded)</p></li>
+<li><p>Total documents processed</p></li>
+<li><p>Active data sources</p></li>
+<li><p>Processing queue depth</p></li>
+</ul>
+</section>
+<section id="real-time-metrics">
+<h3>2. Real-time Metrics<a class="headerlink" href="#real-time-metrics" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Document ingestion rate (documents/minute)</p></li>
+<li><p>Validation success rate</p></li>
+<li><p>API response times</p></li>
+<li><p>Error rates by component</p></li>
+</ul>
+</section>
+<section id="data-source-monitoring">
+<h3>3. Data Source Monitoring<a class="headerlink" href="#data-source-monitoring" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Status of each data source</p></li>
+<li><p>Last successful fetch time</p></li>
+<li><p>Documents fetched per source</p></li>
+<li><p>Error counts per source</p></li>
+</ul>
+</section>
+<section id="processing-pipeline">
+<h3>4. Processing Pipeline<a class="headerlink" href="#processing-pipeline" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Current stage of document processing</p></li>
+<li><p>Bottlenecks identification</p></li>
+<li><p>Processing time per stage</p></li>
+<li><p>Failed documents queue</p></li>
+</ul>
+</section>
+<section id="alerts-and-notifications">
+<h3>5. Alerts and Notifications<a class="headerlink" href="#alerts-and-notifications" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Threshold-based alerts</p></li>
+<li><p>Error notifications</p></li>
+<li><p>Performance degradation warnings</p></li>
+</ul>
+</section>
+</section>
+<section id="data-engineering-considerations">
+<h2>Data Engineering Considerations<a class="headerlink" href="#data-engineering-considerations" title="Link to this heading"></a></h2>
+<section id="real-time-data-streaming-architecture">
+<h3>1. Real-time Data Streaming Architecture<a class="headerlink" href="#real-time-data-streaming-architecture" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Data Source → Connector → Processing Pipeline → Database
+                                      ↓
+                                Metrics Collector
+                                      ↓
+                              REST API Endpoint
+                                      ↓
+                                Dashboard UI
+</pre></div>
+</div>
+</section>
+<section id="metrics-collection">
+<h3>2. Metrics Collection<a class="headerlink" href="#metrics-collection" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Counter</strong>: Total documents processed, errors</p></li>
+<li><p><strong>Gauge</strong>: Active connections, queue depth</p></li>
+<li><p><strong>Histogram</strong>: Processing times, API response times</p></li>
+<li><p><strong>Summary</strong>: Quantiles for performance metrics</p></li>
+</ul>
+</section>
+<section id="data-aggregation">
+<h3>3. Data Aggregation<a class="headerlink" href="#data-aggregation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Real-time aggregation for current metrics</p></li>
+<li><p>Periodic aggregation for historical data</p></li>
+<li><p>Caching frequently accessed aggregated data</p></li>
+</ul>
+</section>
+</section>
+<section id="implementation-timeline">
+<h2>Implementation Timeline<a class="headerlink" href="#implementation-timeline" title="Link to this heading"></a></h2>
+<section id="week-1-backend-foundation-completed">
+<h3>Week 1: Backend Foundation (COMPLETED)<a class="headerlink" href="#week-1-backend-foundation-completed" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Extend API with dashboard endpoints</p></li>
+<li><p>Enhance metrics collection</p></li>
+<li><p>Implement data aggregation services</p></li>
+</ul>
+</section>
+<section id="week-2-frontend-development-completed">
+<h3>Week 2: Frontend Development (COMPLETED)<a class="headerlink" href="#week-2-frontend-development-completed" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Create HTML dashboard application</p></li>
+<li><p>Implement real-time data integration</p></li>
+<li><p>Develop data visualization components</p></li>
+</ul>
+</section>
+<section id="week-3-integration-and-testing-currently-in-progress">
+<h3>Week 3: Integration and Testing (CURRENTLY IN PROGRESS)<a class="headerlink" href="#week-3-integration-and-testing-currently-in-progress" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Integrate backend and frontend</p></li>
+<li><p>Optimize performance</p></li>
+<li><p>Conduct thorough testing</p></li>
+</ul>
+</section>
+<section id="week-4-deployment-and-documentation-upcoming">
+<h3>Week 4: Deployment and Documentation (UPCOMING)<a class="headerlink" href="#week-4-deployment-and-documentation-upcoming" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Deploy to staging environment</p></li>
+<li><p>Create user documentation</p></li>
+<li><p>Prepare for production deployment</p></li>
+</ul>
+</section>
+</section>
+<section id="success-criteria">
+<h2>Success Criteria<a class="headerlink" href="#success-criteria" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Functionality</strong>: Dashboard displays real-time data accurately</p></li>
+<li><p><strong>Performance</strong>: Updates with minimal latency (&lt;1 second)</p></li>
+<li><p><strong>Reliability</strong>: 99.9% uptime for dashboard services</p></li>
+<li><p><strong>Usability</strong>: Intuitive interface for monitoring system health</p></li>
+<li><p><strong>Scalability</strong>: Supports multiple concurrent users</p></li>
+</ol>
+</section>
+<section id="what-has-been-implemented">
+<h2>What Has Been Implemented<a class="headerlink" href="#what-has-been-implemented" title="Link to this heading"></a></h2>
+<p>We have successfully implemented a working dashboard with the following features:</p>
+<section id="dashboard-home-page">
+<h3>1. Dashboard Home Page<a class="headerlink" href="#dashboard-home-page" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Simple HTML page with Bootstrap styling</p></li>
+<li><p>Responsive layout with metric cards</p></li>
+<li><p>Real-time updating charts using Chart.js</p></li>
+</ul>
+</section>
+<section id="api-endpoints">
+<h3>2. API Endpoints<a class="headerlink" href="#api-endpoints" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/dashboard/</span></code> - Serves the dashboard HTML page</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/dashboard/api/metrics</span></code> - Returns system metrics</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/dashboard/api/activity</span></code> - Returns recent activity</p></li>
+</ul>
+</section>
+<section id="real-time-updates">
+<h3>3. Real-time Updates<a class="headerlink" href="#real-time-updates" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>JavaScript code that fetches data from backend every 5 seconds</p></li>
+<li><p>Dynamic updating of charts and metrics</p></li>
+<li><p>Real-time activity log</p></li>
+</ul>
+</section>
+<section id="data-visualization">
+<h3>4. Data Visualization<a class="headerlink" href="#data-visualization" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Line chart for processing queue depth</p></li>
+<li><p>Doughnut chart for document sources distribution</p></li>
+<li><p>Metric cards for key system indicators</p></li>
+</ul>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Enhance Real-time Updates</strong>: Implement WebSocket or Server-Sent Events for true real-time updates</p></li>
+<li><p><strong>Connect to Real Data</strong>: Replace simulated data with actual metrics from the system</p></li>
+<li><p><strong>Add Authentication</strong>: Implement authentication for dashboard access</p></li>
+<li><p><strong>Improve UI/UX</strong>: Enhance the dashboard with more advanced UI components</p></li>
+<li><p><strong>Add More Metrics</strong>: Include additional metrics for comprehensive system monitoring</p></li>
+<li><p><strong>Implement Alerts</strong>: Add notification system for critical events</p></li>
+<li><p><strong>Historical Data Views</strong>: Add ability to view historical trends and patterns</p></li>
+<li><p><strong>Mobile Responsiveness</strong>: Further optimize for mobile devices</p></li>
+</ol>
+</section>
+<section id="current-status">
+<h2>Current Status<a class="headerlink" href="#current-status" title="Link to this heading"></a></h2>
+<p>The dashboard is currently functional with:</p>
+<ul class="simple">
+<li><p>Basic HTML/CSS/JavaScript frontend</p></li>
+<li><p>FastAPI backend serving the dashboard</p></li>
+<li><p>Simulated real-time data updates</p></li>
+<li><p>Basic charts and metrics display</p></li>
+<li><p>API endpoints for data access</p></li>
+<li><p>Passing unit tests</p></li>
+</ul>
+<p>This provides a solid foundation that can be enhanced with real data integration and more advanced features in subsequent development phases.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="postgresql_setup.html" class="btn btn-neutral float-left" title="Dockerized PostgreSQL Setup Summary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="onboarding.html" class="btn btn-neutral float-right" title="Internal Onboarding Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Tobias Hoffmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deployment Guide &mdash; Thai Traditional Medicine RAG Bot 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dockerized PostgreSQL Setup Summary" href="postgresql_setup.html" />
+    <link rel="prev" title="Project Status Summary" href="project_status.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Thai Traditional Medicine RAG Bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_overview.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="current_state.html">Current State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future_steps.html">Future Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cto_assessment.html">CTO Assessment Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_status.html">Project Status Summary</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Deployment Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#local-development-deployment">Local Development Deployment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-dependencies">1. Install Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-up-environment-variables">2. Set Up Environment Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-database-services">3. Start Database Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialize-database-tables">4. Initialize Database Tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-database-migrations">5. Run Database Migrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-thai-language-resources">6. Install Thai Language Resources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-the-application">7. Run the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-deployment">Docker Deployment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#build-docker-images">1. Build Docker Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-services">2. Start Services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-up-database">3. Set Up Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">4. Install Thai Language Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#production-deployment">Production Deployment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#environment-configuration">1. Environment Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-configuration">2. Database Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-keys">3. API Keys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reverse-proxy">4. Reverse Proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#monitoring-and-logging">5. Monitoring and Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#health-checks">Health Checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scaling">Scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#backup-and-recovery">Backup and Recovery</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_plan.html">Dashboard Implementation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding.html">Internal Onboarding Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding_summary.html">Internal Onboarding Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html">1. Understanding APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-styles">2. API Styles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-principles">3. API Design Principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-their-influence">4. Protocols &amp; Their Influence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-process">5. API Design Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#restful-api-design">6. RESTful API Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#graphql-api-design">7. GraphQL API Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#authentication-authorization">8. Authentication &amp; Authorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#security-best-practices">9. Security Best Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-transport-layer">10. Protocols &amp; Transport Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#summary-next-steps">11. Summary &amp; Next Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_practices.html#additional-resources">12. Additional Resources</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Thai Traditional Medicine RAG Bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Deployment Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/deployment.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="deployment-guide">
+<h1>Deployment Guide<a class="headerlink" href="#deployment-guide" title="Link to this heading"></a></h1>
+<p>This guide explains how to deploy the Thai Traditional Medicine RAG Bot application in different environments.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>Before deploying the application, ensure you have the following:</p>
+<ol class="arabic simple">
+<li><p>Python 3.11 or higher</p></li>
+<li><p>UV package manager</p></li>
+<li><p>Docker (for containerized deployment)</p></li>
+<li><p>Access to a PostgreSQL database with pgvector extension</p></li>
+<li><p>API keys for data sources (e.g., PubMed)</p></li>
+</ol>
+</section>
+<section id="local-development-deployment">
+<h2>Local Development Deployment<a class="headerlink" href="#local-development-deployment" title="Link to this heading"></a></h2>
+<section id="install-dependencies">
+<h3>1. Install Dependencies<a class="headerlink" href="#install-dependencies" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>&lt;repository-url&gt;
+<span class="nb">cd</span><span class="w"> </span>thai-traditional-medicine-rag-bot
+
+<span class="c1"># Install dependencies using UV</span>
+make<span class="w"> </span>install
+</pre></div>
+</div>
+</section>
+<section id="set-up-environment-variables">
+<h3>2. Set Up Environment Variables<a class="headerlink" href="#set-up-environment-variables" title="Link to this heading"></a></h3>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">.env</span></code> file based on <code class="docutils literal notranslate"><span class="pre">.env.example</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>.env.example<span class="w"> </span>.env
+<span class="c1"># Edit .env to add your API keys and database credentials</span>
+</pre></div>
+</div>
+</section>
+<section id="start-database-services">
+<h3>3. Start Database Services<a class="headerlink" href="#start-database-services" title="Link to this heading"></a></h3>
+<p>The application uses Docker Compose to manage database services:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start the database container</span>
+docker-compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>db
+
+<span class="c1"># Wait for the database to be ready (about 15-30 seconds)</span>
+</pre></div>
+</div>
+</section>
+<section id="initialize-database-tables">
+<h3>4. Initialize Database Tables<a class="headerlink" href="#initialize-database-tables" title="Link to this heading"></a></h3>
+<p>Once the database is running, initialize the tables:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy the initialization script to the container</span>
+docker<span class="w"> </span>cp<span class="w"> </span>scripts/database/init.sql<span class="w"> </span>thai-traditional-medicine-rag-bot-db-1:/tmp/init.sql
+
+<span class="c1"># Run the initialization script</span>
+docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>db<span class="w"> </span>psql<span class="w"> </span>-U<span class="w"> </span>user<span class="w"> </span>-d<span class="w"> </span>thai_medicine_db<span class="w"> </span>-f<span class="w"> </span>/tmp/init.sql
+</pre></div>
+</div>
+</section>
+<section id="run-database-migrations">
+<h3>5. Run Database Migrations<a class="headerlink" href="#run-database-migrations" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create database tables</span>
+make<span class="w"> </span>db-setup
+
+<span class="c1"># Or run the migration scripts directly</span>
+python<span class="w"> </span>scripts/database/migrate.py<span class="w"> </span>create
+python<span class="w"> </span>scripts/database/migrate.py<span class="w"> </span>seed
+</pre></div>
+</div>
+</section>
+<section id="install-thai-language-resources">
+<h3>6. Install Thai Language Resources<a class="headerlink" href="#install-thai-language-resources" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install Thai language processing resources</span>
+make<span class="w"> </span>thai-setup
+</pre></div>
+</div>
+</section>
+<section id="run-the-application">
+<h3>7. Run the Application<a class="headerlink" href="#run-the-application" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start the FastAPI server</span>
+make<span class="w"> </span>api
+</pre></div>
+</div>
+<p>The API will be available at <code class="docutils literal notranslate"><span class="pre">http://localhost:8000</span></code>.</p>
+</section>
+</section>
+<section id="docker-deployment">
+<h2>Docker Deployment<a class="headerlink" href="#docker-deployment" title="Link to this heading"></a></h2>
+<section id="build-docker-images">
+<h3>1. Build Docker Images<a class="headerlink" href="#build-docker-images" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build the Docker images</span>
+make<span class="w"> </span>docker-build
+</pre></div>
+</div>
+</section>
+<section id="start-services">
+<h3>2. Start Services<a class="headerlink" href="#start-services" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start all services using Docker Compose</span>
+make<span class="w"> </span>docker-up
+</pre></div>
+</div>
+</section>
+<section id="set-up-database">
+<h3>3. Set Up Database<a class="headerlink" href="#set-up-database" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy the initialization script to the container</span>
+docker<span class="w"> </span>cp<span class="w"> </span>scripts/database/init.sql<span class="w"> </span>thai-traditional-medicine-rag-bot-db-1:/tmp/init.sql
+
+<span class="c1"># Run the initialization script</span>
+docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>db<span class="w"> </span>psql<span class="w"> </span>-U<span class="w"> </span>user<span class="w"> </span>-d<span class="w"> </span>thai_medicine_db<span class="w"> </span>-f<span class="w"> </span>/tmp/init.sql
+
+<span class="c1"># Set up the database tables</span>
+make<span class="w"> </span>db-setup
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h3>4. Install Thai Language Resources<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install Thai language processing resources</span>
+make<span class="w"> </span>thai-setup
+</pre></div>
+</div>
+<p>The application will be available at <code class="docutils literal notranslate"><span class="pre">http://localhost:8000</span></code>.</p>
+</section>
+</section>
+<section id="production-deployment">
+<h2>Production Deployment<a class="headerlink" href="#production-deployment" title="Link to this heading"></a></h2>
+<section id="environment-configuration">
+<h3>1. Environment Configuration<a class="headerlink" href="#environment-configuration" title="Link to this heading"></a></h3>
+<p>For production deployment, you should:</p>
+<ol class="arabic simple">
+<li><p>Set up a production database with proper security measures</p></li>
+<li><p>Configure SSL/TLS for secure communication</p></li>
+<li><p>Set up proper logging and monitoring</p></li>
+<li><p>Configure backup and disaster recovery procedures</p></li>
+<li><p>Set up authentication and authorization (when implemented)</p></li>
+</ol>
+</section>
+<section id="database-configuration">
+<h3>2. Database Configuration<a class="headerlink" href="#database-configuration" title="Link to this heading"></a></h3>
+<p>In production, use a managed PostgreSQL database with pgvector extension:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set database connection string in .env</span>
+<span class="nv">DATABASE_URL</span><span class="o">=</span>postgresql://user:password@host:port/database
+</pre></div>
+</div>
+</section>
+<section id="api-keys">
+<h3>3. API Keys<a class="headerlink" href="#api-keys" title="Link to this heading"></a></h3>
+<p>Set up API keys for data sources in environment variables:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set API keys in .env</span>
+<span class="nv">PUBMED_API_KEY</span><span class="o">=</span>your_pubmed_api_key
+</pre></div>
+</div>
+</section>
+<section id="reverse-proxy">
+<h3>4. Reverse Proxy<a class="headerlink" href="#reverse-proxy" title="Link to this heading"></a></h3>
+<p>Use a reverse proxy like Nginx for:</p>
+<ol class="arabic simple">
+<li><p>SSL termination</p></li>
+<li><p>Load balancing</p></li>
+<li><p>Rate limiting</p></li>
+<li><p>Caching</p></li>
+</ol>
+</section>
+<section id="monitoring-and-logging">
+<h3>5. Monitoring and Logging<a class="headerlink" href="#monitoring-and-logging" title="Link to this heading"></a></h3>
+<p>Set up monitoring with:</p>
+<ol class="arabic simple">
+<li><p>Prometheus for metrics collection</p></li>
+<li><p>Grafana for dashboard visualization</p></li>
+<li><p>ELK stack for log aggregation (when implemented)</p></li>
+</ol>
+</section>
+</section>
+<section id="health-checks">
+<h2>Health Checks<a class="headerlink" href="#health-checks" title="Link to this heading"></a></h2>
+<p>The application provides health check endpoints:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/health</span></code> - Basic health check</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/metrics</span></code> - Prometheus metrics</p></li>
+</ul>
+</section>
+<section id="scaling">
+<h2>Scaling<a class="headerlink" href="#scaling" title="Link to this heading"></a></h2>
+<p>For high availability and scaling:</p>
+<ol class="arabic simple">
+<li><p>Run multiple instances behind a load balancer</p></li>
+<li><p>Use a managed database service</p></li>
+<li><p>Implement caching with Redis</p></li>
+<li><p>Use a CDN for static assets (documentation)</p></li>
+</ol>
+</section>
+<section id="backup-and-recovery">
+<h2>Backup and Recovery<a class="headerlink" href="#backup-and-recovery" title="Link to this heading"></a></h2>
+<p>Implement regular backups for:</p>
+<ol class="arabic simple">
+<li><p>Database</p></li>
+<li><p>Configuration files</p></li>
+<li><p>Application code</p></li>
+</ol>
+<p>Test recovery procedures regularly.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="project_status.html" class="btn btn-neutral float-left" title="Project Status Summary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="postgresql_setup.html" class="btn btn-neutral float-right" title="Dockerized PostgreSQL Setup Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Tobias Hoffmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
