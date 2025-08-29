@@ -2,11 +2,20 @@ from src.connectors.pubmed import PubMedConnector
 from src.models.source import Source
 from src.models.document import Document
 from src.models.pubmed import PubmedArticle
+from src.utils.rate_limiting import configure_rate_limiting
+from src.database.service import db_service
 import logging
 from typing import List
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
+
+# Configure rate limiting for PubMed API
+# PubMed recommends no more than 3 requests per second
+# We'll set a conservative limit of 2 requests per second with a burst capacity of 5
+configure_rate_limiting("pubmed_search", 2.0, 5.0)
+configure_rate_limiting("pubmed_fetch", 2.0, 5.0)
+
 
 class PubMedPipeline:
     """
@@ -42,6 +51,9 @@ class PubMedPipeline:
         
         # Step 3: Convert to Document objects
         documents = self._convert_to_documents(articles)
+        
+        # Step 4: Save to database
+        self._save_documents_to_database(documents)
         
         logger.info(f"PubMed pipeline completed. Processed {len(documents)} documents.")
         return documents
@@ -84,6 +96,26 @@ class PubMedPipeline:
             documents.append(doc)
             
         return documents
+        
+    def _save_documents_to_database(self, documents: List[Document]) -> None:
+        """
+        Save documents to the database.
+        
+        Args:
+            documents: List of Document objects to save
+        """
+        logger.info(f"Saving {len(documents)} documents to database")
+        
+        for document in documents:
+            try:
+                # Save document to database
+                document_id = db_service.save_document(document, self.source.id)
+                if document_id:
+                    logger.info(f"Saved document {document.external_id} with ID {document_id}")
+                else:
+                    logger.error(f"Failed to save document {document.external_id}")
+            except Exception as e:
+                logger.error(f"Error saving document {document.external_id}: {e}")
 
 if __name__ == '__main__':
     pipeline = PubMedPipeline

@@ -17,6 +17,8 @@ So far, we've successfully completed the following:
 9. **Structured Data Parsing**: Enhanced the PubMed connector to parse XML data into structured information using Pydantic models
 10. **Sophisticated Search Queries**: Implemented advanced search query building capabilities for Thai Traditional Medicine research
 11. **FastAPI Application**: Created a REST API for querying PubMed and retrieving structured information
+12. **Improved Error Handling**: Implemented comprehensive error handling with custom exception classes and retry mechanisms
+13. **Rate Limiting**: Implemented rate limiting to respect PubMed's API guidelines
 
 ## What's Working
 
@@ -26,7 +28,7 @@ Our implementation is successfully:
 2. **Searching for Articles**: We can search for articles using keywords
 3. **Fetching Article Details**: We can retrieve detailed information for specific articles
 4. **Processing Data**: Our pipeline can process the fetched data into our internal Document format
-5. **Error Handling**: Our code gracefully handles network errors and API issues
+5. **Error Handling**: Our code gracefully handles network errors and API issues with comprehensive error handling and retry mechanisms
 6. **Testing**: All our unit and integration tests are passing
 7. **Structured Data Parsing**: Our connector now parses XML into structured Pydantic models with proper validation
 8. **Advanced Search Queries**: We can construct complex, sophisticated search queries tailored for Thai Traditional Medicine research
@@ -34,6 +36,7 @@ Our implementation is successfully:
    - Basic PubMed searches
    - Specialized Thai Traditional Medicine searches
    - Retrieving detailed article information
+10. **Rate Limiting**: Our application respects API rate limits and implements appropriate delays between requests
 
 ## Demonstration
 
@@ -77,6 +80,7 @@ This shows that our pipeline successfully:
    - Date range filtering
    - Specialized query functions for Thai Traditional Medicine
 6. Provides a REST API for accessing this functionality
+7. Respects API rate limits with appropriate delays between requests
 
 ## Code Quality
 
@@ -84,12 +88,13 @@ We've maintained good code quality practices:
 
 1. **Modularity**: Code is organized into separate modules with clear responsibilities
 2. **Documentation**: Classes and methods are documented with docstrings
-3. **Error Handling**: Robust error handling throughout the codebase
+3. **Error Handling**: Robust error handling throughout the codebase with custom exceptions and retry mechanisms
 4. **Logging**: Comprehensive logging for debugging and monitoring
 5. **Testing**: Comprehensive test coverage
 6. **Type Safety**: Using Pydantic models for type-safe data parsing and validation
 7. **Fluent Interface**: Using builder pattern for query construction
 8. **API Design**: Following REST principles for our FastAPI application
+9. **Rate Limiting**: Implementing rate limiting to respect API guidelines
 
 ## Limitations
 
@@ -98,7 +103,7 @@ Our current implementation has some limitations:
 1. **Limited Sources**: We've only implemented PubMed integration so far
 2. **No Database**: We're not yet storing data in a database
 3. **No Validation**: We don't yet have data validation pipelines
-4. **No Advanced Features**: Features like rate limiting, caching, or advanced search are not yet implemented
+4. **No Advanced Features**: Features like caching or advanced search are not yet implemented
 
 ## Next Steps
 
@@ -107,5 +112,4 @@ In the next phase of development, we plan to:
 1. Implement connectors for other data sources
 2. Set up database integration for storing fetched documents
 3. Implement data validation pipelines
-4. Add more sophisticated error handling and logging
-5. Implement rate limiting to respect API guidelines
+4. Implement caching mechanisms for better performance

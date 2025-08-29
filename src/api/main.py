@@ -5,7 +5,7 @@ This application provides a simple REST API for searching PubMed articles
 and retrieving structured data about Thai Traditional Medicine research.
 """
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Depends
 from typing import List, Optional
 from datetime import date
 from pydantic import BaseModel
@@ -19,12 +19,18 @@ from src.utils.pubmed_query_builder import (
     ArticleType,
     build_thai_traditional_medicine_query
 )
+from src.utils.rate_limiting import configure_rate_limiting, acquire_rate_limit
 
 app = FastAPI(
     title="Thai Traditional Medicine PubMed API",
     description="API for querying PubMed for Thai Traditional Medicine research articles",
     version="0.1.0"
 )
+
+# Configure rate limiting for the API
+# Conservative limits to respect PubMed's API guidelines
+configure_rate_limiting("api_search", 1.0, 3.0)  # 1 request/sec, 3 burst
+configure_rate_limiting("api_fetch", 1.0, 3.0)   # 1 request/sec, 3 burst
 
 # Create a global source and connector for the application
 source = Source(
@@ -120,6 +126,10 @@ async def search_pubmed(
     """
     Search PubMed for articles based on the provided query and filters.
     """
+    # Rate limiting for API endpoint
+    if not acquire_rate_limit("api_search", 1.0, timeout=5.0):
+        raise HTTPException(status_code=429, detail="Rate limit exceeded. Please try again later.")
+    
     try:
         # Build the query
         if include_thai_terms or exclude_terms or article_types or (start_date and end_date):
@@ -188,6 +198,10 @@ async def search_thai_traditional_medicine(
     """
     Search PubMed specifically for Thai Traditional Medicine articles using a specialized query.
     """
+    # Rate limiting for API endpoint
+    if not acquire_rate_limit("api_search", 1.0, timeout=5.0):
+        raise HTTPException(status_code=429, detail="Rate limit exceeded. Please try again later.")
+    
     try:
         # Convert string article types to ArticleType enums
         article_type_enums = []
@@ -242,6 +256,10 @@ async def get_article(pmid: str):
     """
     Get detailed information about a specific PubMed article by PMID.
     """
+    # Rate limiting for API endpoint
+    if not acquire_rate_limit("api_fetch", 1.0, timeout=5.0):
+        raise HTTPException(status_code=429, detail="Rate limit exceeded. Please try again later.")
+    
     try:
         articles = connector.fetch_article_details([pmid])
         

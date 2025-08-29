@@ -13,10 +13,16 @@ from src.utils.pubmed_query_builder import (
     ArticleType,
     build_thai_traditional_medicine_query
 )
+from src.database.config import init_database
 
 
 def main():
     """Main function to demonstrate the PubMed pipeline"""
+    # Initialize the database
+    print("Initializing database...")
+    init_database()
+    print("Database initialized successfully!")
+    
     # Create a source object for PubMed
     source = Source(
         id=1,

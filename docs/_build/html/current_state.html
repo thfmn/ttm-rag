@@ -102,6 +102,8 @@
 <li><p><strong>Structured Data Parsing</strong>: Enhanced the PubMed connector to parse XML data into structured information using Pydantic models</p></li>
 <li><p><strong>Sophisticated Search Queries</strong>: Implemented advanced search query building capabilities for Thai Traditional Medicine research</p></li>
 <li><p><strong>FastAPI Application</strong>: Created a REST API for querying PubMed and retrieving structured information</p></li>
+<li><p><strong>Improved Error Handling</strong>: Implemented comprehensive error handling with custom exception classes and retry mechanisms</p></li>
+<li><p><strong>Rate Limiting</strong>: Implemented rate limiting to respect PubMed’s API guidelines</p></li>
 </ol>
 </section>
 <section id="whats-working">
@@ -112,7 +114,7 @@
 <li><p><strong>Searching for Articles</strong>: We can search for articles using keywords</p></li>
 <li><p><strong>Fetching Article Details</strong>: We can retrieve detailed information for specific articles</p></li>
 <li><p><strong>Processing Data</strong>: Our pipeline can process the fetched data into our internal Document format</p></li>
-<li><p><strong>Error Handling</strong>: Our code gracefully handles network errors and API issues</p></li>
+<li><p><strong>Error Handling</strong>: Our code gracefully handles network errors and API issues with comprehensive error handling and retry mechanisms</p></li>
 <li><p><strong>Testing</strong>: All our unit and integration tests are passing</p></li>
 <li><p><strong>Structured Data Parsing</strong>: Our connector now parses XML into structured Pydantic models with proper validation</p></li>
 <li><p><strong>Advanced Search Queries</strong>: We can construct complex, sophisticated search queries tailored for Thai Traditional Medicine research</p></li>
@@ -123,6 +125,7 @@
 <li><p>Retrieving detailed article information</p></li>
 </ul>
 </li>
+<li><p><strong>Rate Limiting</strong>: Our application respects API rate limits and implements appropriate delays between requests</p></li>
 </ol>
 </section>
 <section id="demonstration">
@@ -166,6 +169,7 @@ GET /article/12345678
 </ul>
 </li>
 <li><p>Provides a REST API for accessing this functionality</p></li>
+<li><p>Respects API rate limits with appropriate delays between requests</p></li>
 </ol>
 </section>
 <section id="code-quality">
@@ -174,12 +178,13 @@ GET /article/12345678
 <ol class="arabic simple">
 <li><p><strong>Modularity</strong>: Code is organized into separate modules with clear responsibilities</p></li>
 <li><p><strong>Documentation</strong>: Classes and methods are documented with docstrings</p></li>
-<li><p><strong>Error Handling</strong>: Robust error handling throughout the codebase</p></li>
+<li><p><strong>Error Handling</strong>: Robust error handling throughout the codebase with custom exceptions and retry mechanisms</p></li>
 <li><p><strong>Logging</strong>: Comprehensive logging for debugging and monitoring</p></li>
 <li><p><strong>Testing</strong>: Comprehensive test coverage</p></li>
 <li><p><strong>Type Safety</strong>: Using Pydantic models for type-safe data parsing and validation</p></li>
 <li><p><strong>Fluent Interface</strong>: Using builder pattern for query construction</p></li>
 <li><p><strong>API Design</strong>: Following REST principles for our FastAPI application</p></li>
+<li><p><strong>Rate Limiting</strong>: Implementing rate limiting to respect API guidelines</p></li>
 </ol>
 </section>
 <section id="limitations">
@@ -189,7 +194,7 @@ GET /article/12345678
 <li><p><strong>Limited Sources</strong>: We’ve only implemented PubMed integration so far</p></li>
 <li><p><strong>No Database</strong>: We’re not yet storing data in a database</p></li>
 <li><p><strong>No Validation</strong>: We don’t yet have data validation pipelines</p></li>
-<li><p><strong>No Advanced Features</strong>: Features like rate limiting, caching, or advanced search are not yet implemented</p></li>
+<li><p><strong>No Advanced Features</strong>: Features like caching or advanced search are not yet implemented</p></li>
 </ol>
 </section>
 <section id="next-steps">
@@ -199,8 +204,7 @@ GET /article/12345678
 <li><p>Implement connectors for other data sources</p></li>
 <li><p>Set up database integration for storing fetched documents</p></li>
 <li><p>Implement data validation pipelines</p></li>
-<li><p>Add more sophisticated error handling and logging</p></li>
-<li><p>Implement rate limiting to respect API guidelines</p></li>
+<li><p>Implement caching mechanisms for better performance</p></li>
 </ol>
 </section>
 </section>

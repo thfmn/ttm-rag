@@ -10,6 +10,10 @@ help:
 	@echo "  format      - Format code"
 	@echo "  clean       - Clean temporary files"
 	@echo "  db-setup    - Setup database"
+	@echo "  db-create   - Create database tables"
+	@echo "  db-drop     - Drop database tables"
+	@echo "  db-seed     - Seed database with initial data"
+	@echo "  db-reset    - Reset database (drop and recreate)"
 	@echo "  docker-up   - Start docker services"
 	@echo "  api         - Start FastAPI server"
 	@echo "  docs        - Build documentation"
@@ -72,20 +76,24 @@ format:
 # Database
 db-setup:
 	@echo "🗄️ Setting up database..."
-	alembic upgrade head
+	python scripts/database/migrate.py create
+	python scripts/database/migrate.py seed
 
-db-migrate:
-	@echo "📝 Creating new migration..."
-	alembic revision --autogenerate -m "$(msg)"
+db-create:
+	@echo "🗄️ Creating database tables..."
+	python scripts/database/migrate.py create
 
-db-upgrade:
-	@echo "⬆️ Upgrading database..."
-	alembic upgrade head
+db-drop:
+	@echo "💣 Dropping database tables..."
+	python scripts/database/migrate.py drop
+
+db-seed:
+	@echo "🌱 Seeding database with initial data..."
+	python scripts/database/migrate.py seed
 
 db-reset:
 	@echo "🔄 Resetting database..."
-	alembic downgrade base
-	alembic upgrade head
+	python scripts/database/migrate.py reset
 
 # Docker
 docker-build:

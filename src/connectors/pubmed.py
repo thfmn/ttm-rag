@@ -12,6 +12,7 @@ from src.utils.exceptions import (
     create_pubmed_error_from_response
 )
 from src.utils.retry import retry, RetryConfig, should_retry_pubmed_error
+from src.utils.rate_limiting import acquire_rate_limit
 import logging
 
 logger = logging.getLogger(__name__)
@@ -57,6 +58,11 @@ class PubMedConnector:
             PubMedNetworkError: For network-related errors
             PubMedRateLimitError: For rate limiting errors
         """
+        # Rate limiting - acquire token for this API call
+        if not acquire_rate_limit("pubmed_search", 1.0):
+            logger.warning("Rate limit exceeded for PubMed search API call")
+            raise PubMedRateLimitError("Rate limit exceeded for PubMed search API call")
+        
         # If query is a PubMedQueryBuilder, build the query string
         if isinstance(query, PubMedQueryBuilder):
             query_str = query.build()
@@ -146,6 +152,11 @@ class PubMedConnector:
             PubMedRateLimitError: For rate limiting errors
             PubMedParseError: For XML parsing errors
         """
+        # Rate limiting - acquire token for this API call
+        if not acquire_rate_limit("pubmed_fetch", 1.0):
+            logger.warning("Rate limit exceeded for PubMed fetch API call")
+            raise PubMedRateLimitError("Rate limit exceeded for PubMed fetch API call")
+        
         if not pmids:
             return []
             
@@ -175,9 +186,6 @@ class PubMedConnector:
                 articles = parse_pubmed_xml(response.text)
                 logger.info(f"Fetched and parsed details for {len(articles)} articles")
                 return articles
-            except PubMedParseError:
-                # Re-raise PubMedParseError as is
-                raise
             except Exception as e:
                 logger.error(f"Error parsing XML response: {e}")
                 raise PubMedParseError(
