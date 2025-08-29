@@ -19,6 +19,7 @@ So far, we've successfully completed the following:
 11. **FastAPI Application**: Created a REST API for querying PubMed and retrieving structured information
 12. **Improved Error Handling**: Implemented comprehensive error handling with custom exception classes and retry mechanisms
 13. **Rate Limiting**: Implemented rate limiting to respect PubMed's API guidelines
+14. **Database Integration**: Set up database integration for storing fetched documents
 
 ## What's Working
 
@@ -37,6 +38,7 @@ Our implementation is successfully:
    - Specialized Thai Traditional Medicine searches
    - Retrieving detailed article information
 10. **Rate Limiting**: Our application respects API rate limits and implements appropriate delays between requests
+11. **Database Integration**: Our application can now store fetched documents in a database
 
 ## Demonstration
 
@@ -73,14 +75,15 @@ This shows that our pipeline successfully:
 2. Fetches the first 3 articles
 3. Parses the XML data into structured Pydantic models
 4. Processes them into Document objects with rich metadata
-5. Demonstrates advanced query building capabilities including:
+5. Saves them to the database
+6. Demonstrates advanced query building capabilities including:
    - Complex query construction with multiple terms
    - Exclusion of unwanted terms
    - Article type filtering
    - Date range filtering
    - Specialized query functions for Thai Traditional Medicine
-6. Provides a REST API for accessing this functionality
-7. Respects API rate limits with appropriate delays between requests
+7. Provides a REST API for accessing this functionality
+8. Respects API rate limits with appropriate delays between requests
 
 ## Code Quality
 
@@ -95,21 +98,21 @@ We've maintained good code quality practices:
 7. **Fluent Interface**: Using builder pattern for query construction
 8. **API Design**: Following REST principles for our FastAPI application
 9. **Rate Limiting**: Implementing rate limiting to respect API guidelines
+10. **Database Integration**: Using SQLAlchemy for database operations with proper connection pooling
 
 ## Limitations
 
 Our current implementation has some limitations:
 
 1. **Limited Sources**: We've only implemented PubMed integration so far
-2. **No Database**: We're not yet storing data in a database
-3. **No Validation**: We don't yet have data validation pipelines
-4. **No Advanced Features**: Features like caching or advanced search are not yet implemented
+2. **No Validation**: We don't yet have data validation pipelines
+3. **No Advanced Features**: Features like caching or advanced search are not yet implemented
 
 ## Next Steps
 
 In the next phase of development, we plan to:
 
 1. Implement connectors for other data sources
-2. Set up database integration for storing fetched documents
-3. Implement data validation pipelines
-4. Implement caching mechanisms for better performance
+2. Implement data validation pipelines
+3. Add more sophisticated error handling and logging
+4. Implement rate limiting to respect API guidelines
