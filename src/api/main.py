@@ -30,6 +30,8 @@ from src.api.audit import AuditLogger
 
 # Import dashboard router
 from src.dashboard.router import router as dashboard_router
+# Import RAG router
+from src.api.rag_router import router as rag_router
 
 app = FastAPI(
     title="Thai Traditional Medicine PubMed API",
@@ -74,6 +76,9 @@ connector = PubMedConnector(source)
 
 # Include dashboard router
 app.include_router(dashboard_router)
+
+# Include RAG router
+app.include_router(rag_router)
 
 # Serve static files (including the dashboard)
 static_dir = os.path.join(os.path.dirname(__file__), "..", "dashboard")
@@ -141,7 +146,8 @@ async def root():
             "thai_medicine_search": "/thai-medicine-search",
             "health": "/health",
             "metrics": "/metrics",
-            "dashboard": "/dashboard"
+            "dashboard": "/dashboard",
+            "rag": "/api/v1/rag"
         }
     }
 

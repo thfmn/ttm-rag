@@ -67,3 +67,34 @@ def sanitize_list(items: List[str]) -> List[str]:
         return items
     
     return [sanitize_text(item) for item in items]
+
+def sanitize_dict(data: dict) -> dict:
+    """
+    Sanitize a dictionary by cleaning all string values.
+    
+    Args:
+        data (dict): The dictionary to sanitize
+        
+    Returns:
+        dict: The sanitized dictionary
+    """
+    if not data:
+        return data
+    
+    sanitized = {}
+    for key, value in data.items():
+        if isinstance(value, str):
+            sanitized[key] = sanitize_text(value)
+        elif isinstance(value, list):
+            # Handle lists of strings
+            if all(isinstance(item, str) for item in value):
+                sanitized[key] = sanitize_list(value)
+            else:
+                sanitized[key] = value
+        elif isinstance(value, dict):
+            # Recursively sanitize nested dictionaries
+            sanitized[key] = sanitize_dict(value)
+        else:
+            sanitized[key] = value
+    
+    return sanitized

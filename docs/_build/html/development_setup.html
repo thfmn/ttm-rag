@@ -1,0 +1,676 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Development Environment Setup Guide &mdash; Thai Traditional Medicine RAG Bot 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RAG Implementation Plan" href="rag_implementation_plan.html" />
+    <link rel="prev" title="Dockerized PostgreSQL Setup Summary" href="postgresql_setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Thai Traditional Medicine RAG Bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_overview.html">Project Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="current_state.html">Current State</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future_steps.html">Future Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cto_assessment.html">CTO Assessment Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_status.html">Project Status Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Development Environment Setup Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start-setup">Quick Start Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manual-setup-process">Manual Setup Process</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-install-uv-package-manager">Step 1: Install UV Package Manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-create-virtual-environment">Step 2: Create Virtual Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-install-project-dependencies">Step 3: Install Project Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-set-up-pre-commit-hooks">Step 4: Set Up Pre-commit Hooks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-configuration">Environment Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-create-environment-file">Step 1: Create Environment File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-environment-variables-overview">Step 2: Environment Variables Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#database-setup">Database Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#option-1-sqlite-setup-recommended-for-development">Option 1: SQLite Setup (Recommended for Development)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-2-postgresql-setup-for-advanced-development">Option 2: PostgreSQL Setup (For Advanced Development)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-management-commands">Database Management Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#thai-language-resources-setup">Thai Language Resources Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-the-setup">Testing the Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-workflow">Development Workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#starting-the-development-server">Starting the Development Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-quality-checks">Code Quality Checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-specific-tests">Running Specific Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation-development">Documentation Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#docker-development-environment">Docker Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-development-tasks">Common Development Tasks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adding-new-dependencies">Adding New Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#database-migration">Database Migration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-generation">Code Generation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-issues-and-solutions">Common Issues and Solutions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-tips">Debugging Tips</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ide-and-editor-setup">IDE and Editor Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vs-code-recommended-extensions">VS Code Recommended Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pycharm-configuration">PyCharm Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#code-organization">Code Organization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#git-workflow">Git Workflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rag_implementation_plan.html">RAG Implementation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rag_kickoff_summary.html">RAG Implementation Kickoff Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_plan.html">Dashboard Implementation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding.html">Internal Onboarding Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="onboarding_summary.html">Internal Onboarding Summary</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Thai Traditional Medicine RAG Bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Development Environment Setup Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/development_setup.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="development-environment-setup-guide">
+<h1>Development Environment Setup Guide<a class="headerlink" href="#development-environment-setup-guide" title="Link to this heading"></a></h1>
+<p>This guide provides detailed instructions for setting up a development environment for the Thai Traditional Medicine RAG Bot project. Whether you’re a new team member or setting up the project on a new machine, this guide will walk you through the process step by step.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<p>Before beginning the setup process, ensure you have the following installed on your system:</p>
+<ol class="arabic simple">
+<li><p><strong>Python 3.11 or higher</strong> - The project uses modern Python features</p></li>
+<li><p><strong>Git</strong> - For version control and repository management</p></li>
+<li><p><strong>Docker</strong> (optional) - For containerized database services</p></li>
+<li><p><strong>curl</strong> - For downloading the UV package manager</p></li>
+</ol>
+</section>
+<section id="quick-start-setup">
+<h2>Quick Start Setup<a class="headerlink" href="#quick-start-setup" title="Link to this heading"></a></h2>
+<p>The fastest way to get started is to use the automated setup script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone the repository</span>
+git<span class="w"> </span>clone<span class="w"> </span>&lt;your-repo-url&gt;
+<span class="nb">cd</span><span class="w"> </span>thai-traditional-medicine-rag-bot
+
+<span class="c1"># Make the setup script executable</span>
+chmod<span class="w"> </span>+x<span class="w"> </span>scripts/setup/install.sh
+
+<span class="c1"># Run the automated setup</span>
+./scripts/setup/install.sh
+</pre></div>
+</div>
+<p>This script will:</p>
+<ol class="arabic simple">
+<li><p>Install UV package manager if not already present</p></li>
+<li><p>Create a virtual environment</p></li>
+<li><p>Install all project dependencies</p></li>
+<li><p>Set up pre-commit hooks</p></li>
+<li><p>Create a default <code class="docutils literal notranslate"><span class="pre">.env</span></code> file</p></li>
+<li><p>Install Thai language processing resources</p></li>
+</ol>
+</section>
+<section id="manual-setup-process">
+<h2>Manual Setup Process<a class="headerlink" href="#manual-setup-process" title="Link to this heading"></a></h2>
+<p>For users who prefer manual control over the setup process, follow these steps:</p>
+<section id="step-1-install-uv-package-manager">
+<h3>Step 1: Install UV Package Manager<a class="headerlink" href="#step-1-install-uv-package-manager" title="Link to this heading"></a></h3>
+<p>UV is a fast Python package installer and resolver:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install UV</span>
+curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+
+<span class="c1"># Verify installation</span>
+uv<span class="w"> </span>--version
+</pre></div>
+</div>
+</section>
+<section id="step-2-create-virtual-environment">
+<h3>Step 2: Create Virtual Environment<a class="headerlink" href="#step-2-create-virtual-environment" title="Link to this heading"></a></h3>
+<p>Create an isolated Python environment for the project:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create virtual environment with Python 3.13</span>
+uv<span class="w"> </span>venv<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.13
+
+<span class="c1"># Activate the virtual environment</span>
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+
+<span class="c1"># Verify activation (you should see (.venv) in your prompt)</span>
+which<span class="w"> </span>python
+</pre></div>
+</div>
+</section>
+<section id="step-3-install-project-dependencies">
+<h3>Step 3: Install Project Dependencies<a class="headerlink" href="#step-3-install-project-dependencies" title="Link to this heading"></a></h3>
+<p>Install all required dependencies using UV:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install development dependencies</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+
+<span class="c1"># Install production dependencies (if needed)</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[prod]&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="step-4-set-up-pre-commit-hooks">
+<h3>Step 4: Set Up Pre-commit Hooks<a class="headerlink" href="#step-4-set-up-pre-commit-hooks" title="Link to this heading"></a></h3>
+<p>Pre-commit hooks help maintain code quality:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install pre-commit hooks</span>
+pre-commit<span class="w"> </span>install
+
+<span class="c1"># Run pre-commit checks on all files</span>
+pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+</pre></div>
+</div>
+</section>
+</section>
+<section id="environment-configuration">
+<h2>Environment Configuration<a class="headerlink" href="#environment-configuration" title="Link to this heading"></a></h2>
+<section id="step-1-create-environment-file">
+<h3>Step 1: Create Environment File<a class="headerlink" href="#step-1-create-environment-file" title="Link to this heading"></a></h3>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">.env</span></code> file with your configuration:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy the example environment file</span>
+cp<span class="w"> </span>.env.example<span class="w"> </span>.env
+
+<span class="c1"># Edit the .env file with your configuration</span>
+nano<span class="w"> </span>.env<span class="w">  </span><span class="c1"># or use your preferred editor</span>
+</pre></div>
+</div>
+<p>The default configuration should work for development, but you may want to customize:</p>
+<ul class="simple">
+<li><p>Database connection settings</p></li>
+<li><p>API keys for data sources</p></li>
+<li><p>Application settings</p></li>
+<li><p>Security configurations</p></li>
+</ul>
+</section>
+<section id="step-2-environment-variables-overview">
+<h3>Step 2: Environment Variables Overview<a class="headerlink" href="#step-2-environment-variables-overview" title="Link to this heading"></a></h3>
+<p>Key environment variables include:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Database Configuration</span>
+<span class="nv">DATABASE_URL</span><span class="o">=</span>sqlite:///./thai_medicine.db<span class="w">  </span><span class="c1"># SQLite for development</span>
+<span class="nv">DATABASE_HOST</span><span class="o">=</span>localhost
+<span class="nv">DATABASE_PORT</span><span class="o">=</span><span class="m">5432</span>
+<span class="nv">DATABASE_NAME</span><span class="o">=</span>thai_medicine_db
+<span class="nv">DATABASE_USER</span><span class="o">=</span>user
+<span class="nv">DATABASE_PASSWORD</span><span class="o">=</span>password
+
+<span class="c1"># Redis Configuration (for caching and task queues)</span>
+<span class="nv">REDIS_URL</span><span class="o">=</span>redis://localhost:6379/0
+<span class="nv">REDIS_HOST</span><span class="o">=</span>localhost
+<span class="nv">REDIS_PORT</span><span class="o">=</span><span class="m">6379</span>
+<span class="nv">REDIS_DB</span><span class="o">=</span><span class="m">0</span>
+
+<span class="c1"># API Keys (for data sources)</span>
+<span class="nv">PUBMED_API_KEY</span><span class="o">=</span>your_pubmed_api_key
+<span class="nv">WHO_API_KEY</span><span class="o">=</span>your_who_api_key
+<span class="nv">DTAM_API_KEY</span><span class="o">=</span>your_dtam_api_key
+
+<span class="c1"># Application Settings</span>
+<span class="nv">APP_NAME</span><span class="o">=</span>Thai<span class="w"> </span>Traditional<span class="w"> </span>Medicine<span class="w"> </span>RAG<span class="w"> </span>Bot
+<span class="nv">DEBUG</span><span class="o">=</span>True
+<span class="nv">LOG_LEVEL</span><span class="o">=</span>INFO
+<span class="nv">ENVIRONMENT</span><span class="o">=</span>development
+
+<span class="c1"># Processing Settings</span>
+<span class="nv">MAX_WORKERS</span><span class="o">=</span><span class="m">4</span>
+<span class="nv">BATCH_SIZE</span><span class="o">=</span><span class="m">100</span>
+<span class="nv">VALIDATION_THRESHOLD</span><span class="o">=</span><span class="m">0</span>.8
+
+<span class="c1"># Security</span>
+<span class="nv">SECRET_KEY</span><span class="o">=</span>your-secret-key-here
+<span class="nv">ALLOWED_HOSTS</span><span class="o">=</span>localhost,127.0.0.1
+</pre></div>
+</div>
+</section>
+</section>
+<section id="database-setup">
+<h2>Database Setup<a class="headerlink" href="#database-setup" title="Link to this heading"></a></h2>
+<p>The project supports both SQLite (for development) and PostgreSQL (for production).</p>
+<section id="option-1-sqlite-setup-recommended-for-development">
+<h3>Option 1: SQLite Setup (Recommended for Development)<a class="headerlink" href="#option-1-sqlite-setup-recommended-for-development" title="Link to this heading"></a></h3>
+<p>SQLite is the default database for development and requires no additional setup:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create database tables and seed with initial data</span>
+make<span class="w"> </span>db-setup
+
+<span class="c1"># Or run individual commands:</span>
+make<span class="w"> </span>db-create<span class="w">  </span><span class="c1"># Create tables</span>
+make<span class="w"> </span>db-seed<span class="w">    </span><span class="c1"># Seed with initial data</span>
+</pre></div>
+</div>
+</section>
+<section id="option-2-postgresql-setup-for-advanced-development">
+<h3>Option 2: PostgreSQL Setup (For Advanced Development)<a class="headerlink" href="#option-2-postgresql-setup-for-advanced-development" title="Link to this heading"></a></h3>
+<p>For a more production-like environment, you can use PostgreSQL:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start PostgreSQL container</span>
+docker-compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>db
+
+<span class="c1"># Wait for database to initialize (15-30 seconds)</span>
+sleep<span class="w"> </span><span class="m">30</span>
+
+<span class="c1"># Update .env file to use PostgreSQL</span>
+nano<span class="w"> </span>.env
+<span class="c1"># Set: DATABASE_URL=postgresql://user:password@localhost:5432/thai_medicine_db</span>
+
+<span class="c1"># Create database tables and seed with initial data</span>
+make<span class="w"> </span>db-setup
+</pre></div>
+</div>
+</section>
+<section id="database-management-commands">
+<h3>Database Management Commands<a class="headerlink" href="#database-management-commands" title="Link to this heading"></a></h3>
+<p>The project provides several Makefile commands for database management:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create database tables</span>
+make<span class="w"> </span>db-create
+
+<span class="c1"># Drop database tables (WARNING: Deletes all data!)</span>
+make<span class="w"> </span>db-drop
+
+<span class="c1"># Seed database with initial data</span>
+make<span class="w"> </span>db-seed
+
+<span class="c1"># Reset database (drop, create, and seed)</span>
+make<span class="w"> </span>db-reset
+
+<span class="c1"># Setup database (create and seed)</span>
+make<span class="w"> </span>db-setup
+</pre></div>
+</div>
+</section>
+</section>
+<section id="thai-language-resources-setup">
+<h2>Thai Language Resources Setup<a class="headerlink" href="#thai-language-resources-setup" title="Link to this heading"></a></h2>
+<p>The project uses Thai language processing libraries that require additional resources:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install Thai language processing resources</span>
+make<span class="w"> </span>thai-setup
+</pre></div>
+</div>
+<p>This command installs:</p>
+<ul class="simple">
+<li><p>Thai word vectors (thai2fit_wv)</p></li>
+<li><p>Thai embeddings (thai2vec)</p></li>
+<li><p>Thai spaCy model (if available)</p></li>
+</ul>
+</section>
+<section id="testing-the-setup">
+<h2>Testing the Setup<a class="headerlink" href="#testing-the-setup" title="Link to this heading"></a></h2>
+<p>After completing the setup, verify everything works correctly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run all tests</span>
+make<span class="w"> </span><span class="nb">test</span>
+
+<span class="c1"># Run tests with coverage report</span>
+make<span class="w"> </span>test-cov
+
+<span class="c1"># Run only unit tests</span>
+pytest<span class="w"> </span>tests/unit<span class="w"> </span>-v
+
+<span class="c1"># Run only integration tests</span>
+pytest<span class="w"> </span>tests/integration<span class="w"> </span>-v
+</pre></div>
+</div>
+<p>All tests should pass before proceeding with development.</p>
+</section>
+<section id="development-workflow">
+<h2>Development Workflow<a class="headerlink" href="#development-workflow" title="Link to this heading"></a></h2>
+<section id="starting-the-development-server">
+<h3>Starting the Development Server<a class="headerlink" href="#starting-the-development-server" title="Link to this heading"></a></h3>
+<p>Start the FastAPI development server with auto-reload:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start development server</span>
+make<span class="w"> </span>dev
+
+<span class="c1"># The server will be available at http://localhost:8005</span>
+</pre></div>
+</div>
+<p>The development server automatically reloads when you make code changes.</p>
+</section>
+<section id="code-quality-checks">
+<h3>Code Quality Checks<a class="headerlink" href="#code-quality-checks" title="Link to this heading"></a></h3>
+<p>Maintain code quality with these commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run linters</span>
+make<span class="w"> </span>lint
+
+<span class="c1"># Format code</span>
+make<span class="w"> </span>format
+
+<span class="c1"># Run both linters and formatters</span>
+make<span class="w"> </span>lint<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make<span class="w"> </span>format
+</pre></div>
+</div>
+</section>
+<section id="running-specific-tests">
+<h3>Running Specific Tests<a class="headerlink" href="#running-specific-tests" title="Link to this heading"></a></h3>
+<p>During development, you may want to run specific tests:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run tests for a specific module</span>
+pytest<span class="w"> </span>tests/unit/test_pubmed_connector.py
+
+<span class="c1"># Run tests with a specific marker</span>
+pytest<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;integration&quot;</span>
+
+<span class="c1"># Run tests matching a pattern</span>
+pytest<span class="w"> </span>-k<span class="w"> </span><span class="s2">&quot;test_search&quot;</span>
+
+<span class="c1"># Run tests with verbose output</span>
+pytest<span class="w"> </span>-v
+</pre></div>
+</div>
+</section>
+</section>
+<section id="documentation-development">
+<h2>Documentation Development<a class="headerlink" href="#documentation-development" title="Link to this heading"></a></h2>
+<p>The project uses Sphinx for documentation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build documentation</span>
+make<span class="w"> </span>docs
+
+<span class="c1"># Serve documentation locally</span>
+make<span class="w"> </span>docs-serve
+
+<span class="c1"># Rebuild and serve documentation</span>
+make<span class="w"> </span>docs-rebuild
+</pre></div>
+</div>
+<p>Documentation will be available at <code class="docutils literal notranslate"><span class="pre">http://localhost:8081</span></code>.</p>
+</section>
+<section id="docker-development-environment">
+<h2>Docker Development Environment<a class="headerlink" href="#docker-development-environment" title="Link to this heading"></a></h2>
+<p>For a containerized development environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build Docker images</span>
+make<span class="w"> </span>docker-build
+
+<span class="c1"># Start all services</span>
+make<span class="w"> </span>docker-up
+
+<span class="c1"># View logs</span>
+make<span class="w"> </span>docker-logs
+
+<span class="c1"># Stop services</span>
+make<span class="w"> </span>docker-down
+</pre></div>
+</div>
+</section>
+<section id="common-development-tasks">
+<h2>Common Development Tasks<a class="headerlink" href="#common-development-tasks" title="Link to this heading"></a></h2>
+<section id="adding-new-dependencies">
+<h3>Adding New Dependencies<a class="headerlink" href="#adding-new-dependencies" title="Link to this heading"></a></h3>
+<p>When adding new dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add to pyproject.toml and install</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>new-package-name
+
+<span class="c1"># Add to development dependencies</span>
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>new-dev-package-name
+
+<span class="c1"># Update lock file</span>
+uv<span class="w"> </span>pip<span class="w"> </span>compile<span class="w"> </span>pyproject.toml<span class="w"> </span>-o<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</section>
+<section id="database-migration">
+<h3>Database Migration<a class="headerlink" href="#database-migration" title="Link to this heading"></a></h3>
+<p>When changing database models:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># After modifying models, recreate database tables</span>
+make<span class="w"> </span>db-reset
+</pre></div>
+</div>
+</section>
+<section id="code-generation">
+<h3>Code Generation<a class="headerlink" href="#code-generation" title="Link to this heading"></a></h3>
+<p>Some parts of the project are generated:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Regenerate any auto-generated code</span>
+<span class="c1"># (Specific commands depend on what needs to be generated)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues-and-solutions">
+<h3>Common Issues and Solutions<a class="headerlink" href="#common-issues-and-solutions" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Port Already in Use</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Kill processes using the port</span>
+lsof<span class="w"> </span>-i<span class="w"> </span>:8005<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>LISTEN<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $2}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span><span class="nb">kill</span><span class="w"> </span>-9
+</pre></div>
+</div>
+</li>
+<li><p><strong>Database Connection Errors</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reset the database</span>
+make<span class="w"> </span>db-reset
+</pre></div>
+</div>
+</li>
+<li><p><strong>Missing Thai Language Resources</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reinstall Thai language resources</span>
+make<span class="w"> </span>thai-setup
+</pre></div>
+</div>
+</li>
+<li><p><strong>Dependency Installation Failures</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Upgrade UV and reinstall dependencies</span>
+pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>uv
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Virtual Environment Issues</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Recreate virtual environment</span>
+rm<span class="w"> </span>-rf<span class="w"> </span>.venv
+uv<span class="w"> </span>venv<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.13
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="debugging-tips">
+<h3>Debugging Tips<a class="headerlink" href="#debugging-tips" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Enable Debug Mode</strong>
+Set <code class="docutils literal notranslate"><span class="pre">DEBUG=True</span></code> in your <code class="docutils literal notranslate"><span class="pre">.env</span></code> file</p></li>
+<li><p><strong>View Application Logs</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># View logs in real-time</span>
+tail<span class="w"> </span>-f<span class="w"> </span>logs/app.log
+
+<span class="c1"># Or use the Makefile command</span>
+make<span class="w"> </span>logs
+</pre></div>
+</div>
+</li>
+<li><p><strong>Database Inspection</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For SQLite</span>
+sqlite3<span class="w"> </span>thai_medicine.db
+
+<span class="c1"># For PostgreSQL with Docker</span>
+docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>db<span class="w"> </span>psql<span class="w"> </span>-U<span class="w"> </span>user<span class="w"> </span>-d<span class="w"> </span>thai_medicine_db
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="ide-and-editor-setup">
+<h2>IDE and Editor Setup<a class="headerlink" href="#ide-and-editor-setup" title="Link to this heading"></a></h2>
+<section id="vs-code-recommended-extensions">
+<h3>VS Code Recommended Extensions<a class="headerlink" href="#vs-code-recommended-extensions" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Python</strong> - Official Python extension</p></li>
+<li><p><strong>Pylance</strong> - Rich Python language support</p></li>
+<li><p><strong>Black Formatter</strong> - Code formatter</p></li>
+<li><p><strong>isort</strong> - Import sorting</p></li>
+<li><p><strong>Flake8</strong> - Linting</p></li>
+<li><p><strong>Docker</strong> - Dockerfile support</p></li>
+<li><p><strong>Sphinx</strong> - Documentation support</p></li>
+</ol>
+</section>
+<section id="pycharm-configuration">
+<h3>PyCharm Configuration<a class="headerlink" href="#pycharm-configuration" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Interpreter Setup</strong></p>
+<ul class="simple">
+<li><p>Set interpreter to <code class="docutils literal notranslate"><span class="pre">.venv/bin/python</span></code></p></li>
+</ul>
+</li>
+<li><p><strong>Code Formatting</strong></p>
+<ul class="simple">
+<li><p>Configure Black as external tool</p></li>
+<li><p>Configure isort for import sorting</p></li>
+</ul>
+</li>
+<li><p><strong>Run Configurations</strong></p>
+<ul class="simple">
+<li><p>Create run configuration for <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">dev</span></code></p></li>
+<li><p>Create test configuration for <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code></p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Link to this heading"></a></h2>
+<section id="code-organization">
+<h3>Code Organization<a class="headerlink" href="#code-organization" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Follow Project Structure</strong></p>
+<ul class="simple">
+<li><p>Place new modules in appropriate directories</p></li>
+<li><p>Follow existing naming conventions</p></li>
+</ul>
+</li>
+<li><p><strong>Write Tests</strong></p>
+<ul class="simple">
+<li><p>Write unit tests for new functionality</p></li>
+<li><p>Write integration tests for complex workflows</p></li>
+</ul>
+</li>
+<li><p><strong>Documentation</strong></p>
+<ul class="simple">
+<li><p>Document new functions and classes</p></li>
+<li><p>Update README and docs when adding major features</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="git-workflow">
+<h3>Git Workflow<a class="headerlink" href="#git-workflow" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Branch Naming</strong></p>
+<ul class="simple">
+<li><p>Use descriptive branch names: <code class="docutils literal notranslate"><span class="pre">feature/new-feature-name</span></code></p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">fix/</span></code> prefix for bug fixes</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">docs/</span></code> prefix for documentation changes</p></li>
+</ul>
+</li>
+<li><p><strong>Commit Messages</strong></p>
+<ul class="simple">
+<li><p>Use present tense (“Add feature” not “Added feature”)</p></li>
+<li><p>Be descriptive but concise</p></li>
+<li><p>Reference issues when applicable</p></li>
+</ul>
+</li>
+<li><p><strong>Pull Requests</strong></p>
+<ul class="simple">
+<li><p>Keep PRs focused on a single feature or fix</p></li>
+<li><p>Include tests for new functionality</p></li>
+<li><p>Update documentation as needed</p></li>
+</ul>
+</li>
+</ol>
+<p>This comprehensive setup guide should help you quickly get started with development on the Thai Traditional Medicine RAG Bot project. If you encounter any issues during setup, refer to the troubleshooting section or reach out to the team for assistance.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="postgresql_setup.html" class="btn btn-neutral float-left" title="Dockerized PostgreSQL Setup Summary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rag_implementation_plan.html" class="btn btn-neutral float-right" title="RAG Implementation Plan" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Tobias Hoffmann.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -64,14 +64,13 @@ This document provides a summary of the security and monitoring features impleme
 - **Location**: `docs/onboarding.md`
 - **Content**: Detailed instructions for using all security features
 
-### 2. API Practices Study Guide
-- **Location**: `docs/api_practices.md`
-- **Content**: Comprehensive guide on API design principles, security, authentication, and best practices
-- **Coverage**: REST, GraphQL, gRPC, security patterns, authentication methods
-
-### 3. Deployment Guide
+### 2. Deployment Guide
 - **Location**: `docs/deployment.md`
 - **Content**: Instructions for local, Docker, and production deployment
+
+### 3. Development Setup Guide
+- **Location**: `docs/development_setup.md`
+- **Content**: Step-by-step instructions for setting up a development environment
 
 ## Testing
 
@@ -144,6 +143,7 @@ def my_function():
 
 - [Onboarding Guide](http://localhost:8081/onboarding.html)
 - [Deployment Guide](http://localhost:8081/deployment.html)
+- [Development Setup Guide](http://localhost:8081/development_setup.html)
 - [API Documentation](http://localhost:8081/index.html)
 - [Health Check Endpoint](http://localhost:8005/health)
 - [Metrics Endpoint](http://localhost:8005/metrics)
@@ -151,6 +151,7 @@ def my_function():
 ## Next Steps
 
 1. Review the full onboarding guide for detailed implementation examples
-2. Run the test suite to understand how security features are validated
-3. Examine existing endpoints to see how security features are integrated
-4. Check the deployment guide for production configuration details
+2. Follow the [Development Setup Guide](http://localhost:8081/development_setup.html) to set up your development environment
+3. Run the test suite to understand how security features are validated
+4. Examine existing endpoints to see how security features are integrated
+5. Check the deployment guide for production configuration details

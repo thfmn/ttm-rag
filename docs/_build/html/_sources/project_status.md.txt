@@ -69,14 +69,19 @@ Based on our CTO assessment and current state documentation, we have successfull
 - Created comprehensive database initialization scripts
 - Added proper indexing and performance optimizations
 - Updated application to use PostgreSQL by default
-- Added detailed documentation for PostgreSQL setup and usage
 
 ### ✅ Simple Dashboard Implementation
 - Created working dashboard for real-time monitoring
 - Implemented dashboard UI with HTML, CSS, and JavaScript
 - Added real-time data visualization with Chart.js
 - Created dashboard API endpoints in FastAPI
-- Added dashboard to documentation and testing suite
+
+### ✅ RAG Implementation Preparation
+- Created comprehensive RAG implementation plan
+- Established RAG module structure with basic classes
+- Implemented initial RAG pipeline components
+- Added unit tests for RAG functionality
+- Integrated RAG planning into project documentation
 
 ## Next Steps
 
@@ -94,7 +99,32 @@ Based on the CTO assessment and future steps documentation, our priorities shoul
    - Set up CORS configuration *(COMPLETE)*
    - Add audit logging for compliance *(COMPLETE)*
 
-### Phase 2: Data Source Expansion (Weeks 3-6)
+### Phase 2: RAG Foundation (Weeks 3-6)
+1. **Document Processing Pipeline** (Week 3)
+   - Implement document chunking strategies
+   - Create preprocessing pipeline for Thai text
+   - Set up embedding generation infrastructure
+   - Store processed documents with embeddings
+
+2. **Similarity Search System** (Week 4)
+   - Implement vector similarity search algorithms
+   - Create search indexing mechanisms
+   - Develop ranking and filtering capabilities
+   - Optimize search performance
+
+3. **Basic Generation System** (Week 5)
+   - Implement basic text generation capabilities
+   - Create RAG pipeline combining retrieval and generation
+   - Develop initial evaluation framework
+   - Conduct preliminary testing
+
+4. **Comprehensive RAG System** (Week 6)
+   - Implement advanced retrieval techniques
+   - Add query understanding and rewriting
+   - Create comprehensive evaluation metrics
+   - Conduct thorough RAG testing
+
+### Phase 3: Data Source Expansion (Weeks 7-10)
 1. **Additional Data Sources** (High Priority - 4 weeks)
    - Implement DTAM Database connector
    - Add PMC Open Access integration
@@ -106,16 +136,6 @@ Based on the CTO assessment and future steps documentation, our priorities shoul
    - Add quality scoring for documents
    - Implement deduplication mechanisms
    - Add data cleaning and normalization
-
-### Phase 3: RAG Implementation (Weeks 7-10)
-1. **Vector Embedding Pipeline** (High Priority - 3 weeks)
-   - Implement vector embeddings for documents
-   - Set up OpenSearch for efficient searching
-   - Implement the retrieval component of the RAG system
-
-2. **Generation Component**
-   - Implement generation capabilities using Typhoon models
-   - Integrate retrieval and generation components
 
 ### Phase 4: Production Optimization (Weeks 11-12)
 1. **Production Monitoring** (High Priority - 2 weeks)
@@ -142,3 +162,7 @@ Based on the CTO assessment and future steps documentation, our priorities shoul
 10. [x] Create internal onboarding documentation
 11. [x] Implement Dockerized PostgreSQL setup
 12. [x] Implement simple dashboard with real-time monitoring
+13. [x] Create comprehensive RAG implementation plan
+14. [x] Establish RAG module structure with basic classes
+15. [x] Implement initial RAG pipeline components
+16. [x] Add unit tests for RAG functionality

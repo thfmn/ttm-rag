@@ -1,126 +1,318 @@
 # Thai Traditional Medicine RAG Bot
 
-## Project Documentation
+## Fool-Proof Development & Testing Setup Guide
 
-You can view the project documentation by running:
+This guide provides step-by-step instructions for setting up a development environment for the Thai Traditional Medicine RAG Bot project. Follow these steps in order for a smooth setup experience.
 
+## Prerequisites
+
+Before starting, ensure you have:
+- Python 3.11 or higher
+- Git
+- Docker (optional, for containerized database)
+- curl (for downloading UV package manager)
+
+## Quick Start (Recommended for Beginners)
+
+### Step 1: Clone the Repository
 ```bash
-python serve_docs.py
+git clone <your-repo-url>
+cd thai-traditional-medicine-rag-bot
 ```
 
-Then opening your browser to http://localhost:8081
-
-For internal onboarding, refer to the [Onboarding Guide](http://localhost:8081/onboarding.html) which provides detailed instructions on how to use the security and monitoring features.
-
-## Quick Start with Dockerized PostgreSQL
-
-### 1. Start Database Services
+### Step 2: Run Automated Setup Script
 ```bash
-# Start the database container
-docker-compose up -d db
+# Make the setup script executable
+chmod +x scripts/setup/install.sh
 
-# Wait for the database to be ready (about 15-30 seconds)
+# Run the automated setup
+./scripts/setup/install.sh
 ```
 
-### 2. Initialize Database Tables
+### Step 3: Configure Environment Variables
 ```bash
-# Copy the initialization script to the container
-docker cp scripts/database/init.sql thai-traditional-medicine-rag-bot-db-1:/tmp/init.sql
+# Copy the example environment file
+cp .env.example .env
 
-# Run the initialization script
-docker-compose exec db psql -U user -d thai_medicine_db -f /tmp/init.sql
+# Edit the .env file with your configuration
+# For development, the defaults should work fine
+nano .env  # or use your preferred editor
 ```
 
-### 3. Run Database Migrations
+### Step 4: Set Up Database
 ```bash
-# Create database tables and seed initial data
-python scripts/database/migrate.py create
-python scripts/database/migrate.py seed
+# Create database tables and seed with initial data
+make db-setup
 ```
 
-### 4. Start the Application
+### Step 5: Install Thai Language Resources
 ```bash
-# Start the FastAPI server
-make api
+# Install Thai language processing resources
+make thai-setup
+```
+
+### Step 6: Run Tests
+```bash
+# Verify everything is working
+make test
+```
+
+### Step 7: Start Development Server
+```bash
+# Start the development server
+make dev
 ```
 
 The API will be available at `http://localhost:8005`.
 
-## Quick Start Commands
+## Manual Setup (For Advanced Users)
 
-### 1. Clone and setup
-git clone # Todo
-cd thai-traditional-medicine-rag-bot
+If you prefer to set up the environment manually:
 
-### 2. Run setup script
-chmod +x scripts/setup/install.sh
-./scripts/setup/install.sh
+### Step 1: Install UV Package Manager
+```bash
+# Install UV if not already installed
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
-### 3. Start services
-make docker-up
+### Step 2: Create Virtual Environment
+```bash
+# Create virtual environment with Python 3.13
+uv venv --python 3.13
 
-### 4. Setup database
-make db-setup
+# Activate virtual environment
+source .venv/bin/activate
+```
 
-### 5. Install Thai language resources
+### Step 3: Install Dependencies
+```bash
+# Install project dependencies
+uv pip install -e ".[dev]"
+
+# Install pre-commit hooks
+pre-commit install
+```
+
+### Step 4: Configure Environment
+```bash
+# Create .env file from example
+cp .env.example .env
+
+# Edit .env file with your configuration
+nano .env
+```
+
+### Step 5: Set Up Database
+```bash
+# Create database tables
+make db-create
+
+# Seed database with initial data
+make db-seed
+```
+
+### Step 6: Install Thai Language Resources
+```bash
+# Install Thai language processing resources
 make thai-setup
+```
 
-### 6. Run tests
+### Step 7: Verify Setup
+```bash
+# Run tests to verify everything works
 make test
 
-### 7. Start development
+# Start development server
 make dev
+```
 
-## Verification Commands
+## Docker-Based Database Setup (Alternative)
 
-### 1. Clone and setup
-git clone <your-repo-url>
-cd thai-traditional-medicine-rag-bot
+For users who prefer to use Docker for the database:
 
-### 2. Run setup script
-chmod +x scripts/setup/install.sh
-./scripts/setup/install.sh
+### Step 1: Start Database Container
+```bash
+# Start only the database service
+docker-compose up -d db
+```
 
-### 3. Start services
-make docker-up
+### Step 2: Wait for Database to Initialize
+```bash
+# Wait about 15-30 seconds for the database to be ready
+sleep 30
+```
 
-### 4. Setup database
+### Step 3: Update Environment Variables
+```bash
+# Edit .env file to use PostgreSQL
+nano .env
+
+# Set DATABASE_URL to:
+# DATABASE_URL=postgresql://user:password@localhost:5432/thai_medicine_db
+```
+
+### Step 4: Initialize Database
+```bash
+# Create database tables and seed with initial data
 make db-setup
+```
 
-### 5. Install Thai language resources
+### Step 5: Continue with Setup
+```bash
+# Install Thai language resources
 make thai-setup
 
-### 6. Run tests
+# Run tests
 make test
 
-### 7. Start development
+# Start development server
+make dev
+```
+
+## Development Workflow Commands
+
+Once your environment is set up, use these commands for development:
+
+```bash
+# Start development server with auto-reload
 make dev
 
-## Current Project Status
+# Run all tests
+make test
 
-The project has made significant progress in implementing security and monitoring features:
+# Run tests with coverage report
+make test-cov
 
-### ✅ Security Enhancements
-- Input sanitization using nh3 (Python binding for ammonia) to prevent XSS attacks
-- HTTPS enforcement middleware for production environments
-- CORS configuration for cross-origin requests
-- Audit logging for compliance tracking
-- Data encryption utilities for sensitive metadata
+# Run linters
+make lint
 
-### ✅ Monitoring & Health Checks
-- Prometheus monitoring middleware with request metrics
-- Health check endpoints (`/health`, `/metrics`)
-- Comprehensive error tracking and logging
+# Format code
+make format
 
-### ✅ CI/CD Pipeline
-- GitHub Actions workflow for testing and building
-- Support for multiple Python versions (3.11, 3.12)
-- Automated linting and testing steps
+# Reset database (drops and recreates)
+make db-reset
 
-### ✅ Documentation
-- Comprehensive deployment guide
-- Internal onboarding guide for team members
-- Updated documentation with all recent enhancements
-- Sphinx-based documentation system
+# View application logs
+make logs
 
-For detailed information about the current status and future steps, please refer to the project documentation, particularly the "Project Status" section.
+# Clean temporary files
+make clean
+```
+
+## Documentation
+
+### View Documentation Locally
+```bash
+# Build and serve documentation
+make docs-serve
+```
+
+Then open your browser to `http://localhost:8081`
+
+### Rebuild Documentation
+```bash
+# Rebuild documentation after making changes
+make docs-rebuild
+```
+
+## Project Structure Overview
+
+```
+thai-traditional-medicine-rag-bot/
+├── src/                    # Source code
+│   ├── api/               # FastAPI application
+│   ├── connectors/        # Data source connectors
+│   ├── database/          # Database models and utilities
+│   ├── models/            # Pydantic data models
+│   ├── pipelines/         # Data processing pipelines
+│   ├── utils/            # Utility functions
+│   └── validators/        # Data validators
+├── tests/                 # Test suite
+│   ├── unit/              # Unit tests
+│   └── integration/      # Integration tests
+├── docs/                  # Documentation
+├── scripts/               # Setup and utility scripts
+├── config/                # Configuration files
+└── requirements/         # Dependency requirements
+```
+
+## Common Issues and Solutions
+
+### Issue: Port Already in Use
+If you see "Address already in use" errors:
+```bash
+# Kill processes using the port
+lsof -i :8005 | grep LISTEN | awk '{print $2}' | xargs kill -9
+```
+
+### Issue: Database Connection Errors
+If you have database connection issues:
+```bash
+# Reset the database
+make db-reset
+
+# Or drop and recreate manually
+make db-drop
+make db-create
+make db-seed
+```
+
+### Issue: Missing Thai Language Resources
+If Thai language processing fails:
+```bash
+# Reinstall Thai language resources
+make thai-setup
+```
+
+### Issue: Dependency Installation Failures
+If dependencies fail to install:
+```bash
+# Upgrade UV
+pip install --upgrade uv
+
+# Reinstall dependencies
+uv pip install -e ".[dev]"
+```
+
+## Useful Development Tools
+
+### Pre-commit Hooks
+The project uses pre-commit hooks to ensure code quality:
+```bash
+# Run pre-commit checks manually
+pre-commit run --all-files
+
+# Update pre-commit hooks
+pre-commit autoupdate
+```
+
+### Database Inspection
+To inspect the database directly:
+```bash
+# For SQLite (development default)
+sqlite3 thai_medicine.db
+
+# For PostgreSQL (with Docker)
+docker-compose exec db psql -U user -d thai_medicine_db
+```
+
+## Next Steps
+
+After setting up your development environment:
+
+1. **Explore the Codebase**: Familiarize yourself with the project structure
+2. **Run the Tests**: Ensure all tests pass (`make test`)
+3. **Start the Development Server**: Run the API locally (`make dev`)
+4. **Check Documentation**: Review the documentation at `http://localhost:8081`
+5. **Review Contributing Guidelines**: Check for coding standards and contribution processes
+
+## Getting Help
+
+If you encounter any issues during setup:
+
+1. **Check the Documentation**: Many common issues are documented
+2. **Review Error Messages**: Carefully read any error messages for clues
+3. **Consult Team Members**: Reach out to other developers for assistance
+4. **File an Issue**: If you've found a bug, file an issue on GitHub
+
+For internal onboarding, refer to the [Onboarding Guide](http://localhost:8081/onboarding.html) which provides detailed instructions on how to use the security and monitoring features.

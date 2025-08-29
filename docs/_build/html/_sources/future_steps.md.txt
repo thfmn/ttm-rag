@@ -4,7 +4,7 @@ This section outlines our plans for future development of the project.
 
 ## Short-term Goals
 
-In the immediate future, we plan to focus on enhancing our current implementation:
+In the immediate future, we plan to focus on enhancing our current implementation and preparing for our first RAG test:
 
 ### 1. Enhanced PubMed Connector
 - ~~Parse XML data returned by the PubMed API into structured data~~ (Completed)
@@ -27,70 +27,80 @@ In the immediate future, we plan to focus on enhancing our current implementatio
 - ~~Implement request queuing for better resource management~~ (Completed)
 
 ### 5. Dashboard Implementation
-- Implement a simple, working dashboard for real-time monitoring
-- Create dashboard UI with Vue.js and Bootstrap
-- Add real-time data streaming with WebSockets or Server-Sent Events
-- Implement key metrics visualization with Chart.js
+- ~~Implement a simple, working dashboard for real-time monitoring~~ (Completed)
+- ~~Create dashboard UI with HTML, CSS, and JavaScript~~ (Completed)
+- ~~Add real-time data streaming with AJAX calls~~ (Completed)
+- ~~Implement key metrics visualization with Chart.js~~ (Completed)
+
+### 6. Preparation for RAG Implementation
+- Implement vector embedding pipeline for document processing
+- Set up infrastructure for storing document embeddings
+- Create preprocessing pipeline for RAG-ready documents
+- Implement similarity search capabilities
+- Develop evaluation framework for RAG performance
 
 ## Medium-term Goals
 
-After completing the short-term goals, we'll focus on expanding our data sources and capabilities:
+After completing the short-term goals, we'll focus on our first RAG implementation and testing:
 
-### 1. Additional Data Sources
-- Implement connectors for other Tier 1 sources:
-  - DTAM Database
-  - PMC Open Access
-  - Thai Traditional Medicine Journal
-- Implement connectors for Tier 2 sources:
-  - Thai University Repositories
-  - WHO SEARO Reports
-  - ASEAN Health Database
+### 1. Vector Embedding Pipeline
+- Implement document chunking and preprocessing
+- Generate vector embeddings for Thai Traditional Medicine documents
+- Store embeddings in database with pgvector extension
+- Implement embedding similarity search
+- Optimize embedding generation for performance
 
-### 2. Database Integration
-- ~~Set up PostgreSQL database with pgvector extension~~ (Completed)
-- ~~Implement data models based on our schema design~~ (Completed)
-- ~~Add functionality to save fetched documents to the database~~ (Completed)
-- ~~Implement database connection pooling for better performance~~ (Completed)
+### 2. Retrieval System
+- Implement efficient similarity search algorithms
+- Create retrieval ranking mechanisms
+- Add filtering and boosting capabilities
+- Implement hybrid search (keyword + semantic)
+- Develop retrieval evaluation metrics
 
-### 3. Data Validation
+### 3. First RAG Testing
+- Implement basic generation capabilities
+- Create RAG pipeline combining retrieval and generation
+- Develop comprehensive testing framework
+- Implement evaluation metrics for RAG performance
+- Conduct initial RAG testing with Thai Traditional Medicine queries
+
+### 4. Data Validation System
 - Implement data validation pipelines
 - Add quality scoring for documents
 - Implement deduplication mechanisms
 - Add data cleaning and normalization
-
-### 4. Monitoring and Logging
-- ~~Implement comprehensive monitoring using Prometheus~~ (Partially Completed)
-- Set up Grafana dashboards for real-time metrics
-- Add structured logging for better debugging
-- Implement alerting for critical issues
 
 ## Long-term Goals
 
 For the long-term success of the project, we have these goals:
 
 ### 1. Full RAG Implementation
-- Implement vector embeddings for documents
+- Implement advanced vector embeddings for documents
 - Set up OpenSearch for efficient searching
-- Implement the retrieval component of the RAG system
+- Implement the complete retrieval component of the RAG system
 - Implement the generation component using Typhoon models
+- Add advanced features like query rewriting and context compression
 
 ### 2. Advanced Features
 - Implement natural language querying
 - Add document summarization capabilities
 - Implement relationship mapping between documents
 - Add recommendation systems for related documents
+- Implement multi-hop reasoning capabilities
 
 ### 3. Scalability
 - Implement distributed processing using Celery
 - Add horizontal scaling capabilities
 - Implement caching mechanisms for better performance
 - Optimize database queries for large datasets
+- Add load balancing for high availability
 
 ### 4. User Interface
-- ~~Develop a web interface for the RAG bot~~ (Dashboard Implementation)
+- Develop a comprehensive web interface for the RAG bot
 - Implement an API for external integrations
 - Add administrative interface for managing sources and documents
 - Create documentation and examples for users
+- Implement user feedback collection mechanisms
 
 ## Success Metrics
 
@@ -110,6 +120,13 @@ We'll measure our progress using these success metrics:
 - **System Uptime**: Pipeline availability percentage
 - **Resource Utilization**: CPU, memory, and storage usage
 
+### RAG Performance Metrics
+- **Retrieval Accuracy**: Precision and recall of retrieved documents
+- **Generation Quality**: Relevance and factual accuracy of generated responses
+- **Response Time**: Latency for end-to-end RAG queries
+- **User Satisfaction**: Feedback scores from evaluation tests
+- **Evaluation Coverage**: Percentage of queries with evaluation data
+
 ## Timeline
 
 Our projected timeline for these goals:
@@ -119,19 +136,19 @@ Our projected timeline for these goals:
 - ~~Sophisticated search queries~~ (Completed)
 - ~~Improved error handling~~ (Completed)
 - ~~Rate limiting implementation~~ (Completed)
-- **Dashboard Implementation** (New)
+- **Dashboard Implementation** (Completed)
+- **Preparation for RAG Implementation** (New)
 
-### Phase 2: Expansion (Weeks 3-6)
-- Additional data sources
-- ~~Database integration~~ (Completed)
-- Data validation
-- Monitoring and logging
+### Phase 2: RAG Foundation (Weeks 3-6)
+- Vector embedding pipeline
+- Retrieval system development
+- First RAG testing preparations
+- Data validation system
 
 ### Phase 3: RAG Implementation (Weeks 7-10)
-- Vector embeddings
-- OpenSearch integration
-- Retrieval implementation
-- Generation implementation
+- Full RAG implementation
+- Advanced features development
+- Comprehensive testing and evaluation
 
 ### Phase 4: Advanced Features (Weeks 11-12)
 - Natural language querying
@@ -140,3 +157,36 @@ Our projected timeline for these goals:
 - User interface development
 
 This timeline is subject to change based on progress and any challenges we encounter during development.
+
+## RAG Implementation Roadmap
+
+### Milestone 1: Document Processing Pipeline (Week 3)
+- Implement document chunking strategies
+- Create preprocessing pipeline for Thai text
+- Set up embedding generation infrastructure
+- Store processed documents with embeddings
+
+### Milestone 2: Similarity Search (Week 4)
+- Implement vector similarity search algorithms
+- Create search indexing mechanisms
+- Develop ranking and filtering capabilities
+- Optimize search performance
+
+### Milestone 3: Basic Generation (Week 5)
+- Implement basic text generation capabilities
+- Create RAG pipeline combining retrieval and generation
+- Develop initial evaluation framework
+- Conduct preliminary testing
+
+### Milestone 4: Comprehensive RAG System (Week 6)
+- Implement advanced retrieval techniques
+- Add query understanding and rewriting
+- Create comprehensive evaluation metrics
+- Conduct thorough RAG testing
+
+Each milestone will include:
+- Comprehensive documentation
+- Unit and integration tests
+- Performance evaluation
+- Dashboard monitoring updates
+- Analytics and reporting

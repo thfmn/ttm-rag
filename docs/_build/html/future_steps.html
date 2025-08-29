@@ -56,13 +56,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#improved-error-handling">3. Improved Error Handling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rate-limiting">4. Rate Limiting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dashboard-implementation">5. Dashboard Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#preparation-for-rag-implementation">6. Preparation for RAG Implementation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#medium-term-goals">Medium-term Goals</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#additional-data-sources">1. Additional Data Sources</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#database-integration">2. Database Integration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#data-validation">3. Data Validation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#monitoring-and-logging">4. Monitoring and Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vector-embedding-pipeline">1. Vector Embedding Pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieval-system">2. Retrieval System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#first-rag-testing">3. First RAG Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-validation-system">4. Data Validation System</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#long-term-goals">Long-term Goals</a><ul>
@@ -75,13 +76,21 @@
 <li class="toctree-l2"><a class="reference internal" href="#success-metrics">Success Metrics</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#data-acquisition-metrics">Data Acquisition Metrics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#system-performance-metrics">System Performance Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rag-performance-metrics">RAG Performance Metrics</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#timeline">Timeline</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#phase-1-enhancement-weeks-1-2">Phase 1: Enhancement (Weeks 1-2)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#phase-2-expansion-weeks-3-6">Phase 2: Expansion (Weeks 3-6)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#phase-2-rag-foundation-weeks-3-6">Phase 2: RAG Foundation (Weeks 3-6)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#phase-3-rag-implementation-weeks-7-10">Phase 3: RAG Implementation (Weeks 7-10)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#phase-4-advanced-features-weeks-11-12">Phase 4: Advanced Features (Weeks 11-12)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#rag-implementation-roadmap">RAG Implementation Roadmap</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#milestone-1-document-processing-pipeline-week-3">Milestone 1: Document Processing Pipeline (Week 3)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#milestone-2-similarity-search-week-4">Milestone 2: Similarity Search (Week 4)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#milestone-3-basic-generation-week-5">Milestone 3: Basic Generation (Week 5)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#milestone-4-comprehensive-rag-system-week-6">Milestone 4: Comprehensive RAG System (Week 6)</a></li>
 </ul>
 </li>
 </ul>
@@ -90,21 +99,12 @@
 <li class="toctree-l1"><a class="reference internal" href="project_status.html">Project Status Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development_setup.html">Development Environment Setup Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rag_implementation_plan.html">RAG Implementation Plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rag_kickoff_summary.html">RAG Implementation Kickoff Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard_plan.html">Dashboard Implementation Plan</a></li>
 <li class="toctree-l1"><a class="reference internal" href="onboarding.html">Internal Onboarding Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="onboarding_summary.html">Internal Onboarding Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html">1. Understanding APIs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-styles">2. API Styles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-principles">3. API Design Principles</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-their-influence">4. Protocols &amp; Their Influence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#api-design-process">5. API Design Process</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#restful-api-design">6. RESTful API Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#graphql-api-design">7. GraphQL API Design</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#authentication-authorization">8. Authentication &amp; Authorization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#security-best-practices">9. Security Best Practices</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#protocols-transport-layer">10. Protocols &amp; Transport Layer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#summary-next-steps">11. Summary &amp; Next Steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_practices.html#additional-resources">12. Additional Resources</a></li>
 </ul>
 
         </div>
@@ -136,7 +136,7 @@
 <p>This section outlines our plans for future development of the project.</p>
 <section id="short-term-goals">
 <h2>Short-term Goals<a class="headerlink" href="#short-term-goals" title="Link to this heading"></a></h2>
-<p>In the immediate future, we plan to focus on enhancing our current implementation:</p>
+<p>In the immediate future, we plan to focus on enhancing our current implementation and preparing for our first RAG test:</p>
 <section id="enhanced-pubmed-connector">
 <h3>1. Enhanced PubMed Connector<a class="headerlink" href="#enhanced-pubmed-connector" title="Link to this heading"></a></h3>
 <ul class="simple">
@@ -172,60 +172,63 @@
 <section id="dashboard-implementation">
 <h3>5. Dashboard Implementation<a class="headerlink" href="#dashboard-implementation" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>Implement a simple, working dashboard for real-time monitoring</p></li>
-<li><p>Create dashboard UI with Vue.js and Bootstrap</p></li>
-<li><p>Add real-time data streaming with WebSockets or Server-Sent Events</p></li>
-<li><p>Implement key metrics visualization with Chart.js</p></li>
+<li><p><s>Implement a simple, working dashboard for real-time monitoring</s> (Completed)</p></li>
+<li><p><s>Create dashboard UI with HTML, CSS, and JavaScript</s> (Completed)</p></li>
+<li><p><s>Add real-time data streaming with AJAX calls</s> (Completed)</p></li>
+<li><p><s>Implement key metrics visualization with Chart.js</s> (Completed)</p></li>
+</ul>
+</section>
+<section id="preparation-for-rag-implementation">
+<h3>6. Preparation for RAG Implementation<a class="headerlink" href="#preparation-for-rag-implementation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Implement vector embedding pipeline for document processing</p></li>
+<li><p>Set up infrastructure for storing document embeddings</p></li>
+<li><p>Create preprocessing pipeline for RAG-ready documents</p></li>
+<li><p>Implement similarity search capabilities</p></li>
+<li><p>Develop evaluation framework for RAG performance</p></li>
 </ul>
 </section>
 </section>
 <section id="medium-term-goals">
 <h2>Medium-term Goals<a class="headerlink" href="#medium-term-goals" title="Link to this heading"></a></h2>
-<p>After completing the short-term goals, we’ll focus on expanding our data sources and capabilities:</p>
-<section id="additional-data-sources">
-<h3>1. Additional Data Sources<a class="headerlink" href="#additional-data-sources" title="Link to this heading"></a></h3>
+<p>After completing the short-term goals, we’ll focus on our first RAG implementation and testing:</p>
+<section id="vector-embedding-pipeline">
+<h3>1. Vector Embedding Pipeline<a class="headerlink" href="#vector-embedding-pipeline" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>Implement connectors for other Tier 1 sources:</p>
-<ul>
-<li><p>DTAM Database</p></li>
-<li><p>PMC Open Access</p></li>
-<li><p>Thai Traditional Medicine Journal</p></li>
-</ul>
-</li>
-<li><p>Implement connectors for Tier 2 sources:</p>
-<ul>
-<li><p>Thai University Repositories</p></li>
-<li><p>WHO SEARO Reports</p></li>
-<li><p>ASEAN Health Database</p></li>
-</ul>
-</li>
+<li><p>Implement document chunking and preprocessing</p></li>
+<li><p>Generate vector embeddings for Thai Traditional Medicine documents</p></li>
+<li><p>Store embeddings in database with pgvector extension</p></li>
+<li><p>Implement embedding similarity search</p></li>
+<li><p>Optimize embedding generation for performance</p></li>
 </ul>
 </section>
-<section id="database-integration">
-<h3>2. Database Integration<a class="headerlink" href="#database-integration" title="Link to this heading"></a></h3>
+<section id="retrieval-system">
+<h3>2. Retrieval System<a class="headerlink" href="#retrieval-system" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><s>Set up PostgreSQL database with pgvector extension</s> (Completed)</p></li>
-<li><p><s>Implement data models based on our schema design</s> (Completed)</p></li>
-<li><p><s>Add functionality to save fetched documents to the database</s> (Completed)</p></li>
-<li><p><s>Implement database connection pooling for better performance</s> (Completed)</p></li>
+<li><p>Implement efficient similarity search algorithms</p></li>
+<li><p>Create retrieval ranking mechanisms</p></li>
+<li><p>Add filtering and boosting capabilities</p></li>
+<li><p>Implement hybrid search (keyword + semantic)</p></li>
+<li><p>Develop retrieval evaluation metrics</p></li>
 </ul>
 </section>
-<section id="data-validation">
-<h3>3. Data Validation<a class="headerlink" href="#data-validation" title="Link to this heading"></a></h3>
+<section id="first-rag-testing">
+<h3>3. First RAG Testing<a class="headerlink" href="#first-rag-testing" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Implement basic generation capabilities</p></li>
+<li><p>Create RAG pipeline combining retrieval and generation</p></li>
+<li><p>Develop comprehensive testing framework</p></li>
+<li><p>Implement evaluation metrics for RAG performance</p></li>
+<li><p>Conduct initial RAG testing with Thai Traditional Medicine queries</p></li>
+</ul>
+</section>
+<section id="data-validation-system">
+<h3>4. Data Validation System<a class="headerlink" href="#data-validation-system" title="Link to this heading"></a></h3>
 <ul class="simple">
 <li><p>Implement data validation pipelines</p></li>
 <li><p>Add quality scoring for documents</p></li>
 <li><p>Implement deduplication mechanisms</p></li>
 <li><p>Add data cleaning and normalization</p></li>
-</ul>
-</section>
-<section id="monitoring-and-logging">
-<h3>4. Monitoring and Logging<a class="headerlink" href="#monitoring-and-logging" title="Link to this heading"></a></h3>
-<ul class="simple">
-<li><p><s>Implement comprehensive monitoring using Prometheus</s> (Partially Completed)</p></li>
-<li><p>Set up Grafana dashboards for real-time metrics</p></li>
-<li><p>Add structured logging for better debugging</p></li>
-<li><p>Implement alerting for critical issues</p></li>
 </ul>
 </section>
 </section>
@@ -235,10 +238,11 @@
 <section id="full-rag-implementation">
 <h3>1. Full RAG Implementation<a class="headerlink" href="#full-rag-implementation" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>Implement vector embeddings for documents</p></li>
+<li><p>Implement advanced vector embeddings for documents</p></li>
 <li><p>Set up OpenSearch for efficient searching</p></li>
-<li><p>Implement the retrieval component of the RAG system</p></li>
+<li><p>Implement the complete retrieval component of the RAG system</p></li>
 <li><p>Implement the generation component using Typhoon models</p></li>
+<li><p>Add advanced features like query rewriting and context compression</p></li>
 </ul>
 </section>
 <section id="advanced-features">
@@ -248,6 +252,7 @@
 <li><p>Add document summarization capabilities</p></li>
 <li><p>Implement relationship mapping between documents</p></li>
 <li><p>Add recommendation systems for related documents</p></li>
+<li><p>Implement multi-hop reasoning capabilities</p></li>
 </ul>
 </section>
 <section id="scalability">
@@ -257,15 +262,17 @@
 <li><p>Add horizontal scaling capabilities</p></li>
 <li><p>Implement caching mechanisms for better performance</p></li>
 <li><p>Optimize database queries for large datasets</p></li>
+<li><p>Add load balancing for high availability</p></li>
 </ul>
 </section>
 <section id="user-interface">
 <h3>4. User Interface<a class="headerlink" href="#user-interface" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><s>Develop a web interface for the RAG bot</s> (Dashboard Implementation)</p></li>
+<li><p>Develop a comprehensive web interface for the RAG bot</p></li>
 <li><p>Implement an API for external integrations</p></li>
 <li><p>Add administrative interface for managing sources and documents</p></li>
 <li><p>Create documentation and examples for users</p></li>
+<li><p>Implement user feedback collection mechanisms</p></li>
 </ul>
 </section>
 </section>
@@ -292,6 +299,16 @@
 <li><p><strong>Resource Utilization</strong>: CPU, memory, and storage usage</p></li>
 </ul>
 </section>
+<section id="rag-performance-metrics">
+<h3>RAG Performance Metrics<a class="headerlink" href="#rag-performance-metrics" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Retrieval Accuracy</strong>: Precision and recall of retrieved documents</p></li>
+<li><p><strong>Generation Quality</strong>: Relevance and factual accuracy of generated responses</p></li>
+<li><p><strong>Response Time</strong>: Latency for end-to-end RAG queries</p></li>
+<li><p><strong>User Satisfaction</strong>: Feedback scores from evaluation tests</p></li>
+<li><p><strong>Evaluation Coverage</strong>: Percentage of queries with evaluation data</p></li>
+</ul>
+</section>
 </section>
 <section id="timeline">
 <h2>Timeline<a class="headerlink" href="#timeline" title="Link to this heading"></a></h2>
@@ -303,25 +320,25 @@
 <li><p><s>Sophisticated search queries</s> (Completed)</p></li>
 <li><p><s>Improved error handling</s> (Completed)</p></li>
 <li><p><s>Rate limiting implementation</s> (Completed)</p></li>
-<li><p><strong>Dashboard Implementation</strong> (New)</p></li>
+<li><p><strong>Dashboard Implementation</strong> (Completed)</p></li>
+<li><p><strong>Preparation for RAG Implementation</strong> (New)</p></li>
 </ul>
 </section>
-<section id="phase-2-expansion-weeks-3-6">
-<h3>Phase 2: Expansion (Weeks 3-6)<a class="headerlink" href="#phase-2-expansion-weeks-3-6" title="Link to this heading"></a></h3>
+<section id="phase-2-rag-foundation-weeks-3-6">
+<h3>Phase 2: RAG Foundation (Weeks 3-6)<a class="headerlink" href="#phase-2-rag-foundation-weeks-3-6" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>Additional data sources</p></li>
-<li><p><s>Database integration</s> (Completed)</p></li>
-<li><p>Data validation</p></li>
-<li><p>Monitoring and logging</p></li>
+<li><p>Vector embedding pipeline</p></li>
+<li><p>Retrieval system development</p></li>
+<li><p>First RAG testing preparations</p></li>
+<li><p>Data validation system</p></li>
 </ul>
 </section>
 <section id="phase-3-rag-implementation-weeks-7-10">
 <h3>Phase 3: RAG Implementation (Weeks 7-10)<a class="headerlink" href="#phase-3-rag-implementation-weeks-7-10" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p>Vector embeddings</p></li>
-<li><p>OpenSearch integration</p></li>
-<li><p>Retrieval implementation</p></li>
-<li><p>Generation implementation</p></li>
+<li><p>Full RAG implementation</p></li>
+<li><p>Advanced features development</p></li>
+<li><p>Comprehensive testing and evaluation</p></li>
 </ul>
 </section>
 <section id="phase-4-advanced-features-weeks-11-12">
@@ -333,6 +350,53 @@
 <li><p>User interface development</p></li>
 </ul>
 <p>This timeline is subject to change based on progress and any challenges we encounter during development.</p>
+</section>
+</section>
+<section id="rag-implementation-roadmap">
+<h2>RAG Implementation Roadmap<a class="headerlink" href="#rag-implementation-roadmap" title="Link to this heading"></a></h2>
+<section id="milestone-1-document-processing-pipeline-week-3">
+<h3>Milestone 1: Document Processing Pipeline (Week 3)<a class="headerlink" href="#milestone-1-document-processing-pipeline-week-3" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Implement document chunking strategies</p></li>
+<li><p>Create preprocessing pipeline for Thai text</p></li>
+<li><p>Set up embedding generation infrastructure</p></li>
+<li><p>Store processed documents with embeddings</p></li>
+</ul>
+</section>
+<section id="milestone-2-similarity-search-week-4">
+<h3>Milestone 2: Similarity Search (Week 4)<a class="headerlink" href="#milestone-2-similarity-search-week-4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Implement vector similarity search algorithms</p></li>
+<li><p>Create search indexing mechanisms</p></li>
+<li><p>Develop ranking and filtering capabilities</p></li>
+<li><p>Optimize search performance</p></li>
+</ul>
+</section>
+<section id="milestone-3-basic-generation-week-5">
+<h3>Milestone 3: Basic Generation (Week 5)<a class="headerlink" href="#milestone-3-basic-generation-week-5" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Implement basic text generation capabilities</p></li>
+<li><p>Create RAG pipeline combining retrieval and generation</p></li>
+<li><p>Develop initial evaluation framework</p></li>
+<li><p>Conduct preliminary testing</p></li>
+</ul>
+</section>
+<section id="milestone-4-comprehensive-rag-system-week-6">
+<h3>Milestone 4: Comprehensive RAG System (Week 6)<a class="headerlink" href="#milestone-4-comprehensive-rag-system-week-6" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Implement advanced retrieval techniques</p></li>
+<li><p>Add query understanding and rewriting</p></li>
+<li><p>Create comprehensive evaluation metrics</p></li>
+<li><p>Conduct thorough RAG testing</p></li>
+</ul>
+<p>Each milestone will include:</p>
+<ul class="simple">
+<li><p>Comprehensive documentation</p></li>
+<li><p>Unit and integration tests</p></li>
+<li><p>Performance evaluation</p></li>
+<li><p>Dashboard monitoring updates</p></li>
+<li><p>Analytics and reporting</p></li>
+</ul>
 </section>
 </section>
 </section>

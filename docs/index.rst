@@ -15,9 +15,12 @@ Welcome to Thai Traditional Medicine RAG Bot's documentation!
    project_status
    deployment
    postgresql_setup
+   development_setup
+   rag_implementation_plan
+   rag_kickoff_summary
    dashboard_plan
+   final_summary
    onboarding
    onboarding_summary
-   api_practices
 
 .. include:: ../README.md
