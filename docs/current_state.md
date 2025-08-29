@@ -26,6 +26,7 @@ So far, we've successfully completed the following:
 18. **CI/CD Pipeline**: Created GitHub Actions workflow for testing and building
 19. **Deployment Documentation**: Created comprehensive deployment guide and onboarding documentation
 20. **Dashboard Implementation**: Created a working dashboard for real-time monitoring and control
+21. **RAG Prototype Implementation**: Implemented a functional RAG prototype with document chunking, embedding, storage, and retrieval capabilities
 
 ## What's Working
 
@@ -49,51 +50,41 @@ Our implementation is successfully:
 13. **Monitoring**: Our application provides health checks and Prometheus metrics
 14. **Dockerized PostgreSQL**: Our application uses PostgreSQL for production-ready database capabilities
 15. **Dashboard**: We have a working dashboard that provides real-time monitoring and system insights
+16. **RAG System**: We have a functional RAG prototype that can:
+   - Chunk documents into smaller, manageable pieces
+   - Generate vector embeddings for semantic search
+   - Store documents and embeddings in a PostgreSQL database
+   - Retrieve relevant document chunks based on semantic similarity
 
 ## Demonstration
 
-When we run our main script, we get output like this:
+Our RAG API is now functional. We can add documents and query the system.
 
-```
-Running PubMed pipeline with different query approaches...
-
-1. Basic query: 'traditional medicine'
-Found 3 documents
-
-2. Thai Traditional Medicine query using query builder
-
-3. Specialized Thai Traditional Medicine query function
-
-4. Query with date range filter
-Found 3 articles with date range query: (thai medicine) AND 2020/01/01:2023/12/31[Date - Publication]
-  Article 1: Generalized lichen amyloidosis in a pregnant woman...
-  Article 2: The beneficial effects of traditional Thai massage...
-  Article 3: Dentists' Stress During the COVID-19 Pandemic: A R...
+**Adding a document:**
+```bash
+curl -X POST "http://localhost:8005/api/v1/rag/documents" \
+-H "Content-Type: application/json" \
+-d '{
+  "id": "doc-001",
+  "content": "Thai traditional medicine is a holistic approach to health...",
+  "metadata": {
+    "source": "manual",
+    "year": 2024
+  }
+}'
 ```
 
-When we run our FastAPI application, we can access endpoints like:
-
+**Querying the system:**
+```bash
+curl -X POST "http://localhost:8005/api/v1/rag/query" \
+-H "Content-Type: application/json" \
+-d '{
+  "query": "anti-inflammatory properties of Plai",
+  "top_k": 3
+}'
 ```
-GET /search?query=traditional+medicine&max_results=3
-GET /thai-medicine-search?additional_terms=herbal&max_results=3
-GET /article/12345678
-```
 
-This shows that our pipeline successfully:
-
-1. Searches PubMed for articles related to "traditional medicine"
-2. Fetches the first 3 articles
-3. Parses the XML data into structured Pydantic models
-4. Processes them into Document objects with rich metadata
-5. Saves them to the database
-6. Demonstrates advanced query building capabilities including:
-   - Complex query construction with multiple terms
-   - Exclusion of unwanted terms
-   - Article type filtering
-   - Date range filtering
-   - Specialized query functions for Thai Traditional Medicine
-7. Provides a REST API for accessing this functionality
-8. Respects API rate limits with appropriate delays between requests
+This demonstrates that our RAG pipeline can successfully ingest documents, process them into searchable chunks with embeddings, and retrieve them based on a semantic query.
 
 ## Code Quality
 
@@ -130,30 +121,28 @@ Our dashboard provides real-time insights into system performance:
 4. **Processing Queue**: Depth and performance metrics
 5. **Activity Log**: Recent system activities and events
 
-## Preparation for RAG Implementation
+## RAG System Status
 
-We've laid the groundwork for our first RAG test:
+Our RAG system prototype is now functional and has been validated:
 
-1. **Vector Embeddings Infrastructure**: Database with pgvector extension ready for embeddings
-2. **Document Processing Pipeline**: Mature pipeline for preprocessing documents
-3. **Data Storage**: Scalable database for storing documents and embeddings
-4. **API Access**: REST API for retrieving processed documents
-5. **Monitoring**: Comprehensive system monitoring for performance tracking
+1. **Document Processing**: The pipeline successfully chunks documents and generates embeddings.
+2. **Vector Storage**: Chunks and their embeddings are correctly stored in the PostgreSQL database using the `pgvector` extension.
+3. **Retrieval System**: The API can retrieve relevant document chunks based on semantic similarity search. Performance has been validated and tuned.
+4. **API Endpoints**: The RAG API provides endpoints for adding documents, running queries, and checking system health.
 
 ## Limitations
 
 Our current implementation has some limitations:
 
-1. **Limited Sources**: We've only implemented PubMed integration so far
-2. **No Validation**: We don't yet have data validation pipelines
-3. **No Advanced Features**: Features like caching or advanced search are not yet implemented
+1. **Prototype-Level RAG**: The RAG system is functional but lacks a generation component and advanced features.
+2. **Limited Sources**: We've only implemented PubMed integration so far.
+3. **No Data Validation**: We don't yet have data validation pipelines to ensure the quality of ingested content.
 
 ## Next Steps
 
 In the next phase of development, we plan to:
 
-1. Implement connectors for other data sources
-2. Implement data validation pipelines
-3. Add more sophisticated error handling and logging
-4. Implement rate limiting to respect API guidelines
-5. **Prepare for our first RAG implementation and testing**
+1. **Implement Data Validation Pipeline**: Ensure the quality and integrity of the data powering the RAG system.
+2. **Expand Data Sources**: Mitigate the single-source dependency by adding more connectors (e.g., PMC Open Access).
+3. **Integrate Generation Model**: Complete the RAG loop by adding a language generation model.
+4. **Enhance RAG features**: Implement more advanced retrieval techniques and query understanding.

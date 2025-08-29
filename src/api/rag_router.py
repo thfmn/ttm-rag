@@ -49,9 +49,9 @@ class QueryResponse(BaseModel):
     query: str
     num_results: int
     retrieval_time: float
+    answer: Optional[str] = None
     context: Optional[List[Dict[str, Any]]] = None
     sources: Optional[List[str]] = None
-    combined_context: Optional[str] = None
 
 
 class ProcessingStats(BaseModel):

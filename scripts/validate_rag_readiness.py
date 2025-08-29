@@ -12,8 +12,8 @@ def check_rag_readiness():
     """Check that all prerequisites for RAG implementation are met."""
     print("Checking RAG system readiness...")
     
-    # Get project root
-    project_root = Path(__file__).parent
+    # Get project root (parent of scripts directory)
+    project_root = Path(__file__).parent.parent
     
     # Check essential components
     checks = [

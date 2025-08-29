@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from src.rag.chunker import DocumentChunker, DocumentChunk, ChunkConfig
 from src.rag.embeddings import EmbeddingGenerator, EmbeddingConfig
 from src.rag.vector_store import VectorStore
+from src.rag.generation import TextGenerator, assemble_prompt
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ class RAGConfig:
     embedding_config: Optional[EmbeddingConfig] = None
     database_url: Optional[str] = None
     top_k: int = 5
-    similarity_threshold: float = 0.7
+    similarity_threshold: float = 0.3
 
 
 class RAGPipeline:
@@ -48,6 +49,7 @@ class RAGPipeline:
             database_url=self.config.database_url,
             embedding_dim=embedding_dim
         )
+        self.text_generator = TextGenerator()
         
         logger.info("Initialized RAG pipeline")
     
@@ -143,7 +145,8 @@ class RAGPipeline:
         self,
         query: str,
         top_k: Optional[int] = None,
-        return_context: bool = True
+        return_context: bool = True,
+        model: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Process a query through the RAG pipeline.
@@ -152,6 +155,7 @@ class RAGPipeline:
             query: Query text
             top_k: Number of results to retrieve
             return_context: Whether to return retrieved context
+            model: Optional model adapter id to use for answer generation (adapter integration to be added)
             
         Returns:
             Dictionary with query results
@@ -165,35 +169,52 @@ class RAGPipeline:
         response = {
             "query": query,
             "num_results": len(results),
-            "retrieval_time": time.time() - start_time
+            "retrieval_time": time.time() - start_time,
+            "answer": None,
         }
         
-        if return_context and results:
-            # Combine chunk contents for context
-            context_chunks = []
-            sources = []
-            
+        context_chunks = []
+        sources_set = set()
+        combined_contents: List[str] = []
+        if results:
             for chunk, score in results:
-                context_chunks.append({
-                    "content": chunk.content,
-                    "score": score,
-                    "document_id": chunk.document_id,
-                    "chunk_index": chunk.chunk_index
-                })
-                
-                # Track unique sources
-                if chunk.document_id not in sources:
-                    sources.append(chunk.document_id)
-            
-            response["context"] = context_chunks
-            response["sources"] = sources
-            
-            # Create combined context text
-            response["combined_context"] = "\n\n".join([
-                f"[{i+1}] {chunk['content']}" 
-                for i, chunk in enumerate(context_chunks)
-            ])
+                context_chunks.append(
+                    {
+                        "content": chunk.content,
+                        "score": score,
+                        "document_id": chunk.document_id,
+                        "chunk_index": chunk.chunk_index,
+                    }
+                )
+                # Collect sources from metadata if available, otherwise fallback to document_id
+                src_val = None
+                try:
+                    src_val = (chunk.metadata or {}).get("source")
+                except Exception:
+                    src_val = None
+                sources_set.add(src_val or chunk.document_id)
+                combined_contents.append(chunk.content)
         
+        if return_context:
+            response["context"] = context_chunks
+
+        # Enrich response schema for compatibility with existing tests
+        response["sources"] = sorted(list(sources_set)) if sources_set else []
+        response["combined_context"] = "\n\n".join(combined_contents) if combined_contents else ""
+
+        # Generate answer (use adapter if specified)
+        if model:
+            try:
+                from src.rag.models import registry as model_registry
+                prompt = assemble_prompt(query, context_chunks)
+                adapter = model_registry.get_adapter(model, config={})
+                response["answer"] = adapter.generate(prompt, context_chunks)
+            except Exception as e:
+                logger.error(f"Adapter generation failed for model '{model}': {e}")
+                response["answer"] = self.text_generator.generate_answer(query, context_chunks)
+        else:
+            response["answer"] = self.text_generator.generate_answer(query, context_chunks)
+
         return response
     
     def add_document(

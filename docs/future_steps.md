@@ -2,84 +2,49 @@
 
 This section outlines our plans for future development of the project.
 
-## Short-term Goals
+## Immediate Priorities (MVP Path)
 
-In the immediate future, we plan to focus on enhancing our current implementation and preparing for our first RAG test:
+With a functional RAG prototype now validated, our immediate focus shifts to addressing the key missing components identified in the CTO assessment to reach MVP readiness.
 
-### 1. Enhanced PubMed Connector
-- ~~Parse XML data returned by the PubMed API into structured data~~ (Completed)
-- ~~Extract specific fields like title, abstract, authors, publication date~~ (Completed)
-- ~~Handle different XML formats that PubMed might return~~ (Completed)
+### 1. Implement Data Validation Pipeline
+- **Priority**: Medium
+- **Goal**: Ensure the quality and integrity of all data ingested into the RAG system.
+- **Tasks**:
+  - Develop a pipeline for data validation and quality scoring.
+  - Implement deduplication and data normalization mechanisms.
 
-### 2. Sophisticated Search Queries
-- ~~Implement more complex search queries specific to Thai Traditional Medicine~~ (Completed)
-- ~~Add filtering options (date ranges, article types, etc.)~~ (Completed)
-- ~~Implement search query optimization~~ (Completed)
+### 2. Expand Data Sources
+- **Priority**: High
+- **Goal**: Mitigate the single-source dependency risk and enrich our knowledge base.
+- **Tasks**:
+  - Implement a connector for the PMC Open Access database.
+  - Integrate at least one other Tier 1 source, such as the Thai Traditional Medicine Journal.
 
-### 3. Improved Error Handling
-- ~~Add more comprehensive error handling and logging~~ (Completed)
-- ~~Implement retry mechanisms for failed requests~~ (Completed)
-- ~~Add more detailed error messages for debugging~~ (Completed)
-
-### 4. Rate Limiting
-- ~~Implement rate limiting to respect PubMed's API guidelines~~ (Completed)
-- ~~Add delays between requests to avoid overwhelming the API~~ (Completed)
-- ~~Implement request queuing for better resource management~~ (Completed)
-
-### 5. Dashboard Implementation
-- ~~Implement a simple, working dashboard for real-time monitoring~~ (Completed)
-- ~~Create dashboard UI with HTML, CSS, and JavaScript~~ (Completed)
-- ~~Add real-time data streaming with AJAX calls~~ (Completed)
-- ~~Implement key metrics visualization with Chart.js~~ (Completed)
-
-### 6. Preparation for RAG Implementation
-- Implement vector embedding pipeline for document processing
-- Set up infrastructure for storing document embeddings
-- Create preprocessing pipeline for RAG-ready documents
-- Implement similarity search capabilities
-- Develop evaluation framework for RAG performance
+### 3. Integrate Generation Model
+- **Priority**: High
+- **Goal**: Complete the core RAG functionality by adding a text generation component.
+- **Tasks**:
+  - Integrate a suitable Large Language Model (e.g., from the Typhoon series).
+  - Develop prompt engineering strategies for summarizing retrieved context into coherent answers.
+  - Establish a framework for evaluating the quality and factual accuracy of generated responses.
 
 ## Medium-term Goals
 
-After completing the short-term goals, we'll focus on our first RAG implementation and testing:
+Once the MVP is established, we will focus on enhancing the RAG system's capabilities and robustness.
 
-### 1. Vector Embedding Pipeline
-- Implement document chunking and preprocessing
-- Generate vector embeddings for Thai Traditional Medicine documents
-- Store embeddings in database with pgvector extension
-- Implement embedding similarity search
-- Optimize embedding generation for performance
+### 1. Enhance RAG Performance
+- Implement more advanced retrieval strategies (e.g., hybrid search).
+- Fine-tune embedding models on Thai Traditional Medicine-specific texts.
+- Optimize the generation process for quality, speed, and cost.
 
-### 2. Retrieval System
-- Implement efficient similarity search algorithms
-- Create retrieval ranking mechanisms
-- Add filtering and boosting capabilities
-- Implement hybrid search (keyword + semantic)
-- Develop retrieval evaluation metrics
-
-### 3. First RAG Testing
-- Implement basic generation capabilities
-- Create RAG pipeline combining retrieval and generation
-- Develop comprehensive testing framework
-- Implement evaluation metrics for RAG performance
-- Conduct initial RAG testing with Thai Traditional Medicine queries
-
-### 4. Data Validation System
-- Implement data validation pipelines
-- Add quality scoring for documents
-- Implement deduplication mechanisms
-- Add data cleaning and normalization
+### 2. Production Monitoring & Optimization
+- Implement a comprehensive monitoring stack with Grafana dashboards.
+- Establish performance benchmarks and automated regression testing.
+- Implement caching strategies for frequently accessed data.
 
 ## Long-term Goals
 
-For the long-term success of the project, we have these goals:
-
-### 1. Full RAG Implementation
-- Implement advanced vector embeddings for documents
-- Set up OpenSearch for efficient searching
-- Implement the complete retrieval component of the RAG system
-- Implement the generation component using Typhoon models
-- Add advanced features like query rewriting and context compression
+For the long-term success of the project, our vision includes:
 
 ### 2. Advanced Features
 - Implement natural language querying
@@ -127,66 +92,27 @@ We'll measure our progress using these success metrics:
 - **User Satisfaction**: Feedback scores from evaluation tests
 - **Evaluation Coverage**: Percentage of queries with evaluation data
 
-## Timeline
+## Revised Roadmap
 
-Our projected timeline for these goals:
+Our development is now structured around enhancing the existing RAG prototype to prepare it for production.
 
-### Phase 1: Enhancement (Weeks 1-2)
-- ~~Enhanced PubMed connector~~ (Completed)
-- ~~Sophisticated search queries~~ (Completed)
-- ~~Improved error handling~~ (Completed)
-- ~~Rate limiting implementation~~ (Completed)
-- **Dashboard Implementation** (Completed)
-- **Preparation for RAG Implementation** (New)
+### Phase 1: MVP Readiness (Current Phase)
+- **Goal**: Address critical missing components for a viable product.
+- **Key Tasks**:
+  - [ ] Implement Data Validation Pipeline.
+  - [ ] Add PMC Open Access as a new data source.
+  - [ ] Integrate a generation model to complete the RAG loop.
 
-### Phase 2: RAG Foundation (Weeks 3-6)
-- Vector embedding pipeline
-- Retrieval system development
-- First RAG testing preparations
-- Data validation system
+### Phase 2: RAG Enhancement & Optimization
+- **Goal**: Improve the performance, accuracy, and feature set of the RAG system.
+- **Key Tasks**:
+  - Implement advanced retrieval techniques (hybrid search).
+  - Fine-tune embedding models for the TTM domain.
+  - Add production-grade monitoring and performance dashboards.
 
-### Phase 3: RAG Implementation (Weeks 7-10)
-- Full RAG implementation
-- Advanced features development
-- Comprehensive testing and evaluation
-
-### Phase 4: Advanced Features (Weeks 11-12)
-- Natural language querying
-- Document summarization
-- Relationship mapping
-- User interface development
-
-This timeline is subject to change based on progress and any challenges we encounter during development.
-
-## RAG Implementation Roadmap
-
-### Milestone 1: Document Processing Pipeline (Week 3)
-- Implement document chunking strategies
-- Create preprocessing pipeline for Thai text
-- Set up embedding generation infrastructure
-- Store processed documents with embeddings
-
-### Milestone 2: Similarity Search (Week 4)
-- Implement vector similarity search algorithms
-- Create search indexing mechanisms
-- Develop ranking and filtering capabilities
-- Optimize search performance
-
-### Milestone 3: Basic Generation (Week 5)
-- Implement basic text generation capabilities
-- Create RAG pipeline combining retrieval and generation
-- Develop initial evaluation framework
-- Conduct preliminary testing
-
-### Milestone 4: Comprehensive RAG System (Week 6)
-- Implement advanced retrieval techniques
-- Add query understanding and rewriting
-- Create comprehensive evaluation metrics
-- Conduct thorough RAG testing
-
-Each milestone will include:
-- Comprehensive documentation
-- Unit and integration tests
-- Performance evaluation
-- Dashboard monitoring updates
-- Analytics and reporting
+### Phase 3: Scalability and User Interface
+- **Goal**: Scale the system for wider use and provide a user-friendly interface.
+- **Key Tasks**:
+  - Implement distributed processing for data ingestion.
+  - Develop a comprehensive web interface for end-users.
+  - Build out an administrative dashboard for system management.

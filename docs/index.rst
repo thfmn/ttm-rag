@@ -22,5 +22,7 @@ Welcome to Thai Traditional Medicine RAG Bot's documentation!
    final_summary
    onboarding
    onboarding_summary
+   rag_api_tutorial
+   database_tutorial
 
 .. include:: ../README.md

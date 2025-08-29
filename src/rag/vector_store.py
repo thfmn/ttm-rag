@@ -38,7 +38,7 @@ class ChunkEmbedding(Base):
     chunk_index = Column(Integer, nullable=False)
     start_char = Column(Integer, nullable=False)
     end_char = Column(Integer, nullable=False)
-    metadata = Column(JSON, nullable=True)
+    chunk_metadata = Column(JSON, nullable=True)
     embedding = Column(String, nullable=False)  # Will store as text, convert to vector
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
@@ -69,43 +69,48 @@ class VectorStore:
     
     def _initialize_database(self):
         """Initialize database with pgvector extension and tables."""
-        try:
-            with self.engine.connect() as conn:
-                # Create pgvector extension if not exists
-                conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
-                conn.commit()
-                
-                # Create tables
-                Base.metadata.create_all(bind=self.engine)
-                
-                # Add vector column if not exists (using raw SQL for pgvector)
-                conn.execute(text(f"""
-                    DO $$ 
-                    BEGIN
-                        IF NOT EXISTS (
-                            SELECT 1 FROM information_schema.columns 
-                            WHERE table_name='chunk_embeddings' 
-                            AND column_name='embedding_vector'
-                        ) THEN
-                            ALTER TABLE chunk_embeddings 
-                            ADD COLUMN embedding_vector vector({self.embedding_dim});
-                        END IF;
-                    END $$;
-                """))
-                
-                # Create index for similarity search
-                conn.execute(text("""
-                    CREATE INDEX IF NOT EXISTS chunk_embeddings_embedding_vector_idx 
-                    ON chunk_embeddings 
-                    USING ivfflat (embedding_vector vector_cosine_ops)
-                    WITH (lists = 100)
-                """))
-                conn.commit()
-                
-            logger.info("Database initialized with pgvector extension")
-        except Exception as e:
-            logger.warning(f"Could not initialize pgvector (may not be installed): {e}")
-            logger.info("Falling back to text-based embedding storage")
+        # First, create the tables using SQLAlchemy
+        Base.metadata.create_all(bind=self.engine)
+        logger.info("Created database tables")
+        
+        # Try to set up pgvector if using PostgreSQL
+        if "postgresql" in self.database_url.lower():
+            try:
+                with self.engine.connect() as conn:
+                    # Create pgvector extension if not exists
+                    conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+                    conn.commit()
+                    
+                    # Add vector column if not exists (using raw SQL for pgvector)
+                    conn.execute(text(f"""
+                        DO $$ 
+                        BEGIN
+                            IF NOT EXISTS (
+                                SELECT 1 FROM information_schema.columns 
+                                WHERE table_name='chunk_embeddings' 
+                                AND column_name='embedding_vector'
+                            ) THEN
+                                ALTER TABLE chunk_embeddings 
+                                ADD COLUMN embedding_vector vector({self.embedding_dim});
+                            END IF;
+                        END $$;
+                    """))
+                    
+                    # Create index for similarity search
+                    conn.execute(text("""
+                        CREATE INDEX IF NOT EXISTS chunk_embeddings_embedding_vector_idx 
+                        ON chunk_embeddings 
+                        USING ivfflat (embedding_vector vector_cosine_ops)
+                        WITH (lists = 100)
+                    """))
+                    conn.commit()
+                    
+                logger.info("Database initialized with pgvector extension")
+            except Exception as e:
+                logger.warning(f"Could not initialize pgvector: {e}")
+                logger.info("Falling back to text-based embedding storage")
+        else:
+            logger.info("Using SQLite with text-based embedding storage")
     
     def store_chunk_embedding(
         self, 
@@ -136,7 +141,7 @@ class VectorStore:
             if existing:
                 # Update existing chunk
                 existing.content = chunk.content
-                existing.metadata = chunk.metadata
+                existing.chunk_metadata = chunk.metadata
                 existing.embedding = json.dumps(embedding.tolist())
                 existing.updated_at = datetime.now()
                 
@@ -157,7 +162,7 @@ class VectorStore:
                     chunk_index=chunk.chunk_index,
                     start_char=chunk.start_char,
                     end_char=chunk.end_char,
-                    metadata=chunk.metadata,
+                    chunk_metadata=chunk.metadata,
                     embedding=json.dumps(embedding.tolist())
                 )
                 session.add(chunk_embedding)
@@ -239,7 +244,7 @@ class VectorStore:
                 query = text("""
                     SELECT 
                         chunk_id, document_id, content, chunk_index,
-                        start_char, end_char, metadata,
+                        start_char, end_char, chunk_metadata,
                         1 - (embedding_vector <=> :query_vec::vector) as similarity
                     FROM chunk_embeddings
                     WHERE embedding_vector IS NOT NULL
@@ -258,7 +263,7 @@ class VectorStore:
                         chunk_index=row.chunk_index,
                         start_char=row.start_char,
                         end_char=row.end_char,
-                        metadata=row.metadata or {}
+                        metadata=row.chunk_metadata or {}
                     )
                     chunks_with_scores.append((chunk, row.similarity))
                 
@@ -291,7 +296,7 @@ class VectorStore:
                         chunk_index=chunk_record.chunk_index,
                         start_char=chunk_record.start_char,
                         end_char=chunk_record.end_char,
-                        metadata=chunk_record.metadata or {}
+                        metadata=chunk_record.chunk_metadata or {}
                     )
                     
                     similarities.append((chunk, similarity))
@@ -344,7 +349,7 @@ class VectorStore:
                     chunk_index=chunk_record.chunk_index,
                     start_char=chunk_record.start_char,
                     end_char=chunk_record.end_char,
-                    metadata=chunk_record.metadata or {}
+                    metadata=chunk_record.chunk_metadata or {}
                 )
             return None
             
@@ -377,7 +382,7 @@ class VectorStore:
                     chunk_index=record.chunk_index,
                     start_char=record.start_char,
                     end_char=record.end_char,
-                    metadata=record.metadata or {}
+                    metadata=record.chunk_metadata or {}
                 )
                 chunks.append(chunk)
             

@@ -1,0 +1,372 @@
+[
+    {
+        "question": "What are the benefits of Thai traditional medicine for mental health?",
+        "query_time_seconds": 1.0594489574432373,
+        "answer": "Based on the retrieved context, here is a summary:\n\nTraditional Thai medicine has been practiced for centuries and includes various healing practices such as herbal medicine, massage, and spiritual rituals.\n\nThai traditional medicine (TTM) has been used widely in cancer management in Thailand. Although several Thai medicinal plants were screened for pharmacological activities related to cancer treatment, such evidence still suffers from the lack of linking with TTM knowledge.\n\nTraditional Thai herbal medicine formulations have been used as alternative therapies for menopausal symptoms due to concerns from adverse effects associated with hormone therapy. This study aimed to demonstrate the effects of traditional Thai herbal blood and wind tonic formulations used by a traditional Thai medicine doctor, Mr. Somporn Chanwanitsakul, in postmenopausal women.\n\nThe Suk-Saiyasna remedy, an herbal treatment, was historically used but ceased due to its cannabis content. After a relaxation of drug control laws in Thailand, its use re-emerged. This study examines the Suk-Saiyasna remedy's impact on rodent behavior and its receptor effects. This study was conducted to assess the sedative-like effects of the remedy on mice. The mice were divided into groups receiving 0. 6, 3, 30, and 60 mg/kg extracts, with negative controls for comparison.\n\nTo assess the current state of cancer treatment incorporating Thai traditional medicine (TTM) and to identify problems in the system, by using the health system framework of the World Health Organization.",
+        "retrieved_context": [
+            {
+                "content": "Traditional Thai medicine has been practiced for centuries and includes various healing practices such as herbal medicine, massage, and spiritual rituals.",
+                "score": 0.6633066616283485,
+                "document_id": "doc-1",
+                "chunk_index": 0
+            },
+            {
+                "content": "Thai traditional medicine (TTM) has been used widely in cancer management in Thailand. Although several Thai medicinal plants were screened for pharmacological activities related to cancer treatment, such evidence still suffers from the lack of linking with TTM knowledge.",
+                "score": 0.5905563674651702,
+                "document_id": "31751648",
+                "chunk_index": 0
+            },
+            {
+                "content": "Traditional Thai herbal medicine formulations have been used as alternative therapies for menopausal symptoms due to concerns from adverse effects associated with hormone therapy. This study aimed to demonstrate the effects of traditional Thai herbal blood and wind tonic formulations used by a traditional Thai medicine doctor, Mr. Somporn Chanwanitsakul, in postmenopausal women.",
+                "score": 0.5686808235050489,
+                "document_id": "34193369",
+                "chunk_index": 0
+            },
+            {
+                "content": "The Suk-Saiyasna remedy, an herbal treatment, was historically used but ceased due to its cannabis content. After a relaxation of drug control laws in Thailand, its use re-emerged. This study examines the Suk-Saiyasna remedy's impact on rodent behavior and its receptor effects. This study was conducted to assess the sedative-like effects of the remedy on mice. The mice were divided into groups receiving 0. 6, 3, 30, and 60 mg/kg extracts, with negative controls for comparison.",
+                "score": 0.5328564311603506,
+                "document_id": "38389972",
+                "chunk_index": 0
+            },
+            {
+                "content": "To assess the current state of cancer treatment incorporating Thai traditional medicine (TTM) and to identify problems in the system, by using the health system framework of the World Health Organization.",
+                "score": 0.5316604461240086,
+                "document_id": "31889658",
+                "chunk_index": 0
+            }
+        ]
+    },
+    {
+        "question": "What is the role of 'Pra-pai-ro-ma-sa-ma-nee' formula in treating fever?",
+        "query_time_seconds": 0.0328671932220459,
+        "answer": "Based on the retrieved context, here is a summary:\n\nPrasachandaeng (PSD) remedy from the Thailand National List of Essential Medicines (NLEM) has been used as an antipyretic for chronic fever in both adults and children for centuries. Its therapeutic effect in treating fever and its safety have not been studied in animal models. We evaluated its antipyretic activity on lipopolysaccharide (LPS)-induced fever and safety in the liver in comparison with acetaminophen (ACP).\n\nPrasachandaeng (PSD) remedy has been empirically used in Thai traditional medicine to treat fever in bile duct and liver and cancer patients through Thai folk doctors. However, there have been no scientific reports on the bioactive compounds and bioactivities related to inflammation-associated carcinogenesis or cytotoxicity against cancer cell lines.\n\nKheaw-Hom (KH) remedy, a Thai traditional medicine (TTM) on the National List of Essential Medicines, has long been clinically used to treat fever and inflammation in children. However, no in vitro or in vivo anti-inflammatory or bioactive compound studies are published in the literature.\n\nYa-Kao (YK) is a traditional Thai medicine used to relieve fever and consists of 14 crude drugs. It has been recommended by Thai folk healers and the Department of Thai Traditional and Alternative Medicine for COVID-19 treatment, with clinical studies conducted to assess its efficacy. However, scientific evidence on its biological properties remains limited. This study aims to explore the quality aspect of YK and evaluate its antibacterial and anti-inflammatory effects.\n\nMahanintangtong is listed in the Thailand's National List of Essential Medicines (NLEM). It is used to treat non-specific fevers and illnesses such as pharyngitis and chickenpox. In this study, we investigated the biological activities of the different medicinal plants used in the Mahanintangtong formula.",
+        "retrieved_context": [
+            {
+                "content": "Prasachandaeng (PSD) remedy from the Thailand National List of Essential Medicines (NLEM) has been used as an antipyretic for chronic fever in both adults and children for centuries. Its therapeutic effect in treating fever and its safety have not been studied in animal models. We evaluated its antipyretic activity on lipopolysaccharide (LPS)-induced fever and safety in the liver in comparison with acetaminophen (ACP).",
+                "score": 0.5991159056115467,
+                "document_id": "35123231",
+                "chunk_index": 0
+            },
+            {
+                "content": "Prasachandaeng (PSD) remedy has been empirically used in Thai traditional medicine to treat fever in bile duct and liver and cancer patients through Thai folk doctors. However, there have been no scientific reports on the bioactive compounds and bioactivities related to inflammation-associated carcinogenesis or cytotoxicity against cancer cell lines.",
+                "score": 0.5219182646268529,
+                "document_id": "35953870",
+                "chunk_index": 0
+            },
+            {
+                "content": "Kheaw-Hom (KH) remedy, a Thai traditional medicine (TTM) on the National List of Essential Medicines, has long been clinically used to treat fever and inflammation in children. However, no in vitro or in vivo anti-inflammatory or bioactive compound studies are published in the literature.",
+                "score": 0.5043627246036522,
+                "document_id": "37689327",
+                "chunk_index": 0
+            },
+            {
+                "content": "Ya-Kao (YK) is a traditional Thai medicine used to relieve fever and consists of 14 crude drugs. It has been recommended by Thai folk healers and the Department of Thai Traditional and Alternative Medicine for COVID-19 treatment, with clinical studies conducted to assess its efficacy. However, scientific evidence on its biological properties remains limited. This study aims to explore the quality aspect of YK and evaluate its antibacterial and anti-inflammatory effects.",
+                "score": 0.5008814554915632,
+                "document_id": "40281504",
+                "chunk_index": 0
+            },
+            {
+                "content": "Mahanintangtong is listed in the Thailand's National List of Essential Medicines (NLEM). It is used to treat non-specific fevers and illnesses such as pharyngitis and chickenpox. In this study, we investigated the biological activities of the different medicinal plants used in the Mahanintangtong formula.",
+                "score": 0.479072616762639,
+                "document_id": "33785002",
+                "chunk_index": 0
+            }
+        ]
+    },
+    {
+        "question": "What are the anti-inflammatory properties of 'Plai' (Zingiber cassumunar)?",
+        "query_time_seconds": 0.03098273277282715,
+        "answer": "Based on the retrieved context, here is a summary:\n\nRhizomes of Curcuma wanenlueanga Saensouk, Thomudtha &amp; Boonma have been used in Thai traditional medicine and are included as an ingredient in a Thai traditional liniment formula listed by the Ministry of Public Health of Thailand for treating symptoms related to joints and muscle inflammation. However, anti-inflammatory activity and bioactive constituents of C. wanenlueanga have not yet been investigated.\n\nLom-Am-Ma-Pruek (LAMP) remedy has been used in Thai traditional medicine to relieve pain associated with the inflammatory process. The anti-inflammatory activity and bioactivity of LAMP in an animal model have not been previously investigated. We evaluated the\n\nBen-Cha-Moon-Yai (BMY) remedy used in Thai traditional medicine as an anti-inflammatory, analgesic, and antipyretic agent compromises five herbal root extracts of equal weights: Aegle marmelos (L. ) Corrêa (AM), Oroxylum indicum (L. ) Kurz (OI), Dimocarpus longan Lour. (DL), Dolichandrone serrulata (Wall. ex DC. ) Seem. (DS), and Walsura trichostemon Miq. (WT).\n\nThe anti-inflammatory actions of phytochemicals have attracted much attention due to the current state of numerous inflammatory disorders. Thai traditional medicine uses Maclura cochinchinensis (Lour. ) Corner to treat chronic fever and various inflammatory diseases, as well as to maintain normal lymphatic function. Five flavonoids and five xanthones were isolated from the heartwood of M. cochinchinensis and we investigated the anti-inflammatory properties of the isolated compounds.\n\nThus, this study aimed to investigate the anti-inflammatory activity and underlying mechanism of C. wanenlueanga rhizome extract and its responsible bioactive components.",
+        "retrieved_context": [
+            {
+                "content": "Rhizomes of Curcuma wanenlueanga Saensouk, Thomudtha &amp; Boonma have been used in Thai traditional medicine and are included as an ingredient in a Thai traditional liniment formula listed by the Ministry of Public Health of Thailand for treating symptoms related to joints and muscle inflammation. However, anti-inflammatory activity and bioactive constituents of C. wanenlueanga have not yet been investigated.",
+                "score": 0.5166219407451182,
+                "document_id": "40247235",
+                "chunk_index": 0
+            },
+            {
+                "content": "Lom-Am-Ma-Pruek (LAMP) remedy has been used in Thai traditional medicine to relieve pain associated with the inflammatory process. The anti-inflammatory activity and bioactivity of LAMP in an animal model have not been previously investigated. We evaluated the",
+                "score": 0.5151523730877121,
+                "document_id": "39911901",
+                "chunk_index": 0
+            },
+            {
+                "content": "Ben-Cha-Moon-Yai (BMY) remedy used in Thai traditional medicine as an anti-inflammatory, analgesic, and antipyretic agent compromises five herbal root extracts of equal weights: Aegle marmelos (L. ) Corrêa (AM), Oroxylum indicum (L. ) Kurz (OI), Dimocarpus longan Lour. (DL), Dolichandrone serrulata (Wall. ex DC. ) Seem. (DS), and Walsura trichostemon Miq. (WT).",
+                "score": 0.5131069689284988,
+                "document_id": "35149131",
+                "chunk_index": 0
+            },
+            {
+                "content": "The anti-inflammatory actions of phytochemicals have attracted much attention due to the current state of numerous inflammatory disorders. Thai traditional medicine uses Maclura cochinchinensis (Lour. ) Corner to treat chronic fever and various inflammatory diseases, as well as to maintain normal lymphatic function. Five flavonoids and five xanthones were isolated from the heartwood of M. cochinchinensis and we investigated the anti-inflammatory properties of the isolated compounds.",
+                "score": 0.5119969567484887,
+                "document_id": "36580158",
+                "chunk_index": 0
+            },
+            {
+                "content": "Thus, this study aimed to investigate the anti-inflammatory activity and underlying mechanism of C. wanenlueanga rhizome extract and its responsible bioactive components.",
+                "score": 0.5018296743257386,
+                "document_id": "40247235",
+                "chunk_index": 1
+            }
+        ]
+    },
+    {
+        "question": "How is 'Look-pra-kob' (herbal compress ball) used in Thai medicine?",
+        "query_time_seconds": 0.035735368728637695,
+        "answer": "Based on the retrieved context, here is a summary:\n\nThai herbal Kratom (THK), a traditional Thai remedy for muscle pain, is composed of six important medicinal plants and has been traditionally used as a compressed ball for muscle pain management. This study aimed to evaluate its phytochemical composition and biological properties, including antioxidant, anti-inflammatory, and analgesic actions.\n\nIn Thai traditional medicine, Pikad Tri-phol-sa-mut-than has long been used to alleviate gastrointestinal symptoms, renal disease, inflammation-related disorders, and severe malady. This recipe is composed of dried fruits of\n\nTraditional Thai medicine has been practiced for centuries and includes various healing practices such as herbal medicine, massage, and spiritual rituals.\n\nIn the traditional medical system in Thailand, medicinal plants and polyherbal medicines have been prescribed as lipid-lowering agents, including Nawametho decoction. This polyherbal formulation is described in the Worayokasan scripture. It consists of nine medicinal plants (\n\nPrabchompoothaweep (PCT) is a Thai remedy which is composed of 23 herbs and has been added onto the National List of Essential Medicines (NLEM) of Thailand. This remedy has been used to treat allergic rhinitis and asthma in Thai traditional medicine for many years. Furthermore, a few studies have reported anti-allergic, anti-malarial, anti-inflammatory and antioxidant activities.",
+        "retrieved_context": [
+            {
+                "content": "Thai herbal Kratom (THK), a traditional Thai remedy for muscle pain, is composed of six important medicinal plants and has been traditionally used as a compressed ball for muscle pain management. This study aimed to evaluate its phytochemical composition and biological properties, including antioxidant, anti-inflammatory, and analgesic actions.",
+                "score": 0.610163828617402,
+                "document_id": "39929401",
+                "chunk_index": 0
+            },
+            {
+                "content": "In Thai traditional medicine, Pikad Tri-phol-sa-mut-than has long been used to alleviate gastrointestinal symptoms, renal disease, inflammation-related disorders, and severe malady. This recipe is composed of dried fruits of",
+                "score": 0.5671993687623615,
+                "document_id": "37654455",
+                "chunk_index": 0
+            },
+            {
+                "content": "Traditional Thai medicine has been practiced for centuries and includes various healing practices such as herbal medicine, massage, and spiritual rituals.",
+                "score": 0.558413216195798,
+                "document_id": "doc-1",
+                "chunk_index": 0
+            },
+            {
+                "content": "In the traditional medical system in Thailand, medicinal plants and polyherbal medicines have been prescribed as lipid-lowering agents, including Nawametho decoction. This polyherbal formulation is described in the Worayokasan scripture. It consists of nine medicinal plants (",
+                "score": 0.5511224586180719,
+                "document_id": "35966727",
+                "chunk_index": 0
+            },
+            {
+                "content": "Prabchompoothaweep (PCT) is a Thai remedy which is composed of 23 herbs and has been added onto the National List of Essential Medicines (NLEM) of Thailand. This remedy has been used to treat allergic rhinitis and asthma in Thai traditional medicine for many years. Furthermore, a few studies have reported anti-allergic, anti-malarial, anti-inflammatory and antioxidant activities.",
+                "score": 0.5421659586384298,
+                "document_id": "37925003",
+                "chunk_index": 0
+            }
+        ]
+    },
+    {
+        "question": "What does the evidence say about the effectiveness of 'Fah-talai-jone' (Andrographis paniculata) for COVID-19?",
+        "query_time_seconds": 0.03278207778930664,
+        "answer": "Based on the retrieved context, here is a summary:\n\nA common health condition among older persons is xerosis cutis. Topical corticosteroid treatments are -associated with side effects. There is an unmet need for her-bal treatment alternatives. Coccinia grandis, Clerodendrum inerme and Acanthus ebracteatus are used to treat skin con-ditions in Thai traditional medicine. This study aimed to investigate their antimicrobial and antioxidant properties, synergistic properties as well as their cytotoxicity.\n\nYa-Kao (YK) is a traditional Thai medicine used to relieve fever and consists of 14 crude drugs. It has been recommended by Thai folk healers and the Department of Thai Traditional and Alternative Medicine for COVID-19 treatment, with clinical studies conducted to assess its efficacy. However, scientific evidence on its biological properties remains limited. This study aims to explore the quality aspect of YK and evaluate its antibacterial and anti-inflammatory effects.\n\nAcanthus spp. have been documented in traditional Thai herbal medicine and are applicable for the treatment of inflamed skin with wound healing property. Nonetheless, the scientific evidence necessary to prove the herb's doctrine has not yet been revealed. Verbascoside-rich extracts of the herbal medicine A. ebracteatus Vahl. , were therefore prepared. The extracts and verbascoside were examined for their wound healing abilities using a scratch assay with fibroblasts.\n\nReactive oxygen species (ROS) and ultraviolet (UV) light are significant factors to impair skin disorders. Impatiens balsamina Linn. (IB), a traditional Chinese and Thai herbal medicine, has long been used to treat skin and nail diseases, potentially due to its radical-scavenging properties. However, specific antioxidant compounds in IB have not been well defined.\n\nMahanintangtong is listed in the Thailand's National List of Essential Medicines (NLEM). It is used to treat non-specific fevers and illnesses such as pharyngitis and chickenpox. In this study, we investigated the biological activities of the different medicinal plants used in the Mahanintangtong formula.",
+        "retrieved_context": [
+            {
+                "content": "A common health condition among older persons is xerosis cutis. Topical corticosteroid treatments are -associated with side effects. There is an unmet need for her-bal treatment alternatives. Coccinia grandis, Clerodendrum inerme and Acanthus ebracteatus are used to treat skin con-ditions in Thai traditional medicine. This study aimed to investigate their antimicrobial and antioxidant properties, synergistic properties as well as their cytotoxicity.",
+                "score": 0.38101240671226966,
+                "document_id": "32526744",
+                "chunk_index": 0
+            },
+            {
+                "content": "Ya-Kao (YK) is a traditional Thai medicine used to relieve fever and consists of 14 crude drugs. It has been recommended by Thai folk healers and the Department of Thai Traditional and Alternative Medicine for COVID-19 treatment, with clinical studies conducted to assess its efficacy. However, scientific evidence on its biological properties remains limited. This study aims to explore the quality aspect of YK and evaluate its antibacterial and anti-inflammatory effects.",
+                "score": 0.3800520993690396,
+                "document_id": "40281504",
+                "chunk_index": 0
+            },
+            {
+                "content": "Acanthus spp. have been documented in traditional Thai herbal medicine and are applicable for the treatment of inflamed skin with wound healing property. Nonetheless, the scientific evidence necessary to prove the herb's doctrine has not yet been revealed. Verbascoside-rich extracts of the herbal medicine A. ebracteatus Vahl. , were therefore prepared. The extracts and verbascoside were examined for their wound healing abilities using a scratch assay with fibroblasts.",
+                "score": 0.36723804566954504,
+                "document_id": "38253627",
+                "chunk_index": 0
+            },
+            {
+                "content": "Reactive oxygen species (ROS) and ultraviolet (UV) light are significant factors to impair skin disorders. Impatiens balsamina Linn. (IB), a traditional Chinese and Thai herbal medicine, has long been used to treat skin and nail diseases, potentially due to its radical-scavenging properties. However, specific antioxidant compounds in IB have not been well defined.",
+                "score": 0.3406908231859265,
+                "document_id": "39467712",
+                "chunk_index": 0
+            },
+            {
+                "content": "Mahanintangtong is listed in the Thailand's National List of Essential Medicines (NLEM). It is used to treat non-specific fevers and illnesses such as pharyngitis and chickenpox. In this study, we investigated the biological activities of the different medicinal plants used in the Mahanintangtong formula.",
+                "score": 0.3262135038955689,
+                "document_id": "33785002",
+                "chunk_index": 0
+            }
+        ]
+    },
+    {
+        "question": "What are the common uses of 'Rang-jeud' (Thunbergia laurifolia) in detoxification?",
+        "query_time_seconds": 0.03197908401489258,
+        "answer": "Based on the retrieved context, here is a summary:\n\nBauhinia strychnifolia Craib is an herb in Thai traditional medicine. Its decoction is traditionally used as an anticancer, antidiarrheal, and hangover remedy for centuries. Several studies described bioactivities of its organic solvent extracts, however, only few demonstrated the usefulness of the decoction. Here, we aimed to determine the bioactivities of Bauhinia strychnifolia Craib root and stem aqueous extracts in gut and liver perspective.\n\nThe dried fruits of Terminalia plant (Combretaceae) called \"Samo\" have been used as herbal medicine in Thai traditional medicine. Four \"Samo\" crude drugs, namely, Samo thai, Samo thed, Samo dee-ngu, and Samo phiphek, are used as the main ingredients in Triphala and Trisamo recipes. Their commercial products are available in processed and powdered form, but are difficult to authenticate by conventional methods.\n\nPueraria candollei is an ingredient of Thai herbal medicine, dietary supplements, and cosmetics. The in vitro and in vivo studies of this plant supported anti-osteoporotic activity and used for hormone replacement therapy. Deoxymiroestrol shows the most potent phytoconstituent in tuberous root of P. candollei with estrogenic activity. The quality controls are important for good agricultural practice (GAP) and good manufacturing practice (GMP) of plant-derived raw materials.\n\nThai herbal Kratom (THK), a traditional Thai remedy for muscle pain, is composed of six important medicinal plants and has been traditionally used as a compressed ball for muscle pain management. This study aimed to evaluate its phytochemical composition and biological properties, including antioxidant, anti-inflammatory, and analgesic actions.\n\nBreast cancer is the most common type of cancer and is also the second leading cause of cancer‑associated death in women worldwide. Thus, there is an urgent requirement for the development of effective treatments for this disease. Bridelia ovata and Croton oblongifolius are herbs used in Thai traditional medicine that have been used to treat various health problems; B. &nbsp;ovata has traditionally been used as a purgative, an antipyretic, a leukorrhea treatment and as a birth control herb. C.",
+        "retrieved_context": [
+            {
+                "content": "Bauhinia strychnifolia Craib is an herb in Thai traditional medicine. Its decoction is traditionally used as an anticancer, antidiarrheal, and hangover remedy for centuries. Several studies described bioactivities of its organic solvent extracts, however, only few demonstrated the usefulness of the decoction. Here, we aimed to determine the bioactivities of Bauhinia strychnifolia Craib root and stem aqueous extracts in gut and liver perspective.",
+                "score": 0.4454647980210319,
+                "document_id": "34736448",
+                "chunk_index": 0
+            },
+            {
+                "content": "The dried fruits of Terminalia plant (Combretaceae) called \"Samo\" have been used as herbal medicine in Thai traditional medicine. Four \"Samo\" crude drugs, namely, Samo thai, Samo thed, Samo dee-ngu, and Samo phiphek, are used as the main ingredients in Triphala and Trisamo recipes. Their commercial products are available in processed and powdered form, but are difficult to authenticate by conventional methods.",
+                "score": 0.44217002718089643,
+                "document_id": "31587135",
+                "chunk_index": 0
+            },
+            {
+                "content": "Pueraria candollei is an ingredient of Thai herbal medicine, dietary supplements, and cosmetics. The in vitro and in vivo studies of this plant supported anti-osteoporotic activity and used for hormone replacement therapy. Deoxymiroestrol shows the most potent phytoconstituent in tuberous root of P. candollei with estrogenic activity. The quality controls are important for good agricultural practice (GAP) and good manufacturing practice (GMP) of plant-derived raw materials.",
+                "score": 0.4292188466497828,
+                "document_id": "34106388",
+                "chunk_index": 0
+            },
+            {
+                "content": "Thai herbal Kratom (THK), a traditional Thai remedy for muscle pain, is composed of six important medicinal plants and has been traditionally used as a compressed ball for muscle pain management. This study aimed to evaluate its phytochemical composition and biological properties, including antioxidant, anti-inflammatory, and analgesic actions.",
+                "score": 0.42358829184787355,
+                "document_id": "39929401",
+                "chunk_index": 0
+            },
+            {
+                "content": "Breast cancer is the most common type of cancer and is also the second leading cause of cancer‑associated death in women worldwide. Thus, there is an urgent requirement for the development of effective treatments for this disease. Bridelia ovata and Croton oblongifolius are herbs used in Thai traditional medicine that have been used to treat various health problems; B. &nbsp;ovata has traditionally been used as a purgative, an antipyretic, a leukorrhea treatment and as a birth control herb. C.",
+                "score": 0.4211570697913603,
+                "document_id": "32319560",
+                "chunk_index": 0
+            }
+        ]
+    },
+    {
+        "question": "What is the scientific evidence for the use of 'Ka-min-chan' (Curcuma longa) in treating digestive issues?",
+        "query_time_seconds": 0.03319859504699707,
+        "answer": "Based on the retrieved context, here is a summary:\n\nRhizomes of Curcuma wanenlueanga Saensouk, Thomudtha &amp; Boonma have been used in Thai traditional medicine and are included as an ingredient in a Thai traditional liniment formula listed by the Ministry of Public Health of Thailand for treating symptoms related to joints and muscle inflammation. However, anti-inflammatory activity and bioactive constituents of C. wanenlueanga have not yet been investigated.\n\nIn Thai traditional medicine, Pikad Tri-phol-sa-mut-than has long been used to alleviate gastrointestinal symptoms, renal disease, inflammation-related disorders, and severe malady. This recipe is composed of dried fruits of\n\nPrasachandaeng (PSD) remedy has been empirically used in Thai traditional medicine to treat fever in bile duct and liver and cancer patients through Thai folk doctors. However, there have been no scientific reports on the bioactive compounds and bioactivities related to inflammation-associated carcinogenesis or cytotoxicity against cancer cell lines.\n\nInflammation has been known to possess some essential roles in many diseases, especially those with chronic or severe conditions. Pikad Tri-phol-sa-mut-than, a Thai traditional herbal remedy, has long been used to treat gastrointestinal sicknesses, fever, and severe illness caused by the deformities of Tridosha. In particular, this recipe has also been applied for inflammation-related conditions including gout and rheumatoid arthritis.\n\nThe tuberous roots of Pueraria candollei Grah. ex Benth. (Fabaceae), commonly known as white Kwao Krua, are used to relieve menopausal symptoms in Thai traditional medicine because they contain phytoestrogens. Black and red Kwao Krua crude drugs exist as well, but they have different botanical origins and pharmacological activities.",
+        "retrieved_context": [
+            {
+                "content": "Rhizomes of Curcuma wanenlueanga Saensouk, Thomudtha &amp; Boonma have been used in Thai traditional medicine and are included as an ingredient in a Thai traditional liniment formula listed by the Ministry of Public Health of Thailand for treating symptoms related to joints and muscle inflammation. However, anti-inflammatory activity and bioactive constituents of C. wanenlueanga have not yet been investigated.",
+                "score": 0.49245197192673373,
+                "document_id": "40247235",
+                "chunk_index": 0
+            },
+            {
+                "content": "In Thai traditional medicine, Pikad Tri-phol-sa-mut-than has long been used to alleviate gastrointestinal symptoms, renal disease, inflammation-related disorders, and severe malady. This recipe is composed of dried fruits of",
+                "score": 0.4897851321565048,
+                "document_id": "37654455",
+                "chunk_index": 0
+            },
+            {
+                "content": "Prasachandaeng (PSD) remedy has been empirically used in Thai traditional medicine to treat fever in bile duct and liver and cancer patients through Thai folk doctors. However, there have been no scientific reports on the bioactive compounds and bioactivities related to inflammation-associated carcinogenesis or cytotoxicity against cancer cell lines.",
+                "score": 0.48841690999910414,
+                "document_id": "35953870",
+                "chunk_index": 0
+            },
+            {
+                "content": "Inflammation has been known to possess some essential roles in many diseases, especially those with chronic or severe conditions. Pikad Tri-phol-sa-mut-than, a Thai traditional herbal remedy, has long been used to treat gastrointestinal sicknesses, fever, and severe illness caused by the deformities of Tridosha. In particular, this recipe has also been applied for inflammation-related conditions including gout and rheumatoid arthritis.",
+                "score": 0.48006360313098173,
+                "document_id": "35964822",
+                "chunk_index": 0
+            },
+            {
+                "content": "The tuberous roots of Pueraria candollei Grah. ex Benth. (Fabaceae), commonly known as white Kwao Krua, are used to relieve menopausal symptoms in Thai traditional medicine because they contain phytoestrogens. Black and red Kwao Krua crude drugs exist as well, but they have different botanical origins and pharmacological activities.",
+                "score": 0.47216197496582896,
+                "document_id": "31377923",
+                "chunk_index": 0
+            }
+        ]
+    },
+    {
+        "question": "Describe the 'Sen Sib' energy lines in Thai massage.",
+        "query_time_seconds": 0.03517317771911621,
+        "answer": "Based on the retrieved context, here is a summary:\n\nThai massage combines acupressure, Indian Ayurvedic principles, and assisted yoga postures to improve circulation and flexibility.\n\nTraditional Thai medicine has been practiced for centuries and includes various healing practices such as herbal medicine, massage, and spiritual rituals.\n\nIn Thai traditional medicine (TTM), the dominant body element called \"Dhat Chao Ruean\" (DCR) is an integral part in the diagnostic process of Thai traditional medicine. TTM practitioners usually use Thai herbal Benjakul formula (BKF) for adjusting and balancing the body elements. However, the effects of BKF on metabolism and individual response to it have not been studied yet.\n\nThai herbal Kratom (THK), a traditional Thai remedy for muscle pain, is composed of six important medicinal plants and has been traditionally used as a compressed ball for muscle pain management. This study aimed to evaluate its phytochemical composition and biological properties, including antioxidant, anti-inflammatory, and analgesic actions.\n\nLom-Am-Ma-Pruek (LAMP) remedy has been used in Thai traditional medicine to relieve pain associated with the inflammatory process. The anti-inflammatory activity and bioactivity of LAMP in an animal model have not been previously investigated. We evaluated the",
+        "retrieved_context": [
+            {
+                "content": "Thai massage combines acupressure, Indian Ayurvedic principles, and assisted yoga postures to improve circulation and flexibility.",
+                "score": 0.5833063459724818,
+                "document_id": "doc-3",
+                "chunk_index": 0
+            },
+            {
+                "content": "Traditional Thai medicine has been practiced for centuries and includes various healing practices such as herbal medicine, massage, and spiritual rituals.",
+                "score": 0.46283702004566907,
+                "document_id": "doc-1",
+                "chunk_index": 0
+            },
+            {
+                "content": "In Thai traditional medicine (TTM), the dominant body element called \"Dhat Chao Ruean\" (DCR) is an integral part in the diagnostic process of Thai traditional medicine. TTM practitioners usually use Thai herbal Benjakul formula (BKF) for adjusting and balancing the body elements. However, the effects of BKF on metabolism and individual response to it have not been studied yet.",
+                "score": 0.4622425215185956,
+                "document_id": "37954926",
+                "chunk_index": 0
+            },
+            {
+                "content": "Thai herbal Kratom (THK), a traditional Thai remedy for muscle pain, is composed of six important medicinal plants and has been traditionally used as a compressed ball for muscle pain management. This study aimed to evaluate its phytochemical composition and biological properties, including antioxidant, anti-inflammatory, and analgesic actions.",
+                "score": 0.4425609893335718,
+                "document_id": "39929401",
+                "chunk_index": 0
+            },
+            {
+                "content": "Lom-Am-Ma-Pruek (LAMP) remedy has been used in Thai traditional medicine to relieve pain associated with the inflammatory process. The anti-inflammatory activity and bioactivity of LAMP in an animal model have not been previously investigated. We evaluated the",
+                "score": 0.3910637587488981,
+                "document_id": "39911901",
+                "chunk_index": 0
+            }
+        ]
+    },
+    {
+        "question": "What are the traditional uses of 'Ma-kham-pom' (Phyllanthus emblica)?",
+        "query_time_seconds": 0.0332028865814209,
+        "answer": "Based on the retrieved context, here is a summary:\n\nThe tuberous roots of Pueraria candollei Grah. ex Benth. (Fabaceae), commonly known as white Kwao Krua, are used to relieve menopausal symptoms in Thai traditional medicine because they contain phytoestrogens. Black and red Kwao Krua crude drugs exist as well, but they have different botanical origins and pharmacological activities.\n\nLom-Am-Ma-Pruek (LAMP) remedy has been used in Thai traditional medicine to relieve pain associated with the inflammatory process. The anti-inflammatory activity and bioactivity of LAMP in an animal model have not been previously investigated. We evaluated the\n\nPueraria candollei is an ingredient of Thai herbal medicine, dietary supplements, and cosmetics. The in vitro and in vivo studies of this plant supported anti-osteoporotic activity and used for hormone replacement therapy. Deoxymiroestrol shows the most potent phytoconstituent in tuberous root of P. candollei with estrogenic activity. The quality controls are important for good agricultural practice (GAP) and good manufacturing practice (GMP) of plant-derived raw materials.\n\nThai traditional medicine (TTM) has been used widely in cancer management in Thailand. Although several Thai medicinal plants were screened for pharmacological activities related to cancer treatment, such evidence still suffers from the lack of linking with TTM knowledge.\n\nBreast cancer is the most common type of cancer and is also the second leading cause of cancer‑associated death in women worldwide. Thus, there is an urgent requirement for the development of effective treatments for this disease. Bridelia ovata and Croton oblongifolius are herbs used in Thai traditional medicine that have been used to treat various health problems; B. &nbsp;ovata has traditionally been used as a purgative, an antipyretic, a leukorrhea treatment and as a birth control herb. C.",
+        "retrieved_context": [
+            {
+                "content": "The tuberous roots of Pueraria candollei Grah. ex Benth. (Fabaceae), commonly known as white Kwao Krua, are used to relieve menopausal symptoms in Thai traditional medicine because they contain phytoestrogens. Black and red Kwao Krua crude drugs exist as well, but they have different botanical origins and pharmacological activities.",
+                "score": 0.46924863431670927,
+                "document_id": "31377923",
+                "chunk_index": 0
+            },
+            {
+                "content": "Lom-Am-Ma-Pruek (LAMP) remedy has been used in Thai traditional medicine to relieve pain associated with the inflammatory process. The anti-inflammatory activity and bioactivity of LAMP in an animal model have not been previously investigated. We evaluated the",
+                "score": 0.4448487863959425,
+                "document_id": "39911901",
+                "chunk_index": 0
+            },
+            {
+                "content": "Pueraria candollei is an ingredient of Thai herbal medicine, dietary supplements, and cosmetics. The in vitro and in vivo studies of this plant supported anti-osteoporotic activity and used for hormone replacement therapy. Deoxymiroestrol shows the most potent phytoconstituent in tuberous root of P. candollei with estrogenic activity. The quality controls are important for good agricultural practice (GAP) and good manufacturing practice (GMP) of plant-derived raw materials.",
+                "score": 0.44137486258999753,
+                "document_id": "34106388",
+                "chunk_index": 0
+            },
+            {
+                "content": "Thai traditional medicine (TTM) has been used widely in cancer management in Thailand. Although several Thai medicinal plants were screened for pharmacological activities related to cancer treatment, such evidence still suffers from the lack of linking with TTM knowledge.",
+                "score": 0.44066522066039193,
+                "document_id": "31751648",
+                "chunk_index": 0
+            },
+            {
+                "content": "Breast cancer is the most common type of cancer and is also the second leading cause of cancer‑associated death in women worldwide. Thus, there is an urgent requirement for the development of effective treatments for this disease. Bridelia ovata and Croton oblongifolius are herbs used in Thai traditional medicine that have been used to treat various health problems; B. &nbsp;ovata has traditionally been used as a purgative, an antipyretic, a leukorrhea treatment and as a birth control herb. C.",
+                "score": 0.4231753513918866,
+                "document_id": "32319560",
+                "chunk_index": 0
+            }
+        ]
+    },
+    {
+        "question": "How does Thai herbal medicine approach the treatment of diabetes?",
+        "query_time_seconds": 0.03218221664428711,
+        "answer": "Based on the retrieved context, here is a summary:\n\nDiabetes mellitus remains the most lethal metabolic disease of contemporaneous times and despite the therapeutic arsenal currently available, research on new antidiabetic agents remains a priority. In recent years, the revitalization of Thai Traditional Medicine (TTM) became a clear priority for the Thai government, and many efforts have been undertaken to accelerate research on herbal medicines and their use in medical services in various hospitals.\n\nAdditionally, and particularly in rural areas, treatment of diabetes and associated symptomatology frequently relies on herbal preparations recommended by practitioners of TTM. In the current work, medicinal plants used in Thailand for treating diabetes, as well as their hypoglycaemic pharmacological evidences and potential therapeutic use for diabetes-related complications were reviewed.\n\nThis study aims to investigate selected medicinal plants' anti-oxidative and antihyperglycemic activities to develop an effective remedy for lowering blood glucose levels and/or reducing diabetes complications. Thai medicinal plants, reported to have blood sugar-lowering effects, were selected for the study:\n\nDiabetes mellitus is a persistent hyperglycemic condition. Thai cuisine and medicine incorporate spices: nutmeg, mace, clove buds, cardamom, cinnamon, and coriander. The\n\nTraditional herbal formulations offer promising avenues for diabetes management by targeting multiple molecular pathways. Mathurameha (MT), a polyherbal preparation, has been historically used for its antidiabetic potential. However, its molecular mechanisms remain largely unexplored. FrE exhibited potent α-glucosidase inhibition (IC₅₀ 0. 3&nbsp;µg/mL) and significantly enhanced glucose uptake in L6 myotubes (3. 67 ± 0. 23-fold) and 3T3-L1 adipocytes (IC₅₀ 6. 78&nbsp;µg/mL).",
+        "retrieved_context": [
+            {
+                "content": "Diabetes mellitus remains the most lethal metabolic disease of contemporaneous times and despite the therapeutic arsenal currently available, research on new antidiabetic agents remains a priority. In recent years, the revitalization of Thai Traditional Medicine (TTM) became a clear priority for the Thai government, and many efforts have been undertaken to accelerate research on herbal medicines and their use in medical services in various hospitals.",
+                "score": 0.838780905607913,
+                "document_id": "32768637",
+                "chunk_index": 0
+            },
+            {
+                "content": "Additionally, and particularly in rural areas, treatment of diabetes and associated symptomatology frequently relies on herbal preparations recommended by practitioners of TTM. In the current work, medicinal plants used in Thailand for treating diabetes, as well as their hypoglycaemic pharmacological evidences and potential therapeutic use for diabetes-related complications were reviewed.",
+                "score": 0.8209992294946569,
+                "document_id": "32768637",
+                "chunk_index": 1
+            },
+            {
+                "content": "This study aims to investigate selected medicinal plants' anti-oxidative and antihyperglycemic activities to develop an effective remedy for lowering blood glucose levels and/or reducing diabetes complications. Thai medicinal plants, reported to have blood sugar-lowering effects, were selected for the study:",
+                "score": 0.730372786699172,
+                "document_id": "39458809",
+                "chunk_index": 0
+            },
+            {
+                "content": "Diabetes mellitus is a persistent hyperglycemic condition. Thai cuisine and medicine incorporate spices: nutmeg, mace, clove buds, cardamom, cinnamon, and coriander. The",
+                "score": 0.65875280444426,
+                "document_id": "39006980",
+                "chunk_index": 0
+            },
+            {
+                "content": "Traditional herbal formulations offer promising avenues for diabetes management by targeting multiple molecular pathways. Mathurameha (MT), a polyherbal preparation, has been historically used for its antidiabetic potential. However, its molecular mechanisms remain largely unexplored. FrE exhibited potent α-glucosidase inhibition (IC₅₀ 0. 3&nbsp;µg/mL) and significantly enhanced glucose uptake in L6 myotubes (3. 67 ± 0. 23-fold) and 3T3-L1 adipocytes (IC₅₀ 6. 78&nbsp;µg/mL).",
+                "score": 0.6293698379198498,
+                "document_id": "40820159",
+                "chunk_index": 0
+            }
+        ]
+    }
+]
