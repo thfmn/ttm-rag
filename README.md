@@ -44,7 +44,7 @@ python scripts/database/migrate.py seed
 make api
 ```
 
-The API will be available at `http://localhost:8000`.
+The API will be available at `http://localhost:8005`.
 
 ## Quick Start Commands
 

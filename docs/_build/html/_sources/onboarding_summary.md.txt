@@ -145,8 +145,8 @@ def my_function():
 - [Onboarding Guide](http://localhost:8081/onboarding.html)
 - [Deployment Guide](http://localhost:8081/deployment.html)
 - [API Documentation](http://localhost:8081/index.html)
-- [Health Check Endpoint](http://localhost:8000/health)
-- [Metrics Endpoint](http://localhost:8000/metrics)
+- [Health Check Endpoint](http://localhost:8005/health)
+- [Metrics Endpoint](http://localhost:8005/metrics)
 
 ## Next Steps
 

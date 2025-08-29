@@ -82,7 +82,7 @@ make thai-setup
 make api
 ```
 
-The API will be available at `http://localhost:8000`.
+The API will be available at `http://localhost:8005`.
 
 ## Docker Deployment
 
@@ -120,7 +120,7 @@ make db-setup
 make thai-setup
 ```
 
-The application will be available at `http://localhost:8000`.
+The application will be available at `http://localhost:8005`.
 
 ## Production Deployment
 

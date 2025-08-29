@@ -227,10 +227,10 @@ The application provides two health check endpoints:
 
 ```bash
 # Check application health
-curl http://localhost:8000/health
+curl http://localhost:8005/health
 
 # Get Prometheus metrics
-curl http://localhost:8000/metrics
+curl http://localhost:8005/metrics
 ```
 
 ### Adding Custom Metrics
@@ -453,6 +453,6 @@ When developing new API endpoints in this project:
 ### Quick Reference Links
 
 - [API Practices Full Guide](api_practices.html) - Complete API design study guide
-- [OpenAPI Documentation](http://localhost:8000/docs) - Live API documentation
-- [Health Check Endpoint](http://localhost:8000/health) - API health status
-- [Metrics Endpoint](http://localhost:8000/metrics) - Performance metrics
+- [OpenAPI Documentation](http://localhost:8005/docs) - Live API documentation
+- [Health Check Endpoint](http://localhost:8005/health) - API health status
+- [Metrics Endpoint](http://localhost:8005/metrics) - Performance metrics

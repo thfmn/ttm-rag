@@ -32,20 +32,21 @@ install-prod:
 # Development
 dev:
 	@echo "🚀 Starting development server..."
-	uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+	uv run uvicorn src.main:app --reload --host 0.0.0.0 --port 8005
 
 dev-worker:
 	@echo "👷 Starting Celery worker..."
-	celery -A src.tasks.celery worker --loglevel=info
+	uv run celery -A src.tasks.celery worker --loglevel=info
 
 dev-flower:
 	@echo "🌸 Starting Flower (Celery monitor)..."
-	celery -A src.tasks.celery flower
+	uv run celery -A src.tasks.celery flower
 
 # API
 api:
 	@echo "📡 Starting FastAPI server..."
-	uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
+	@echo "Activating virtual environment and starting server..."
+	bash -c "source .venv/bin/activate && uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8005"
 
 # Testing
 test:
