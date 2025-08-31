@@ -2,10 +2,15 @@ import json
 import time
 from pathlib import Path
 import requests
+from scripts.evaluation.eval_harness import (
+    build_payload_from_env,
+    build_headers_from_env,
+    compute_kpis,
+)
 
 # Configuration
 API_ENDPOINT = "http://localhost:8005/api/v1/rag/query"
-HEADERS = {"Content-Type": "application/json"}
+HEADERS_BASE = {"Content-Type": "application/json"}
 OUTPUT_DIR = Path("results")
 OUTPUT_FILE = OUTPUT_DIR / "retrieval_evaluation_results.json"
 
@@ -38,15 +43,12 @@ def main():
     for i, question in enumerate(EVALUATION_QUESTIONS):
         print(f"\nQuerying with question {i + 1}/{len(EVALUATION_QUESTIONS)}: '{question}'")
         
-        payload = {
-            "query": question,
-            "top_k": 5,
-            "return_context": True
-        }
+        payload = build_payload_from_env(question)
+        headers = {**HEADERS_BASE, **build_headers_from_env()}
 
         start_time = time.time()
         try:
-            response = requests.post(API_ENDPOINT, headers=HEADERS, data=json.dumps(payload))
+            response = requests.post(API_ENDPOINT, headers=headers, data=json.dumps(payload))
             response.raise_for_status()
             
             end_time = time.time()
@@ -76,10 +78,12 @@ def main():
             })
 
     print(f"\nTotal query time for all questions: {total_time:.2f} seconds.")
+    kpis = compute_kpis(results)
+    print("KPIs:", json.dumps(kpis, indent=2))
     
     # Save the results
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=4, ensure_ascii=False)
+        json.dump({"results": results, "kpis": kpis}, f, indent=4, ensure_ascii=False)
     
     print(f"Evaluation results saved to {OUTPUT_FILE}")
 

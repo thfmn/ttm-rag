@@ -4,7 +4,7 @@ FastAPI router for RAG endpoints.
 This module provides REST API endpoints for the RAG system.
 """
 
-from fastapi import APIRouter, HTTPException, Query, Depends
+from fastapi import APIRouter, HTTPException, Query, Depends, Request
 from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
 import logging
@@ -42,6 +42,11 @@ class QueryRequest(BaseModel):
     query: str = Field(..., min_length=1, max_length=1000, description="Query text")
     top_k: Optional[int] = Field(5, ge=1, le=20, description="Number of results to retrieve")
     return_context: Optional[bool] = Field(True, description="Whether to return context")
+    model: Optional[str] = Field(None, description="Optional model adapter id to use for answer generation")
+    filter_metadata: Optional[Dict[str, Any]] = Field(default=None, description="Optional metadata filters applied at retrieval")
+    agentic: Optional[bool] = Field(default=None, description="Enable agentic planner/synthesizer path")
+    use_policy: Optional[bool] = Field(default=None, description="Enable policy-based model selection")
+    policy_constraints: Optional[Dict[str, Any]] = Field(default=None, description="Constraints for policy (e.g., allow_external, max_cost_per_call)")
 
 
 class QueryResponse(BaseModel):
@@ -52,6 +57,7 @@ class QueryResponse(BaseModel):
     answer: Optional[str] = None
     context: Optional[List[Dict[str, Any]]] = None
     sources: Optional[List[str]] = None
+    combined_context: Optional[str] = None
 
 
 class ProcessingStats(BaseModel):
@@ -71,11 +77,24 @@ class SystemStats(BaseModel):
     retrieval_config: Dict[str, Any]
 
 
+@router.get("/models")
+async def get_models():
+    """
+    Get available model adapters.
+    """
+    try:
+        from src.rag.models import registry as model_registry
+        return {"models": model_registry.get_model_list()}
+    except Exception as e:
+        logger.error(f"Error fetching model list: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Endpoints
 @router.post("/query", response_model=QueryResponse)
 async def query_rag(
+    http_request: Request,
     request: QueryRequest,
-    pipeline: RAGPipeline = Depends(get_rag_pipeline)
+    pipeline: RAGPipeline = Depends(get_rag_pipeline),
 ):
     """
     Query the RAG system with a text query.
@@ -92,10 +111,32 @@ async def query_rag(
         clean_query = sanitize_text(request.query)
         
         # Execute query
+        if request.model is not None:
+            model = sanitize_text(request.model)
+        else:
+            model = None
+
+        if request.filter_metadata is not None:
+            clean_filters = sanitize_dict(request.filter_metadata)
+        else:
+            clean_filters = None
+
+        # Collect headers (minimally) for agentic intent analysis if enabled
+        headers_dict = dict(http_request.headers)
+        if request.policy_constraints is not None:
+            constraints = sanitize_dict(request.policy_constraints)
+        else:
+            constraints = None
         result = pipeline.query(
             clean_query,
             top_k=request.top_k,
-            return_context=request.return_context if request.return_context is not None else True
+            return_context=request.return_context if request.return_context is not None else True,
+            model=model,
+            filter_metadata=clean_filters,
+            agentic=request.agentic if getattr(request, "agentic", None) is not None else None,
+            headers=headers_dict if headers_dict else None,
+            use_policy=request.use_policy if getattr(request, "use_policy", None) is not None else None,
+            policy_constraints=constraints,
         )
         
         return QueryResponse(**result)

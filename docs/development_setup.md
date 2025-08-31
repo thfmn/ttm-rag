@@ -257,6 +257,37 @@ make dev
 
 The development server automatically reloads when you make code changes.
 
+### Starting the Chat UI (Open WebUI)
+
+Open WebUI is the chat interface that connects to our API and exposes the custom TTM model dropdown.
+
+1. Prepare environment (one-time):
+   ```bash
+   cp open-webui/.env.example.override open-webui/.env
+   # Edit open-webui/.env and set any required keys (e.g., OPENAI_API_KEY)
+   ```
+2. Start Open WebUI backend:
+   ```bash
+   make openwebui-dev
+   ```
+   - URL: http://localhost:8080
+   - Ensure the API is running at http://localhost:8005 (make dev).
+
+3. Configure models in Open WebUI:
+   - Log in as admin → Admin > Connections.
+   - Add at least one provider:
+     - OpenAI: set OPENAI_API_KEY (or configure in Admin > Connections).
+     - Ollama: run Ollama locally (http://localhost:11434) and pull a model, then add the connection.
+
+4. Use the TTM dropdown:
+   - The UI calls:
+     - GET /api/v1/ttm_rag/models
+     - POST /api/v1/ttm_rag/ with {"query":"...", "model":"adapter-id"}
+   - If the dropdown shows “No results found”, open browser Network tab and verify the call to /api/v1/ttm_rag/models succeeds. Adjust CORS in open-webui/.env if needed:
+     ```
+     CORS_ALLOW_ORIGIN='http://localhost:8080;http://localhost:5173;http://localhost:8005'
+     ```
+
 ### Code Quality Checks
 
 Maintain code quality with these commands:

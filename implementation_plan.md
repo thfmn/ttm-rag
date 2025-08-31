@@ -1,185 +1,271 @@
 # Implementation Plan
 
 [Overview]
-Enable router/model selection in Open-WebUI and integrate three generation backends—Typhoon 7B (scb10x/typhoon-7b via Transformers), OpenAI, and Qwen3-code—using a pluggable adapter/registry pattern with minimal surface changes and TDD. The RAG pipeline will accept an optional per-request model override, maintain backward compatibility, and adjust its output schema to satisfy existing tests.
+Design and introduce a production-ready, multi-agent RAG platform for Thai Traditional Medicine with continuous batch ingestion (Dagster), PDPA-safe preprocessing, agentic query planning/guardrails, and cloud-compatible deployment, while preserving existing APIs and data models.
 
-The current RAG pipeline handles chunking, embeddings, vector storage, retrieval, and a default text generator. We introduce a small model adapter layer that defers answer generation to the specified model when provided, while leaving chunking/retrieval untouched. Open-WebUI gains a GET /models endpoint to discover available adapters and a POST body field to select a model; the frontend exposes a minimal dropdown and includes the chosen model in requests.
+This plan establishes three high-value multi-agent capabilities aligned with Thai 2025 needs: (1) Agentic Continuous Ingestion & Curation (foundation), (2) Query Planner & Router for Thai/English clinical workflows (differentiation), and (3) Pharmacovigilance Signal Detection (strategic B2B). Each capability is operationalized through Pydantic AI agents and optionally composed with pydantic-graph for deterministic control. We integrate Dagster for scheduled/batch ingestion and backfills, and we maintain cloud posture with Postgres/pgvector, object storage, Kubernetes, and KMS-backed secrets.
 
-Local constraints: default CPU inference for Typhoon 7B; optional single-GPU deployment config. Edge deployment on Jetson Orin Nano is documented with guidance (potential quantization, aarch64 constraints).
+The implementation minimally extends existing RAG code (pipeline/chunker/embeddings/vector_store) with explicit hooks for preprocessing (PDPA redaction, quality) and retrieval filtering, adds a model-driven agent layer, and introduces robust evaluation/observability (Safety Adjudicator, usage limits, Logfire/Otel). All changes align with .clinerules and testing practices.
 
-[Types]
-Introduce optional model selection, model list payload, and adapter interfaces.
+[Types]  
+Introduce typed agent I/O and pipeline extension types to enforce PDPA safety, taxonomy, quality scoring, and structured query answers.
 
-- Python (Pydantic)
-  - TtmRagQueryForm (open-webui/backend/open_webui/routers/ttm_rag.py): add field model: Optional[str]
-  - TtmRagModelsResponse schema (Python dict): { "models": [ { "id": str, "name": str, "provider": str, "capabilities": dict, "default": bool } ] }
-  - Pipeline query result: include keys "sources": List[str or objects], and "combined_context": str, in addition to existing fields.
+- src/agents/common/types.py
+  - class PDPAFindings(BaseModel):
+    - pii_found: bool
+    - redactions: list[tuple[int, int, str]]  # (start, end, label)
+    - notes: Optional[str]
+  - class RedactionResult(BaseModel):
+    - cleaned_text: str
+    - findings: PDPAFindings
+    - audit_id: str
+  - class TaxonomyLabel(BaseModel):
+    - label: str
+    - confidence: float
+  - class QualityScore(BaseModel):
+    - completeness: float
+    - coherence: float
+    - citation_presence: float
+    - overall: float
+    - reasons: list[str]
+  - class AcceptanceDecision(BaseModel):
+    - accepted: bool
+    - reasons: list[str]
+    - votes: dict[str, float]
+  - class IngestionDoc(BaseModel):
+    - id: str
+    - content: str
+    - metadata: dict[str, Any] = {}
+  - class SafeChunk(BaseModel):
+    - document_id: str
+    - content: str
+    - metadata: dict[str, Any] = {}
+  - class AnswerChunk(BaseModel):
+    - content: str
+    - score: float
+    - document_id: str
+    - chunk_index: int
+  - class QueryPlan(BaseModel):
+    - persona: Literal["clinician","pharmacist","wellness","tourist"]
+    - language: Literal["th","en","mixed"]
+    - domain_route: Literal["interactions","dosage","contraindications","preparation","general"]
+    - retrieval_mix: dict[str, float]  # e.g., {"bm25":0.3,"dense":0.7}
+    - top_k: int = 5
+  - class PlannedAnswer(BaseModel):
+    - answer: str
+    - citations: list[str]
+    - grounded: bool
+    - disclaimers: list[str]
+    - safety_score: float
 
-- TypeScript
-  - open-webui/src/lib/types/ttm_rag.ts
-    - export interface TtmRagModel { id: string; name: string; provider: string; capabilities?: Record<string, any>; default?: boolean; }
-    - export interface TtmRagModelList { models: TtmRagModel[]; }
+- src/rag/pipeline_ext.py
+  - class PreprocessorResult(BaseModel):
+    - content: str
+    - metadata: dict[str, Any]
+    - audit: dict[str, Any] = {}
 
-- Adapter Interfaces
-  - BaseAdapter: generate(prompt: str, context: list[dict], **kwargs) -> str; model_info() -> dict
+- src/agents/pv/types.py
+  - class EventRecord(BaseModel):
+    - source_id: str
+    - text: str
+    - timestamp: datetime
+    - metadata: dict[str, Any] = {}
+  - class Signal(BaseModel):
+    - key: str
+    - strength: float
+    - evidence: list[str]
+    - triage_level: Literal["low","medium","high"]
 
 [Files]
-Create new adapter modules and minimally modify existing files.
+Add agent modules, orchestration, and pipeline extension points; evolve API and vector filters; no deletions in this phase.
 
-New files:
-- src/rag/models/base.py: BaseAdapter definition and common utilities (timeouts, sanitization hooks)
-- src/rag/models/registry.py: REGISTRY dict and get_adapter(id: str, config: dict) -> BaseAdapter
-- src/rag/models/hf_adapter.py: Typhoon 7B adapter via Transformers pipeline/AutoModelForCausalLM
-- src/rag/models/openai_adapter.py: OpenAI adapter using official SDK
-- src/rag/models/qwen_adapter.py: Qwen3-code adapter via OpenAI-compatible or vendor SDK/HTTPX
-- (Optional) src/rag/models/prompts.py: Prompt templates for Thai answer synthesis and context formatting
+- New files
+  - src/agents/common/__init__.py
+  - src/agents/common/types.py
+  - src/agents/ingestion/__init__.py
+  - src/agents/ingestion/pdpa_agent.py
+  - src/agents/ingestion/taxonomy_agent.py
+  - src/agents/ingestion/quality_agent.py
+  - src/agents/ingestion/safety_agent.py
+  - src/agents/ingestion/committee_agent.py
+  - src/agents/query/__init__.py
+  - src/agents/query/intent_agent.py
+  - src/agents/query/router_agent.py
+  - src/agents/query/planner_agent.py
+  - src/agents/query/synthesizer_agent.py
+  - src/agents/query/safety_adjudicator.py
+  - src/agents/pv/__init__.py
+  - src/agents/pv/types.py
+  - src/agents/pv/ner_agent.py
+  - src/agents/pv/dedup_causality_agent.py
+  - src/agents/pv/triage_agent.py
+  - src/orchestration/__init__.py
+  - src/orchestration/dagster_defs.py          # Definitions, schedules, sensors
+  - src/orchestration/assets/ingestion_assets.py # Dagster assets mapping to agent pipeline
+  - src/orchestration/resources.py              # DB, object store, KMS, model gateway configs
+  - src/rag/pipeline_ext.py                     # Preprocessor hooks (PDPA/quality/taxonomy)
+  - scripts/evaluation/eval_harness.py          # Quality/cost/safety eval harness (KnowledgeOps)
+  - scripts/evaluation/kpis_daily_report.py
+  - docs/architecture/multi_agent_overview.md
+  - docs/operations/dagster_deploy.md
 
-Modified files:
-- src/rag/pipeline.py: 
-  - query(query: str, top_k: Optional[int] = None, return_context: bool = True, model: Optional[str] = None)
-  - Add "sources" and "combined_context" to response
-  - If model provided, resolve adapter and delegate generation
-- src/rag/generation.py:
-  - Add assemble_prompt(query, context_chunks) helper; keep TextGenerator as default
-- open-webui/backend/open_webui/routers/ttm_rag.py:
-  - Add GET /api/v1/ttm_rag/models (behind auth)
-  - Extend POST to accept model and pass to rag_pipeline.query(model=model)
-- open-webui/src/lib/apis/ttm_rag.ts:
-  - add getTtmRagModels(token)
-  - extend queryTtmRag(token, query, model?) to include model in body
-- open-webui/src/lib/types/ttm_rag.ts:
-  - add TtmRagModel, TtmRagModelList types
-- open-webui/src/lib/components/chat/MessageInput.svelte:
-  - Add a small dropdown next to the TTM button to select the model; include in queryTtmRag call
+- Modified files
+  - src/api/rag_router.py
+    - Add model: Optional[str] to QueryRequest, forward to pipeline.query(model=model)
+    - Add GET /models to expose registry.get_model_list()
+    - Add optional filter_metadata: dict on /query to support constrained retrieval
+  - src/rag/vector_store.py
+    - Implement filter_metadata in pgvector SQL and numpy fallback
+  - src/rag/pipeline.py
+    - Accept optional list of preprocessors (callables) in RAGConfig
+    - Apply preprocessors before chunking; include audit info in metadata
+    - Ensure query() forwards model param and unify context schema with agents
+  - scripts/ingestion/ingest_documents.py
+    - Optional: emit batches to Dagster materialization (stdout JSON lines) when env DAGSTER_MODE=1
 
-Documentation:
-- docs/ (Sphinx) pages update: API changes, adapter architecture, env vars, deployment notes (CPU, single GPU, Jetson)
-- scratch.md: decision log and rationale
+- Configuration updates
+  - docs/deployment.md: add Dagster deployment guidance (local+K8s), secrets via env/KMS
+  - Makefile: targets for dagster dev, tests, eval dashboards
 
 [Functions]
-Add adapter factory and modify pipeline to allow per-request selection.
+Add clean, typed agent tools and pipeline hooks; modify existing functions for filters and adapter routing.
 
-New functions:
-- src/rag/models/registry.py:
-  - get_model_list() -> list[dict]
-  - get_adapter(adapter_id: str, config: dict) -> BaseAdapter
-- src/rag/generation.py:
-  - assemble_prompt(query: str, context_chunks: list[dict], max_context_chars: int = N) -> str
-- Adapter methods in each adapter file:
-  - generate(prompt, context, **kwargs) -> str
-  - model_info() -> dict
+- New functions
+  - src/rag/pipeline_ext.py
+    - def apply_preprocessors(doc: IngestionDoc, preprocessors: list[Callable]) -> PreprocessorResult
+  - src/agents/ingestion/pdpa_agent.py
+    - Pydantic-AI agent with tool def redact(ctx, text: str) -> RedactionResult
+  - src/agents/ingestion/taxonomy_agent.py
+    - classify(content: str, metadata: dict) -> list[TaxonomyLabel]
+  - src/agents/ingestion/quality_agent.py
+    - score(content: str, metadata: dict) -> QualityScore
+  - src/agents/ingestion/safety_agent.py
+    - check_contraindications(content: str, metadata: dict) -> list[str]
+  - src/agents/ingestion/committee_agent.py
+    - decide(inputs: dict) -> AcceptanceDecision
+  - src/agents/query/intent_agent.py
+    - analyze(query: str, headers: dict) -> tuple[persona, language]
+  - src/agents/query/router_agent.py
+    - route(persona, query) -> domain_route
+  - src/agents/query/planner_agent.py
+    - plan(query, persona, route) -> QueryPlan
+  - src/agents/query/synthesizer_agent.py
+    - synthesize(query, chunks: list[AnswerChunk]) -> PlannedAnswer
+  - src/agents/query/safety_adjudicator.py
+    - adjudicate(answer: PlannedAnswer) -> PlannedAnswer  # may add disclaimers or request more retrieval
+  - src/agents/pv/ner_agent.py
+    - extract(record: EventRecord) -> dict  # entities and relations
+  - src/agents/pv/dedup_causality_agent.py
+    - cluster_and_score(events: list[dict]) -> list[Signal]
+  - src/agents/pv/triage_agent.py
+    - triage(signals: list[Signal]) -> list[Signal]  # with triage_level set
 
-Modified functions:
-- src/rag/pipeline.RAGPipeline.query:
-  - Add model param; produce "sources" and "combined_context" fields; use adapter when model is set
-- open-webui/backend/open_webui/routers/ttm_rag.py:
-  - New get_models() handler
-  - Update query handler to accept model
+- Modified functions
+  - src/api/rag_router.py
+    - class QueryRequest: add model: Optional[str], filter_metadata: Optional[Dict[str, Any]]
+    - query_rag(): pass model and filter_metadata to pipeline.query
+  - src/rag/vector_store.py
+    - similarity_search(): when filter_metadata present, add WHERE JSON filtering in Postgres:
+      WHERE (chunk_metadata->>:key) = :value ... (conjunction over provided keys)
+      For SQLite fallback, filter in Python before ranking.
+  - src/rag/pipeline.py
+    - __init__(): accept preprocessors in RAGConfig; store on self
+    - process_documents(): call apply_preprocessors() before chunking; merge audit into chunk metadata
+    - query(): generate context_chunks compatible with synthesizer; keep adapter model routing
+
+- Removed functions
+  - None in this phase (preserve compatibility).
 
 [Classes]
-Introduce BaseAdapter and three concrete adapters.
+Introduce agent wrappers and preprocessor plumbing; keep core RAG classes intact.
 
-New classes:
-- BaseAdapter (src/rag/models/base.py): Abstract base with generate/model_info; includes common safety wrappers (timeouts, sanitization callouts).
-- TyphoonHFAdapter (src/rag/models/hf_adapter.py): 
-  - Defaults: CPU inference; option to detect device_map for single-GPU; parameters for max_new_tokens, temperature, top_p; truncates combined_context.
-  - Model: "scb10x/typhoon-7b" via transformers.pipeline or AutoModelForCausalLM + AutoTokenizer.
-- OpenAIAdapter (src/rag/models/openai_adapter.py): 
-  - Uses OPENAI_API_KEY; configurable model name; applies retries and timeouts; redacts keys in logs.
-- QwenCodeAdapter (src/rag/models/qwen_adapter.py):
-  - Uses OpenAI-compatible endpoint or vendor SDK via HTTPX; supports code-focused outputs; applies timeouts/retries.
+- New classes
+  - src/rag/pipeline_ext.py
+    - class DocPreprocessor(Protocol): def __call__(self, doc: IngestionDoc) -> PreprocessorResult
+  - Agent wrappers (Pydantic-AI based)
+    - src/agents/ingestion/*_agent.py: module-level Agent instances with typed tools
+    - src/agents/query/*: planner/router/synthesizer agents
+    - src/agents/pv/*: pv agents
+  - src/orchestration/dagster_defs.py
+    - Dagster Definitions, Jobs, Schedules, Sensors
+  - src/orchestration/assets/ingestion_assets.py
+    - Software-defined assets: raw_docs → redacted_docs → labeled_docs → chunks → accepted_corpus
 
-Modified classes:
-- None beyond pipeline’s method adjustments; TextGenerator remains for default behavior.
+- Modified classes
+  - src/api/rag_router.py: Pydantic models augmented as above
+  - src/rag/pipeline.py: RAGConfig extended; RAGPipeline integrates preprocessors
+
+- Removed classes
+  - None.
 
 [Dependencies]
-Add libraries with explanation (do not auto-install; follow uv-only policy).
+Add minimal, rationale-driven packages via uv (manual execution only).
 
-- transformers: needed for Typhoon 7B local inference
-  - uv pip install transformers
-- torch: backend for Transformers (CPU wheel for local; CUDA wheel for GPU)
-  - uv pip install torch
-  - Note: For Jetson Orin Nano (aarch64), use NVIDIA-provided PyTorch wheels (documented in docs) and ensure CUDA/cuDNN compatibility.
-- openai: official SDK for OpenAI adapter
-  - uv pip install openai
-- httpx: robust HTTP client for Qwen (or HF inference REST if used)
-  - uv pip install httpx
-- Optional:
-  - accelerate (device_map="auto")
-    - uv pip install accelerate
-  - bitsandbytes (4/8-bit quantization); note aarch64 challenges on Jetson—document as optional
-    - uv pip install bitsandbytes
+- Core agents and graphs
+  - uv pip install "pydantic-ai>=0.0.16"
+  - uv pip install "pydantic-graph>=0.4.0"
+  Rationale: Typed agents with tool/DI/validator support; optional FSM for complex flows.
+
+- Orchestration
+  - uv pip install "dagster>=1.7" "dagster-webserver>=1.7"
+  Rationale: Asset-based scheduling/backfills for continuous ingestion.
+
+- Thai language quality (optional but recommended)
+  - uv pip install "pythainlp>=5.0"
+  Rationale: Better Thai sentence splitting/NER; improves chunking and PV extraction accuracy.
+
+- Observability (optional, enable in staging)
+  - uv pip install "pydantic-logfire>=0.5" "opentelemetry-sdk>=1.25.0"
+  Rationale: Deep tracing of agent/tool usage and latency.
+
+- Testing
+  - uv pip install "pytest>=8" "pytest-asyncio>=0.23"
+  - uv pip install "httpx>=0.27"  # for any HTTP tools
+  Follow .clinerules: no auto-install, commands provided for manual run.
 
 [Testing]
-Adopt TDD with unit + integration tests. Target >85% coverage for new code.
+Adopt TDD on agent modules and pipeline extensions; comprehensive unit/integration tests with ethical API usage.
 
-New unit tests:
-- tests/unit/test_model_manager.py
-  - registry.get_model_list() returns expected entries for hf-typhoon-7b, openai-..., qwen3-code
-  - registry.get_adapter(id) returns correct class; invalid id raises error
-- tests/unit/test_generation_integration.py
-  - pipeline.query(..., model="hf-typhoon-7b") delegates to TyphoonHFAdapter.generate()
-  - prompt assembly truncates combined_context safely; sanitization invoked
-  - OpenAI and Qwen adapters mocked to validate request/response handling and error paths
-- tests/unit/test_pipeline_response_shape.py
-  - Asserts presence of "sources" and "combined_context" in pipeline.query result
-
-Integration tests (mock external calls):
-- tests/integration/test_openwebui_model_selection.py
-  - GET /api/v1/ttm_rag/models returns model list under auth
-  - POST /api/v1/ttm_rag/ with model routes to correct adapter (mocks), status 200
-
-Update existing tests if necessary:
-- Align tests/unit/test_rag_pipeline.py expectations with final schema (ensure sources/combined_context present)
+- Unit tests (tests/unit/)
+  - tests/unit/agents/ingestion/test_pdpa_agent.py  # FunctionModel stubs, no network
+  - tests/unit/agents/query/test_planner_router.py
+  - tests/unit/agents/query/test_safety_adjudicator.py
+  - tests/unit/rag/test_vector_store_filters.py     # metadata filter behavior (sqlite and mocked pgvector)
+  - tests/unit/rag/test_pipeline_preprocessors.py   # PDPA + quality integration paths
+  - tests/unit/models/test_model_registry.py        # already present pattern (extend for /models endpoint)
+- Integration tests (tests/integration/)
+  - tests/integration/test_dagster_assets.py  # mark as integration; 1s min between external calls; max 3 results/query
+  - tests/integration/test_query_end_to_end.py # with small fixture corpus; evaluate citations/groundedness
+  - tests/integration/test_openwebui_model_selection.py (existing) remains
+- Markers and rate limits
+  - Use pytest markers @pytest.mark.integration
+  - Sleep(1) between any external API calls; cap result counts at 3
+- Coverage
+  - Target >80% for new code; critical paths 100% (preprocessors, router, safety adjudication)
+- Commands (manual)
+  - make test
+  - make test-integration
+  - make test-cov
 
 [Implementation Order]
-1. Write unit tests for registry and pipeline model override (failing initially).
-2. Implement BaseAdapter, registry, and TyphoonHFAdapter (CPU default), OpenAIAdapter, QwenCodeAdapter (with mocks).
-3. Modify pipeline.query to accept model and add sources/combined_context.
-4. Implement Open-WebUI backend: GET /models and POST model param pass-through.
-5. Implement frontend: getTtmRagModels, dropdown in MessageInput.svelte, payload with model.
-6. Add integration tests for backend endpoints (mock adapters).
-7. Update Sphinx docs and scratch.md; list uv commands and env vars (DEFAULT_TTM_MODEL, OPENAI_API_KEY, etc.).
-8. Verify all tests pass via make test; do not start servers automatically.
+Execute in phases to minimize risk, unlock ROI quickly, and keep API stable.
 
-Acceptance Criteria
-- API: GET /api/v1/ttm_rag/models (auth-required) returns >=3 models; POST accepts model and routes to correct adapter.
-- RAG pipeline: query returns answer, context[], sources[], combined_context; model override works; default behavior unchanged when no model given.
-- Typhoon 7B: CPU inference path functional; optional single GPU supported via config; documented Jetson considerations.
-- Security: keys never logged; sanitized inputs; timeouts/retries enforced.
-- Tests: All new tests pass, coverage >85% for new code; no regressions.
-
-Deployment Notes and Environment
-- Local CPU default (Typhoon 7B with Transformers pipeline).
-- Single-GPU deployment: set device_map="auto" if accelerate present; document max_new_tokens and VRAM utilization.
-- Jetson Orin Nano: document NVIDIA aarch64 PyTorch wheel installation; warn about bitsandbytes compatibility; consider future llama.cpp adapter for GGUF.
-
-UV Installation Commands (document only; do not auto-run)
-- uv pip install transformers
-- uv pip install torch
-- uv pip install openai
-- uv pip install httpx
-- (optional) uv pip install accelerate
-- (optional) uv pip install bitsandbytes
-
-Server Management
-- Do not auto-start servers. Request permission for any server runs.
-
-Plan Document Navigation Commands
-Use these to read sections from implementation_plan.md:
-# Read Overview section
-sed -n '/[Overview]/,/[Types]/p' implementation_plan.md | cat
-# Read Types section
-sed -n '/[Types]/,/[Files]/p' implementation_plan.md | cat
-# Read Files section
-sed -n '/[Files]/,/[Functions]/p' implementation_plan.md | cat
-# Read Functions section
-sed -n '/[Functions]/,/[Classes]/p' implementation_plan.md | cat
-# Read Classes section
-sed -n '/[Classes]/,/[Dependencies]/p' implementation_plan.md | cat
-# Read Dependencies section
-sed -n '/[Dependencies]/,/[Testing]/p' implementation_plan.md | cat
-# Read Testing section
-sed -n '/[Testing]/,/[Implementation Order]/p' implementation_plan.md | cat
-# Read Implementation Order section
-sed -n '/[Implementation Order]/,$p' implementation_plan.md | cat
+1. Extend core RAG for safety hooks and retrieval filters
+   - Add preprocessors support in RAGConfig / RAGPipeline
+   - Implement filter_metadata in vector_store (Postgres+fallback)
+   - Update rag_router to accept model and filters; add /models endpoint
+2. Implement Agentic Continuous Ingestion & Curation (Dagster)
+   - Implement ingestion agents (pdpa/taxonomy/quality/safety/committee) with Pydantic-AI
+   - Add Dagster assets: raw_docs → redacted → labeled → chunks → accepted_corpus
+   - Wire to existing pipelines/connectors; keep REST ingestion script working
+3. Implement Query Planner & Router agents
+   - Intent/language, router, planner, synthesizer, safety adjudicator
+   - Integrate planner into query flow (optionally behind feature flag)
+4. KnowledgeOps evaluation + cost-aware routing (initial)
+   - scripts/evaluation, nightly KPIs, simple model gateway policy (use registry)
+5. Pharmacovigilance pilot
+   - Event aggregator (public/regulatory first), NER/RE, dedup/causality, triage
+   - Secure outputs and alerting pathways; mark as enterprise preview
+6. Documentation and deployment
+   - Update docs (architecture/multi_agent_overview.md, operations/dagster_deploy.md)
+   - K8s manifests and secrets guidance (KMS); logging/tracing enablement

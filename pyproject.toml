@@ -148,3 +148,17 @@ extend-exclude = '''
   | dist
 )/
 '''
+
+# Pytest configuration: run only our repo tests by default; vendor subproject tests excluded.
+[tool.pytest.ini_options]
+testpaths = [
+  "tests/unit",
+  "tests/fixtures",
+]
+pythonpath = [
+  "src",
+  "open-webui/backend",
+]
+markers = [
+  "integration: marks tests as integration (run with 'make test-integration')",
+]

@@ -65,6 +65,33 @@ make dev
 
 The API will be available at `http://localhost:8005`.
 
+### Starting the webservers (API, Docs, Open WebUI)
+
+All commands are executed manually by you (uv policy). From the repo root:
+
+1) API (FastAPI)
+- Purpose: backend REST and RAG endpoints
+- Command: make dev
+- URL: http://localhost:8005
+
+2) Documentation (Sphinx)
+- Purpose: local docs site
+- Command: make docs-serve
+- URL: http://localhost:8081
+
+3) Open WebUI (backend)
+- Purpose: chat UI that integrates with our TTM RAG endpoints and your model connections
+- Prepare env (once): cp open-webui/.env.example.override open-webui/.env and edit keys as needed
+- Command: make openwebui-dev
+- URL: http://localhost:8080
+
+Model visibility in Open WebUI:
+- At least one connection must be configured in Admin > Connections (e.g., OpenAI with OPENAI_API_KEY, or Ollama at http://localhost:11434 with a pulled model).
+- The custom TTM dropdown calls:
+  - GET /api/v1/ttm_rag/models to list adapters (Typhoon HF, OpenAI, Qwen)
+  - POST /api/v1/ttm_rag/ with {"query": "...", "model": "adapter-id"} to run a RAG query via the chosen adapter
+- If the dropdown shows “No results found”, open browser devtools and check the request to /api/v1/ttm_rag/models; fix any CORS or auth issues (see open-webui/.env).
+
 ## Manual Setup (For Advanced Users)
 
 If you prefer to set up the environment manually:

@@ -7,9 +7,8 @@ using PostgreSQL's pgvector extension.
 
 from typing import List, Dict, Any, Optional, Tuple
 import numpy as np
-from sqlalchemy import create_engine, text, Column, String, Integer, Float, JSON, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy import create_engine, text, String, Integer, JSON, DateTime
+from sqlalchemy.orm import declarative_base, sessionmaker, Session, Mapped, mapped_column
 from sqlalchemy.sql import func
 from datetime import datetime
 import logging
@@ -29,19 +28,19 @@ Base = declarative_base()
 
 class ChunkEmbedding(Base):
     """SQLAlchemy model for storing chunk embeddings."""
-    __tablename__ = 'chunk_embeddings'
-    
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    chunk_id = Column(String, unique=True, nullable=False, index=True)
-    document_id = Column(String, nullable=False, index=True)
-    content = Column(String, nullable=False)
-    chunk_index = Column(Integer, nullable=False)
-    start_char = Column(Integer, nullable=False)
-    end_char = Column(Integer, nullable=False)
-    chunk_metadata = Column(JSON, nullable=True)
-    embedding = Column(String, nullable=False)  # Will store as text, convert to vector
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    __tablename__ = "chunk_embeddings"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    chunk_id: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
+    document_id: Mapped[str] = mapped_column(String, nullable=False, index=True)
+    content: Mapped[str] = mapped_column(String, nullable=False)
+    chunk_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    start_char: Mapped[int] = mapped_column(Integer, nullable=False)
+    end_char: Mapped[int] = mapped_column(Integer, nullable=False)
+    chunk_metadata: Mapped[Optional[Dict[str, Any]]] = mapped_column(JSON, nullable=True)
+    embedding: Mapped[str] = mapped_column(String, nullable=False)  # Store as text JSON of vector
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=func.now(), onupdate=func.now())
 
 
 class VectorStore:
@@ -241,18 +240,34 @@ class VectorStore:
                 query_vec = f"[{','.join(map(str, query_embedding.tolist()))}]"
                 
                 # Build query with optional metadata filtering
-                query = text("""
+                # Build dynamic WHERE clause with optional metadata filters
+                params = {"query_vec": query_vec, "limit": top_k}
+                where_clauses = ["embedding_vector IS NOT NULL"]
+                if filter_metadata:
+                    for idx, (k, v) in enumerate(filter_metadata.items()):
+                        if v is None:
+                            continue
+                        key_escaped = str(k).replace("'", "''")
+                        if isinstance(v, bool):
+                            val_str = "true" if v else "false"
+                        else:
+                            val_str = str(v)
+                        where_clauses.append(f"chunk_metadata ->> '{key_escaped}' = :fval{idx}")
+                        params[f"fval{idx}"] = val_str
+                
+                sql = f"""
                     SELECT 
                         chunk_id, document_id, content, chunk_index,
                         start_char, end_char, chunk_metadata,
                         1 - (embedding_vector <=> :query_vec::vector) as similarity
                     FROM chunk_embeddings
-                    WHERE embedding_vector IS NOT NULL
+                    WHERE {' AND '.join(where_clauses)}
                     ORDER BY embedding_vector <=> :query_vec::vector
                     LIMIT :limit
-                """)
+                """
+                query = text(sql)
                 
-                results = session.execute(query, {"query_vec": query_vec, "limit": top_k})
+                results = session.execute(query, params)
                 
                 chunks_with_scores = []
                 for row in results:
@@ -279,9 +294,11 @@ class VectorStore:
                 if not all_chunks:
                     return []
                 
-                # Calculate similarities
                 similarities = []
                 for chunk_record in all_chunks:
+                    metadata = chunk_record.chunk_metadata or {}
+                    if filter_metadata and not self._metadata_matches(metadata, filter_metadata):
+                        continue
                     # Parse embedding from JSON
                     chunk_embedding = np.array(json.loads(chunk_record.embedding))
                     
@@ -296,7 +313,7 @@ class VectorStore:
                         chunk_index=chunk_record.chunk_index,
                         start_char=chunk_record.start_char,
                         end_char=chunk_record.end_char,
-                        metadata=chunk_record.chunk_metadata or {}
+                        metadata=metadata
                     )
                     
                     similarities.append((chunk, similarity))
@@ -325,6 +342,35 @@ class VectorStore:
         
         # Calculate dot product
         return float(np.dot(vec1_norm, vec2_norm))
+    
+    def _metadata_matches(self, metadata: Dict[str, Any], filters: Dict[str, Any]) -> bool:
+        """
+        Check if a chunk's metadata satisfies all provided filter conditions.
+        Performs lenient comparisons for common types (e.g., '1' vs 1, 'true' vs True).
+        """
+        try:
+            for key, expected in (filters or {}).items():
+                actual = (metadata or {}).get(key)
+                if isinstance(expected, bool):
+                    # Support boolean values stored as strings in JSON
+                    if isinstance(actual, str):
+                        lower = actual.lower()
+                        if lower in ("true", "false"):
+                            actual_val = (lower == "true")
+                        else:
+                            return False
+                    else:
+                        actual_val = bool(actual) if actual is not None else None
+                    if actual_val is None or actual_val != expected:
+                        return False
+                else:
+                    if actual is None:
+                        return False
+                    if str(actual) != str(expected):
+                        return False
+            return True
+        except Exception:
+            return False
     
     def get_chunk_by_id(self, chunk_id: str) -> Optional[DocumentChunk]:
         """

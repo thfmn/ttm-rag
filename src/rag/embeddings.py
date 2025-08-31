@@ -7,8 +7,9 @@ from text chunks using sentence transformers.
 
 from typing import List, Dict, Any, Optional, Tuple
 import numpy as np
-from sentence_transformers import SentenceTransformer
-import torch
+# Lazy imports are performed in __init__ to avoid heavy deps at module import time.
+# from sentence_transformers import SentenceTransformer  # moved to __init__
+# import torch  # moved to __init__
 import logging
 import time
 from dataclasses import dataclass
@@ -40,19 +41,29 @@ class EmbeddingGenerator:
         """
         self.config = config or EmbeddingConfig()
         
-        # Determine device
+        # Determine device (lazy import torch)
+        try:
+            import torch as _torch  # type: ignore
+        except Exception:
+            _torch = None
+
         if self.config.device is None:
-            self.device = "cuda" if torch.cuda.is_available() else "cpu"
+            self.device = "cuda" if (_torch is not None and hasattr(_torch, "cuda") and _torch.cuda.is_available()) else "cpu"
         else:
             self.device = self.config.device
-        
-        # Initialize the model
+
+        # Initialize the model (lazy import sentence-transformers)
         logger.info(f"Loading embedding model: {self.config.model_name}")
-        self.model = SentenceTransformer(
-            self.config.model_name,
-            device=self.device
-        )
-        
+        try:
+            from sentence_transformers import SentenceTransformer as _SentenceTransformer  # type: ignore
+        except Exception as e:
+            raise ImportError(
+                "sentence-transformers is required for embeddings. "
+                "Install with: uv pip install 'sentence-transformers>=5.1.0' 'torch>=2.1.0'"
+            ) from e
+
+        self.model = _SentenceTransformer(self.config.model_name, device=self.device)
+
         # Set max sequence length
         self.model.max_seq_length = self.config.max_length
         
@@ -223,7 +234,9 @@ class EmbeddingGenerator:
         Returns:
             Embedding dimension
         """
-        return self.model.get_sentence_embedding_dimension()
+        dim = self.model.get_sentence_embedding_dimension()
+        # Guard for Optional[int] typing in stubs
+        return int(dim) if dim is not None else 0
     
     def get_model_info(self) -> Dict[str, Any]:
         """

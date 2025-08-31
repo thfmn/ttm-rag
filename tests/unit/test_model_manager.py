@@ -14,21 +14,16 @@ def test_registry_model_list_includes_required_models():
     - openai-* (OpenAI SDK based)
     - qwen3-code (OpenAI-compatible/Qwen vendor)
     """
-    # Lazy import within test to avoid import error messages at discovery time
-    with pytest.raises(Exception):
-        # Until implemented, importing should fail; we assert later after implementation.
-        import src.rag.models.registry as registry  # noqa: F401
+    import src.rag.models.registry as registry
 
-    # When implemented, uncomment the below and remove the block above:
-    # import src.rag.models.registry as registry
-    # model_list = registry.get_model_list()
-    # assert isinstance(model_list, list)
-    # ids = {m.get("id") for m in model_list}
-    # assert "hf-typhoon-7b" in ids
-    # assert "qwen3-code" in ids
-    # # At least one OpenAI entry
-    # assert any(m.get("provider") == "openai" for m in model_list)
-    # assert len(model_list) >= 3
+    model_list = registry.get_model_list()
+    assert isinstance(model_list, list)
+    ids = {m.get("id") for m in model_list}
+    assert "hf-typhoon-7b" in ids
+    assert "qwen3-code" in ids
+    # At least one OpenAI entry
+    assert any(m.get("provider") == "openai" for m in model_list)
+    assert len(model_list) >= 3
 
 
 def test_pipeline_uses_adapter_when_model_overridden(monkeypatch):

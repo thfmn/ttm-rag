@@ -2,6 +2,7 @@ import json
 import time
 from pathlib import Path
 import requests
+import os
 
 # Configuration
 INPUT_FILE = Path("data/raw/pubmed_ttm_100_articles.json")
@@ -24,6 +25,9 @@ def main():
 
     total_docs = len(documents)
     print(f"Found {total_docs} documents to ingest.")
+    # Optional Dagster emission mode: when enabled, emit JSON Lines to stdout instead of POSTing
+    dagster_mode = os.getenv("DAGSTER_MODE", "0")
+    dagster_mode = str(dagster_mode).strip().lower() not in ("", "0", "false", "no")
 
     start_time = time.time()
     errors = []
@@ -50,7 +54,15 @@ def main():
         if not payload["content"]:
             print(f"Skipping document {payload['id']} due to empty content.")
             continue
-            
+
+        # If in DAGSTER_MODE, emit JSON line to stdout for downstream assets and skip API call
+        if dagster_mode:
+            print(json.dumps(payload), flush=True)
+            success_count += 1
+            print(f"Emitted document {i + 1}/{total_docs} to stdout (DAGSTER_MODE=1): {payload['id']}")
+            time.sleep(0.1)
+            continue
+
         try:
             response = requests.post(API_ENDPOINT, headers=HEADERS, data=json.dumps(payload))
             response.raise_for_status()  # Raise an exception for bad status codes

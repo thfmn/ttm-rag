@@ -1,0 +1,48 @@
+# Minimal, production-friendly FastAPI image using uv package manager
+# - Non-root
+# - psycopg2 build deps included
+# - curl + jq for healthchecks and diagnostics
+# - Uses uv to install project deps from pyproject.toml
+
+FROM python:3.11-slim AS base
+
+ARG UV_VERSION=0.5.7
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    DEBIAN_FRONTEND=noninteractive
+
+# System deps: build tools for psycopg2, libpq, curl/jq for healthchecks
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    pkg-config \
+    curl \
+    ca-certificates \
+    jq \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install uv (static binary) and make it globally available
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh -s -- -y --version ${UV_VERSION} \
+  && cp /root/.local/bin/uv /usr/local/bin/uv
+
+# Create non-root user
+RUN useradd -u 1000 -m appuser
+
+WORKDIR /app
+
+# Copy project
+# Note: for optimal caching you could COPY pyproject.toml first, but we want a simple, reliable build
+COPY . /app
+
+# Install production dependencies with uv into system site-packages
+# (keeps runtime simple and avoids venv activation)
+RUN uv pip install --system -e ".[prod]"
+
+# Drop privileges
+USER appuser:appuser
+
+EXPOSE 8005
+
+# Default command (overridden by compose if needed)
+CMD ["uv", "run", "uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8005"]

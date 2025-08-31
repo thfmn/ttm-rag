@@ -1,0 +1,158 @@
+name: ttm-rag
+
+# Common anchors
+x-common-env: &common-env
+  TZ: ${TZ:-UTC}
+
+x-common-security: &common-security
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+
+x-health-openwebui: &health-openwebui
+  healthcheck:
+    test:
+      [
+        "CMD-SHELL",
+        "unset http_proxy; unset https_proxy; curl -fsS http://localhost:8080/health | jq -ne 'input.status == true'",
+      ]
+    interval: 10s
+    timeout: 5s
+    retries: 6
+    start_period: 10s
+
+x-health-ollama: &health-ollama
+  healthcheck:
+    test: ["CMD-SHELL", "curl -fsS http://localhost:11434/api/tags >/dev/null"]
+    interval: 10s
+    timeout: 5s
+    retries: 12
+    start_period: 15s
+
+x-health-api: &health-api
+  healthcheck:
+    test:
+      [
+        "CMD-SHELL",
+        "curl -fsS http://localhost:8005/health || curl -fsS http://localhost:8000/health",
+      ]
+    interval: 10s
+    timeout: 5s
+    retries: 12
+    start_period: 15s
+
+x-health-db: &health-db
+  healthcheck:
+    test:
+      [
+        "CMD-SHELL",
+        "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-ttm} -h localhost",
+      ]
+    interval: 10s
+    timeout: 5s
+    retries: 12
+    start_period: 15s
+
+volumes:
+  openwebui_data: {}
+  ollama_data: {}
+  pg_data: {}
+  api_cache: {}
+
+networks:
+  public: {}
+  backend:
+    internal: true
+
+services:
+  # LLM runner in container (profile: llm)
+  ollama:
+    profiles: ["llm"]
+    image: ollama/ollama:${OLLAMA_DOCKER_TAG:-latest}
+    container_name: ollama
+    environment:
+      <<: *common-env
+      OLLAMA_HOST: 0.0.0.0:11434
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    restart: unless-stopped
+    <<: *health-ollama
+    networks:
+      - backend
+    tty: true
+
+  # Open WebUI (profile: core)
+  open-webui:
+    profiles: ["core"]
+    image: ghcr.io/open-webui/open-webui:${WEBUI_DOCKER_TAG:-main}
+    container_name: open-webui
+    environment:
+      <<: *common-env
+      # When ollama container is enabled:
+      OLLAMA_BASE_URL: "http://ollama:11434"
+      # Secret encouraged:
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY:-change-me}
+    volumes:
+      - openwebui_data:/app/backend/data
+    ports:
+      - "${OPEN_WEBUI_PORT:-8080}:8080"
+    depends_on:
+      ollama:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # allows host reachability if you switch to host-ollama override
+    restart: unless-stopped
+    <<: *health-openwebui
+    networks:
+      - public
+      - backend
+    <<: *common-security
+
+  # FastAPI RAG API (profile: api)
+  api:
+    profiles: ["api"]
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+      args:
+        UV_VERSION: ${UV_VERSION:-0.5.7}
+    environment:
+      <<: *common-env
+      # Typical envs, fed via .env
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/ttm}
+      LLM_PROVIDER: ${LLM_PROVIDER:-ollama}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://ollama:11434}
+    volumes:
+      - api_cache:/app/.cache
+    ports:
+      - "${API_PORT:-8005}:8005"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    <<: *health-api
+    networks:
+      - public
+      - backend
+    user: "1000:1000"
+    <<: *common-security
+
+  # PostgreSQL (profile: db)
+  db:
+    profiles: ["db"]
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-ttm}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    restart: unless-stopped
+    <<: *health-db
+    networks:
+      - backend

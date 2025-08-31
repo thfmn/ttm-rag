@@ -5,7 +5,7 @@ This module provides the complete RAG pipeline functionality,
 combining document processing, embedding generation, storage, and retrieval.
 """
 
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional, Tuple, Callable
 import logging
 import time
 from dataclasses import dataclass
@@ -14,6 +14,7 @@ from src.rag.chunker import DocumentChunker, DocumentChunk, ChunkConfig
 from src.rag.embeddings import EmbeddingGenerator, EmbeddingConfig
 from src.rag.vector_store import VectorStore
 from src.rag.generation import TextGenerator, assemble_prompt
+from src.rag.pipeline_ext import apply_preprocessors
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,7 @@ class RAGConfig:
     database_url: Optional[str] = None
     top_k: int = 5
     similarity_threshold: float = 0.3
+    preprocessors: Optional[List[Callable]] = None
 
 
 class RAGPipeline:
@@ -50,6 +52,7 @@ class RAGPipeline:
             embedding_dim=embedding_dim
         )
         self.text_generator = TextGenerator()
+        self.preprocessors = self.config.preprocessors or []
         
         logger.info("Initialized RAG pipeline")
     
@@ -70,9 +73,29 @@ class RAGPipeline:
         """
         start_time = time.time()
         
-        # Step 1: Chunk documents
+        # Step 1: Preprocess then chunk documents
         logger.info(f"Processing {len(documents)} documents")
-        all_chunks = self.chunker.process_documents(documents)
+        pre_docs = []
+        for doc in documents:
+            if getattr(self, "preprocessors", None):
+                pre = apply_preprocessors(doc, self.preprocessors)
+                merged_metadata = dict(doc.get("metadata", {}) or {})
+                if pre.metadata:
+                    merged_metadata.update(pre.metadata)
+                if pre.audit:
+                    merged_metadata["audit"] = pre.audit
+                pre_docs.append({
+                    "id": doc.get("id", ""),
+                    "content": pre.content,
+                    "metadata": merged_metadata,
+                })
+            else:
+                pre_docs.append({
+                    "id": doc.get("id", ""),
+                    "content": doc.get("content", ""),
+                    "metadata": dict(doc.get("metadata", {}) or {}),
+                })
+        all_chunks = self.chunker.process_documents(pre_docs)
         logger.info(f"Created {len(all_chunks)} chunks")
         
         # Step 2: Generate embeddings and store
@@ -146,7 +169,12 @@ class RAGPipeline:
         query: str,
         top_k: Optional[int] = None,
         return_context: bool = True,
-        model: Optional[str] = None
+        model: Optional[str] = None,
+        filter_metadata: Optional[Dict[str, Any]] = None,
+        agentic: Optional[bool] = None,
+        headers: Optional[Dict[str, str]] = None,
+        use_policy: Optional[bool] = None,
+        policy_constraints: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """
         Process a query through the RAG pipeline.
@@ -162,8 +190,22 @@ class RAGPipeline:
         """
         start_time = time.time()
         
+        # Agentic planning (optional)
+        use_top_k = top_k
+        plan = None
+        if agentic:
+            try:
+                from src.agents.query import intent_agent, router_agent, planner_agent
+                persona, language = intent_agent.analyze(query, headers or {})
+                route = router_agent.route(persona, query)
+                plan = planner_agent.plan(query, persona, route, default_top_k=top_k or self.config.top_k)
+                use_top_k = plan.top_k
+            except Exception as e:
+                logger.error(f"Agentic planning failed: {e}")
+                use_top_k = top_k or self.config.top_k
+
         # Retrieve relevant chunks
-        results = self.retrieve(query, top_k)
+        results = self.retrieve(query, use_top_k, filter_metadata=filter_metadata)
         
         # Format response
         response = {
@@ -202,8 +244,28 @@ class RAGPipeline:
         response["sources"] = sorted(list(sources_set)) if sources_set else []
         response["combined_context"] = "\n\n".join(combined_contents) if combined_contents else ""
 
-        # Generate answer (use adapter if specified)
-        if model:
+        # Generate answer (agentic path or adapter/default)
+        if agentic:
+            try:
+                from src.agents.common.types import AnswerChunk as _AnswerChunk
+                from src.agents.query import synthesizer_agent, safety_adjudicator
+                ans_chunks = []
+                for chunk, score in results:
+                    ans_chunks.append(
+                        _AnswerChunk(
+                            content=chunk.content,
+                            score=float(score),
+                            document_id=chunk.document_id,
+                            chunk_index=chunk.chunk_index,
+                        )
+                    )
+                planned = synthesizer_agent.synthesize(query, ans_chunks)
+                adjudicated = safety_adjudicator.adjudicate(planned)
+                response["answer"] = adjudicated.answer
+            except Exception as e:
+                logger.error(f"Agentic synthesis failed: {e}")
+                response["answer"] = self.text_generator.generate_answer(query, context_chunks)
+        elif model:
             try:
                 from src.rag.models import registry as model_registry
                 prompt = assemble_prompt(query, context_chunks)
@@ -211,6 +273,23 @@ class RAGPipeline:
                 response["answer"] = adapter.generate(prompt, context_chunks)
             except Exception as e:
                 logger.error(f"Adapter generation failed for model '{model}': {e}")
+                response["answer"] = self.text_generator.generate_answer(query, context_chunks)
+        elif use_policy:
+            try:
+                # Select model via policy using persona/language from intent analysis (non-agentic policy).
+                from src.agents.query import intent_agent as _intent_agent
+                from src.rag.models.policy import ModelPolicySelector
+                persona, language = _intent_agent.analyze(query, headers or {})
+                selector = ModelPolicySelector()
+                selected_model = selector.select_model(
+                    persona=persona, language=language, constraints=policy_constraints or {}
+                )
+                from src.rag.models import registry as model_registry
+                prompt = assemble_prompt(query, context_chunks)
+                adapter = model_registry.get_adapter(selected_model, config={})
+                response["answer"] = adapter.generate(prompt, context_chunks)
+            except Exception as e:
+                logger.error(f"Policy-based adapter selection failed: {e}")
                 response["answer"] = self.text_generator.generate_answer(query, context_chunks)
         else:
             response["answer"] = self.text_generator.generate_answer(query, context_chunks)
@@ -294,7 +373,8 @@ class RAGPipeline:
     
     def clear_cache(self):
         """Clear embedding cache to free memory."""
-        self.embedding_generator.clear_cache()
+        if hasattr(self.embedding_generator, "clear_cache"):
+            self.embedding_generator.clear_cache()  # type: ignore[attr-defined]
         logger.info("Cleared embedding cache")
 
 
@@ -304,7 +384,8 @@ def create_rag_pipeline(
     chunk_overlap: int = 50,
     model_name: str = "sentence-transformers/all-MiniLM-L6-v2",
     database_url: Optional[str] = None,
-    top_k: int = 5
+    top_k: int = 5,
+    preprocessors: Optional[List[Callable]] = None,
 ) -> RAGPipeline:
     """
     Create a RAG pipeline with custom configuration.
@@ -328,7 +409,8 @@ def create_rag_pipeline(
             model_name=model_name
         ),
         database_url=database_url,
-        top_k=top_k
+        top_k=top_k,
+        preprocessors=preprocessors
     )
     
     return RAGPipeline(config)
