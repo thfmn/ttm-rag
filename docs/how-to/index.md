@@ -13,6 +13,7 @@ Task-focused recipes. Copy, paste, succeed. Each guide lists prerequisites, step
 ```{toctree}
 :maxdepth: 2
 
+mcp_readiness_checks
 ../deploy
 ../deployment
 ../postgresql_setup

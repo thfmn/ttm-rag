@@ -343,3 +343,46 @@ If you encounter any issues during setup:
 4. **File an Issue**: If you've found a bug, file an issue on GitHub
 
 For internal onboarding, refer to the [Onboarding Guide](http://localhost:8081/onboarding.html) which provides detailed instructions on how to use the security and monitoring features.
+
+## TTM‑MCP Expert Agent (Adapter) — Quick Links
+
+- Docs (Diataxis):
+  - Tutorial: docs/tutorials/ttm_mcp_quickstart.md
+  - How‑to: docs/how-to/mcp_readiness_checks.md
+  - Reference (contracts): docs/reference/mcp_contracts.md
+  - Explanations: docs/explanations/mcp_adapter_philosophy.md
+- Core facades:
+  - gRPC proto: src/api/grpc/ttm_core.proto
+  - gRPC server scaffold: src/api/grpc/grpc_server.py
+  - GraphQL schema: src/api/graphql/schema.py
+- MCP adapter (skeleton):
+  - tools/ttm-mcp/config.py
+  - tools/ttm-mcp/logging.py (audit + hashing + seed)
+  - tools/ttm-mcp/schemas.py (Pydantic I/O)
+  - tools/ttm-mcp/adapters/grpc_client.py
+  - tools/ttm-mcp/server.py (transport‑agnostic handlers)
+
+Environment keys (edit .env):
+- TTM_API_URL, TTM_API_KEY
+- EMBED_MODEL_TH, EMBED_MODEL_EN, SEARCH_TOPK, RAG_TOPK
+- Optional: FIRECRAWL_API_KEY, LIGHTPANDA_API_KEY, CONTEXT7_API_KEY
+- gRPC host/port: GRPC_HOST, GRPC_PORT (defaults 0.0.0.0:50051)
+
+Manual run helpers (documented; run yourself):
+- Generate gRPC stubs (see tutorial)
+- Start API: make dev
+- Start gRPC server: uv run python scripts/run_grpc_server.py
+- Validate scaffolding: uv run python scripts/validate_rag_readiness.py
+
+Audit & determinism:
+- All MCP tools produce audit records in audit.log with input/output hashes, deterministic seed, latency, and status.
+- Policy: “No citation → no answer” enforced in gates (wire as core integration advances).
+
+## Cline Memory Bank
+
+We maintain persistent project context under memory‑bank/ (read these first in each session):
+- projectbrief.md, productContext.md, systemPatterns.md, techContext.md, activeContext.md, progress.md
+
+Update policy:
+- After implementing features or docs that affect agent behavior or contracts, update memory-bank/activeContext.md with the current focus and decisions.
+- After each session or milestone, update memory-bank/progress.md with what works, what’s pending, and next steps.

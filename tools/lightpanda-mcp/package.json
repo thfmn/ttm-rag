@@ -1,0 +1,31 @@
+{
+  "name": "lightpanda-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local MCP server exposing Lightpanda headless browser capabilities via stdio tools.",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "lightpanda-mcp": "index.js"
+  },
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.3.0"
+  },
+  "keywords": [
+    "MCP",
+    "Model Context Protocol",
+    "Lightpanda",
+    "browser",
+    "scraping",
+    "automation",
+    "CDP"
+  ],
+  "author": "",
+  "license": "UNLICENSED"
+}

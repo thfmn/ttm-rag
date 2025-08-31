@@ -9,6 +9,7 @@ Authoritative, factual reference for APIs, configuration, and models.
 :maxdepth: 2
 
 ../api/index
+mcp_contracts
 ```
 
 ## Configuration

@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+package ttm.core.v1;
+option go_package = "ttm/core/v1";
+
+// ======================
+// Types
+// ======================
+message NamePair {
+  string th = 1;
+  string en = 2;
+}
+
+message Constituent {
+  string id = 1;
+  string name = 2;
+}
+
+message Indication {
+  string icdCode = 1;
+  string description = 2;
+}
+
+message Herb {
+  string id = 1;
+  NamePair names = 2;
+  repeated Constituent constituents = 3;
+  repeated Indication indications = 4;
+}
+
+// Graph/Pathing
+message Node {
+  string id = 1;
+  string type = 2;   // herb | constituent | indication | ...
+  string label = 3;  // display name
+}
+
+message Path {
+  repeated Node nodes = 1;
+}
+
+// Search / Retrieval
+message Hit {
+  string id = 1;
+  string type = 2;
+  string title = 3;
+  string snippet = 4;
+  double score = 5;
+  string source = 6;
+}
+
+// RAG Answer / Citations
+message Citation {
+  string id = 1;
+  string uri = 2;
+  string title = 3;
+  string span = 4;
+}
+
+message Metric {
+  string name = 1;
+  double value = 2;
+}
+
+// ======================
+// Requests / Responses
+// ======================
+
+// KG
+message GetHerbRequest {
+  string id = 1;
+}
+
+message GetHerbResponse {
+  Herb herb = 1;
+}
+
+message QueryPathsRequest {
+  string start_type = 1; // herb | constituent | indication
+  string start_id = 2;
+  string pattern = 3;    // optional path expression
+  int32 max_depth = 4;   // default small (e.g., 3)
+}
+
+message QueryPathsResponse {
+  repeated Path paths = 1;
+}
+
+// Search
+message HybridSearchRequest {
+  string query = 1;
+  string lang = 2; // th | en | auto
+  int32 top_k = 3; // default via env
+}
+
+message HybridSearchResponse {
+  repeated Hit hits = 1;
+}
+
+// RAG
+message AnswerRequest {
+  string question = 1;
+  string lang = 2; // th | en | auto
+  int32 top_k = 3; // retrieval top-k
+}
+
+message AnswerResponse {
+  string answer = 1;
+  repeated Citation citations = 2;
+  double retrieval_score = 3;
+  double answer_conf = 4;
+}
+
+// Eval
+message RunEvalRequest {
+  string set = 1;                 // smoke | curated | custom
+  repeated string metrics = 2;    // e.g., "R@k","MRR","factuality"
+  string params_json = 3;         // optional freeform params as JSON
+}
+
+message RunEvalResponse {
+  repeated Metric metrics = 1;
+  string report_uri = 2;
+}
+
+// Ingest
+message IngestItem {
+  string uri = 1;     // file path or URL
+  string lang = 2;    // th | en | auto
+  string doc_type = 3;
+}
+
+message RunIngestRequest {
+  bool dry_run = 1;
+  repeated IngestItem batch = 2;
+  string ocr_json = 3; // optional OCR params JSON
+  string ner_json = 4; // optional NER params JSON
+}
+
+message RunIngestResponse {
+  string job_id = 1;
+  string status = 2;   // queued | running | done | error
+  string log_uri = 3;
+}
+
+// ======================
+// Services
+// ======================
+service KGService {
+  rpc GetHerb(GetHerbRequest) returns (GetHerbResponse);
+  rpc QueryPaths(QueryPathsRequest) returns (QueryPathsResponse);
+}
+
+service SearchService {
+  rpc HybridSearch(HybridSearchRequest) returns (HybridSearchResponse);
+}
+
+service RagService {
+  rpc Answer(AnswerRequest) returns (AnswerResponse);
+}
+
+service EvalService {
+  rpc RunEval(RunEvalRequest) returns (RunEvalResponse);
+}
+
+service IngestService {
+  rpc RunIngest(RunIngestRequest) returns (RunIngestResponse);
+}

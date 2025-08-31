@@ -23,6 +23,7 @@ Concepts, architecture, and decision records that explain the “why” behind t
 ../project_status
 ../current_state
 ../future_steps
+mcp_adapter_philosophy
 ```
 
 ```{note}

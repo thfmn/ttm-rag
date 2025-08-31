@@ -18,6 +18,7 @@ These tutorials aim to be short, practical, and joyful. Each one includes prereq
 ```{toctree}
 :maxdepth: 2
 
+ttm_mcp_quickstart
 ../database_tutorial
 ../rag_api_tutorial
 ```
