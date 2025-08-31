@@ -3,6 +3,9 @@ Test module for the RAG system.
 """
 
 import pytest
+
+pytest.importorskip("sentence_transformers")
+
 from src.rag import RagSystem, RagDocument, RagQuery, RagResponse
 
 def test_rag_system_initialization():
