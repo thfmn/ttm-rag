@@ -1,5 +1,19 @@
 # Thai Traditional Medicine RAG Bot
 
+## Project Documentation and Status
+- Authoritative status & roadmap: docs/explanations/project_lifecycle.md
+- Diátaxis navigation:
+  - Tutorials: docs/tutorials/index.md
+  - How-to: docs/how-to/index.md
+  - Reference: docs/reference/index.md
+  - Explanations: docs/explanations/index.md
+  - Policy: docs/explanations/context7_docs_policy.md
+  - Docs refresh plan: docs/explanations/docs_refresh_plan.md
+- Build/serve docs (uv policy; run manually):
+  - uv pip install sphinx myst-parser furo sphinx-design sphinx-copybutton sphinx-autodoc-typehints sphinx-sitemap sphinxext-opengraph sphinxcontrib-mermaid linkify-it-py sphinx-autobuild
+  - uv run sphinx-build -b html docs docs/_build/html
+  - uv run sphinx-autobuild -b html docs docs/_build/html
+
 ## Fool-Proof Development & Testing Setup Guide
 
 This guide provides step-by-step instructions for setting up a development environment for the Thai Traditional Medicine RAG Bot project. Follow these steps in order for a smooth setup experience.

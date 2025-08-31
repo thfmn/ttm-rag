@@ -1,183 +1,323 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="RAG Implementation Plan" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://example.com/ttm-rag-docs/rag_implementation_plan.html" />
+<meta property="og:site_name" content="Thai Traditional Medicine RAG Bot" />
+<meta property="og:description" content="This document outlines our comprehensive plan for implementing the Retrieval-Augmented Generation (RAG) system for the Thai Traditional Medicine RAG Bot project. Our approach emphasizes evaluation,..." />
+<meta name="description" content="This document outlines our comprehensive plan for implementing the Retrieval-Augmented Generation (RAG) system for the Thai Traditional Medicine RAG Bot project. Our approach emphasizes evaluation,..." />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="RAG Implementation Summary - August 29, 2025" href="rag_implementation_summary.html" /><link rel="prev" title="1. Understanding APIs" href="api_practices.html" />
+        <link rel="canonical" href="https://example.com/ttm-rag-docs/rag_implementation_plan.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
+        <title>RAG Implementation Plan - Thai Traditional Medicine RAG Bot</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
 
 
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
-<head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RAG Implementation Plan &mdash; Thai Traditional Medicine RAG Bot 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
-
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=01f34227"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="RAG Implementation Kickoff Summary" href="rag_kickoff_summary.html" />
-    <link rel="prev" title="Development Environment Setup Guide" href="development_setup.html" /> 
-</head>
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
 
-          
-          
-          <a href="index.html" class="icon icon-home">
-            Thai Traditional Medicine RAG Bot
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="project_overview.html">Project Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="implementation.html">Implementation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="current_state.html">Current State</a></li>
-<li class="toctree-l1"><a class="reference internal" href="future_steps.html">Future Steps</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cto_assessment.html">CTO Assessment Report</a></li>
-<li class="toctree-l1"><a class="reference internal" href="project_status.html">Project Status Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="development_setup.html">Development Environment Setup Guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">RAG Implementation Plan</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#phase-1-document-processing-pipeline-week-3">Phase 1: Document Processing Pipeline (Week 3)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#objective">Objective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tasks">Tasks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#evaluation-metrics">Evaluation Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#testing-approach">Testing Approach</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#phase-2-similarity-search-system-week-4">Phase 2: Similarity Search System (Week 4)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Objective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id2">Tasks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">Evaluation Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id4">Testing Approach</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">Documentation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#phase-3-basic-generation-system-week-5">Phase 3: Basic Generation System (Week 5)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id6">Objective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">Tasks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">Evaluation Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id9">Testing Approach</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">Documentation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#phase-4-comprehensive-rag-system-week-6">Phase 4: Comprehensive RAG System (Week 6)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id11">Objective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id12">Tasks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id13">Evaluation Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id14">Testing Approach</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id15">Documentation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#monitoring-and-analytics">Monitoring and Analytics</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#real-time-monitoring">Real-time Monitoring</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#analytics-and-reporting">Analytics and Reporting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#continuous-improvement">Continuous Improvement</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#dashboard-integration">Dashboard Integration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#rag-pipeline-monitoring">RAG Pipeline Monitoring</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#performance-analytics">Performance Analytics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#evaluation-and-testing">Evaluation and Testing</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#documentation-standards">Documentation Standards</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#technical-documentation">Technical Documentation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user-documentation">User Documentation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#evaluation-documentation">Evaluation Documentation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#quality-assurance">Quality Assurance</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#testing-framework">Testing Framework</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#code-quality">Code Quality</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#continuous-integration">Continuous Integration</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#risk-management">Risk Management</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#technical-risks">Technical Risks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mitigation-strategies">Mitigation Strategies</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#timeline-and-milestones">Timeline and Milestones</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#week-3-document-processing-pipeline">Week 3: Document Processing Pipeline</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#week-4-similarity-search-system">Week 4: Similarity Search System</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#week-5-basic-generation-system">Week 5: Basic Generation System</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#week-6-comprehensive-rag-system">Week 6: Comprehensive RAG System</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#success-criteria">Success Criteria</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#technical-success-metrics">Technical Success Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#business-success-metrics">Business Success Metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#documentation-success-metrics">Documentation Success Metrics</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="rag_kickoff_summary.html">RAG Implementation Kickoff Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dashboard_plan.html">Dashboard Implementation Plan</a></li>
-<li class="toctree-l1"><a class="reference internal" href="onboarding.html">Internal Onboarding Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="onboarding_summary.html">Internal Onboarding Summary</a></li>
-</ul>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
 
-        </div>
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Thai Traditional Medicine RAG Bot</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
       </div>
-    </nav>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">Thai Traditional Medicine RAG Bot</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="getting-started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project_overview.html">Project Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development_setup.html">Development Environment Setup Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onboarding.html">Internal Onboarding Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="onboarding_summary.html">Internal Onboarding Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/ttm_mcp_quickstart.html">Tutorial — TTM‑MCP Expert Agent Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="database_tutorial.html">Database Interaction Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rag_api_tutorial.html">RAG API Usage and Testing Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="how-to/index.html">How-to Guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of How-to Guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="how-to/mcp_readiness_checks.html">How‑to — MCP Readiness Checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deploy.html">Stack deployment (Docker Compose + Makefile)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deployment.html">Deployment Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations/dagster_deploy.html">Dagster Deployment Guide (Phase 2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firecrawl_mcp_add_key.html">How to add FIRECRAWL_API_KEY to cline_mcp_settings.json</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="reference/index.html">Reference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/mcp_contracts.html">Reference — MCP Contracts (Tools and Resources)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="explanations/index.html">Explanations</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Explanations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="explanations/project_lifecycle.html">Project Lifecycle and Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture/multi_agent_overview.html">Multi-Agent Ingestion &amp; Curation Overview (Phase 2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html">1. Understanding APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#api-styles">2. API Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#api-design-principles">3. API Design Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#protocols-their-influence">4. Protocols &amp; Their Influence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#api-design-process">5. API Design Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#restful-api-design">6. RESTful API Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#graphql-api-design">7. GraphQL API Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#authentication-authorization">8. Authentication &amp; Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#security-best-practices">9. Security Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#protocols-transport-layer">10. Protocols &amp; Transport Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#summary-next-steps">11. Summary &amp; Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_practices.html#additional-resources">12. Additional Resources</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">RAG Implementation Plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rag_implementation_summary.html">RAG Implementation Summary - August 29, 2025</a></li>
+<li class="toctree-l2"><a class="reference internal" href="today_rag_plan.html">Today’s RAG Implementation Plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="final_summary.html">Project Status Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementation.html">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cto_assessment.html">CTO Assessment Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project_status.html">Project Status Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="current_state.html">Current State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="future_steps.html">Future Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="explanations/mcp_adapter_philosophy.html">MCP Adapter Philosophy — Thin, Auditable, and Safe</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Thai Traditional Medicine RAG Bot</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">RAG Implementation Plan</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/rag_implementation_plan.md.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section class="tex2jax_ignore mathjax_ignore" id="rag-implementation-plan">
-<h1>RAG Implementation Plan<a class="headerlink" href="#rag-implementation-plan" title="Link to this heading"></a></h1>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/rag_implementation_plan.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="rag-implementation-plan">
+<h1>RAG Implementation Plan<a class="headerlink" href="#rag-implementation-plan" title="Link to this heading">¶</a></h1>
 <p>This document outlines our comprehensive plan for implementing the Retrieval-Augmented Generation (RAG) system for the Thai Traditional Medicine RAG Bot project. Our approach emphasizes evaluation, testing, analytics, and documentation at every step.</p>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
 <p>Our RAG implementation will transform our existing document collection system into an intelligent question-answering system that can retrieve relevant Thai Traditional Medicine documents and generate accurate, context-aware responses to user queries.</p>
 </section>
 <section id="phase-1-document-processing-pipeline-week-3">
-<h2>Phase 1: Document Processing Pipeline (Week 3)<a class="headerlink" href="#phase-1-document-processing-pipeline-week-3" title="Link to this heading"></a></h2>
+<h2>Phase 1: Document Processing Pipeline (Week 3)<a class="headerlink" href="#phase-1-document-processing-pipeline-week-3" title="Link to this heading">¶</a></h2>
 <section id="objective">
-<h3>Objective<a class="headerlink" href="#objective" title="Link to this heading"></a></h3>
+<h3>Objective<a class="headerlink" href="#objective" title="Link to this heading">¶</a></h3>
 <p>Create a robust pipeline for processing documents into RAG-ready format with embeddings.</p>
 </section>
 <section id="tasks">
-<h3>Tasks<a class="headerlink" href="#tasks" title="Link to this heading"></a></h3>
+<h3>Tasks<a class="headerlink" href="#tasks" title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p><strong>Document Chunking Strategy</strong></p>
 <ul class="simple">
@@ -214,7 +354,7 @@
 </ol>
 </section>
 <section id="evaluation-metrics">
-<h3>Evaluation Metrics<a class="headerlink" href="#evaluation-metrics" title="Link to this heading"></a></h3>
+<h3>Evaluation Metrics<a class="headerlink" href="#evaluation-metrics" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Chunk quality score (coherence and completeness)</p></li>
 <li><p>Processing throughput (documents/minute)</p></li>
@@ -223,7 +363,7 @@
 </ul>
 </section>
 <section id="testing-approach">
-<h3>Testing Approach<a class="headerlink" href="#testing-approach" title="Link to this heading"></a></h3>
+<h3>Testing Approach<a class="headerlink" href="#testing-approach" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Unit tests for chunking algorithms</p></li>
 <li><p>Integration tests for preprocessing pipeline</p></li>
@@ -232,7 +372,7 @@
 </ul>
 </section>
 <section id="documentation">
-<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading"></a></h3>
+<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Technical documentation for each pipeline component</p></li>
 <li><p>API documentation for pipeline interfaces</p></li>
@@ -242,13 +382,13 @@
 </section>
 </section>
 <section id="phase-2-similarity-search-system-week-4">
-<h2>Phase 2: Similarity Search System (Week 4)<a class="headerlink" href="#phase-2-similarity-search-system-week-4" title="Link to this heading"></a></h2>
+<h2>Phase 2: Similarity Search System (Week 4)<a class="headerlink" href="#phase-2-similarity-search-system-week-4" title="Link to this heading">¶</a></h2>
 <section id="id1">
-<h3>Objective<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<h3>Objective<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <p>Build an efficient similarity search system that can quickly retrieve relevant document chunks.</p>
 </section>
 <section id="id2">
-<h3>Tasks<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<h3>Tasks<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p><strong>Similarity Search Algorithms</strong></p>
 <ul class="simple">
@@ -285,7 +425,7 @@
 </ol>
 </section>
 <section id="id3">
-<h3>Evaluation Metrics<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<h3>Evaluation Metrics<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Search accuracy (precision and recall)</p></li>
 <li><p>Response time (milliseconds per query)</p></li>
@@ -294,7 +434,7 @@
 </ul>
 </section>
 <section id="id4">
-<h3>Testing Approach<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<h3>Testing Approach<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Unit tests for search algorithms</p></li>
 <li><p>Integration tests for search pipeline</p></li>
@@ -303,7 +443,7 @@
 </ul>
 </section>
 <section id="id5">
-<h3>Documentation<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<h3>Documentation<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Technical documentation for search algorithms</p></li>
 <li><p>API documentation for search endpoints</p></li>
@@ -313,13 +453,13 @@
 </section>
 </section>
 <section id="phase-3-basic-generation-system-week-5">
-<h2>Phase 3: Basic Generation System (Week 5)<a class="headerlink" href="#phase-3-basic-generation-system-week-5" title="Link to this heading"></a></h2>
+<h2>Phase 3: Basic Generation System (Week 5)<a class="headerlink" href="#phase-3-basic-generation-system-week-5" title="Link to this heading">¶</a></h2>
 <section id="id6">
-<h3>Objective<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<h3>Objective<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
 <p>Implement basic text generation capabilities that can combine retrieved documents with user queries.</p>
 </section>
 <section id="id7">
-<h3>Tasks<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<h3>Tasks<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p><strong>Generation Pipeline</strong></p>
 <ul class="simple">
@@ -356,7 +496,7 @@
 </ol>
 </section>
 <section id="id8">
-<h3>Evaluation Metrics<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<h3>Evaluation Metrics<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Generation quality (coherence, relevance, accuracy)</p></li>
 <li><p>Factual accuracy score</p></li>
@@ -365,7 +505,7 @@
 </ul>
 </section>
 <section id="id9">
-<h3>Testing Approach<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<h3>Testing Approach<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Unit tests for generation components</p></li>
 <li><p>Integration tests for end-to-end generation</p></li>
@@ -374,7 +514,7 @@
 </ul>
 </section>
 <section id="id10">
-<h3>Documentation<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<h3>Documentation<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Technical documentation for generation pipeline</p></li>
 <li><p>Prompt engineering guide</p></li>
@@ -384,13 +524,13 @@
 </section>
 </section>
 <section id="phase-4-comprehensive-rag-system-week-6">
-<h2>Phase 4: Comprehensive RAG System (Week 6)<a class="headerlink" href="#phase-4-comprehensive-rag-system-week-6" title="Link to this heading"></a></h2>
+<h2>Phase 4: Comprehensive RAG System (Week 6)<a class="headerlink" href="#phase-4-comprehensive-rag-system-week-6" title="Link to this heading">¶</a></h2>
 <section id="id11">
-<h3>Objective<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<h3>Objective<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
 <p>Integrate all components into a complete RAG system with advanced features and comprehensive evaluation.</p>
 </section>
 <section id="id12">
-<h3>Tasks<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<h3>Tasks<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p><strong>Advanced Retrieval Techniques</strong></p>
 <ul class="simple">
@@ -427,7 +567,7 @@
 </ol>
 </section>
 <section id="id13">
-<h3>Evaluation Metrics<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<h3>Evaluation Metrics<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>End-to-end RAG performance metrics</p></li>
 <li><p>User satisfaction scores</p></li>
@@ -436,7 +576,7 @@
 </ul>
 </section>
 <section id="id14">
-<h3>Testing Approach<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<h3>Testing Approach<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>End-to-end integration testing</p></li>
 <li><p>Comprehensive evaluation with diverse query sets</p></li>
@@ -445,7 +585,7 @@
 </ul>
 </section>
 <section id="id15">
-<h3>Documentation<a class="headerlink" href="#id15" title="Link to this heading"></a></h3>
+<h3>Documentation<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Complete system architecture documentation</p></li>
 <li><p>User guide for RAG system usage</p></li>
@@ -455,10 +595,10 @@
 </section>
 </section>
 <section id="monitoring-and-analytics">
-<h2>Monitoring and Analytics<a class="headerlink" href="#monitoring-and-analytics" title="Link to this heading"></a></h2>
+<h2>Monitoring and Analytics<a class="headerlink" href="#monitoring-and-analytics" title="Link to this heading">¶</a></h2>
 <p>Throughout all phases, we’ll implement comprehensive monitoring and analytics:</p>
 <section id="real-time-monitoring">
-<h3>Real-time Monitoring<a class="headerlink" href="#real-time-monitoring" title="Link to this heading"></a></h3>
+<h3>Real-time Monitoring<a class="headerlink" href="#real-time-monitoring" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Dashboard integration for RAG system metrics</p></li>
 <li><p>Performance monitoring for all pipeline components</p></li>
@@ -467,7 +607,7 @@
 </ul>
 </section>
 <section id="analytics-and-reporting">
-<h3>Analytics and Reporting<a class="headerlink" href="#analytics-and-reporting" title="Link to this heading"></a></h3>
+<h3>Analytics and Reporting<a class="headerlink" href="#analytics-and-reporting" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Usage analytics and user behavior tracking</p></li>
 <li><p>Performance trend analysis</p></li>
@@ -476,7 +616,7 @@
 </ul>
 </section>
 <section id="continuous-improvement">
-<h3>Continuous Improvement<a class="headerlink" href="#continuous-improvement" title="Link to this heading"></a></h3>
+<h3>Continuous Improvement<a class="headerlink" href="#continuous-improvement" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Automated performance regression detection</p></li>
 <li><p>A/B testing framework for system improvements</p></li>
@@ -486,10 +626,10 @@
 </section>
 </section>
 <section id="dashboard-integration">
-<h2>Dashboard Integration<a class="headerlink" href="#dashboard-integration" title="Link to this heading"></a></h2>
+<h2>Dashboard Integration<a class="headerlink" href="#dashboard-integration" title="Link to this heading">¶</a></h2>
 <p>All RAG components will be integrated with our dashboard for real-time monitoring:</p>
 <section id="rag-pipeline-monitoring">
-<h3>RAG Pipeline Monitoring<a class="headerlink" href="#rag-pipeline-monitoring" title="Link to this heading"></a></h3>
+<h3>RAG Pipeline Monitoring<a class="headerlink" href="#rag-pipeline-monitoring" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Document processing pipeline status</p></li>
 <li><p>Search performance metrics</p></li>
@@ -498,7 +638,7 @@
 </ul>
 </section>
 <section id="performance-analytics">
-<h3>Performance Analytics<a class="headerlink" href="#performance-analytics" title="Link to this heading"></a></h3>
+<h3>Performance Analytics<a class="headerlink" href="#performance-analytics" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Real-time performance dashboards</p></li>
 <li><p>Historical performance trends</p></li>
@@ -507,7 +647,7 @@
 </ul>
 </section>
 <section id="evaluation-and-testing">
-<h3>Evaluation and Testing<a class="headerlink" href="#evaluation-and-testing" title="Link to this heading"></a></h3>
+<h3>Evaluation and Testing<a class="headerlink" href="#evaluation-and-testing" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Evaluation results visualization</p></li>
 <li><p>Testing coverage metrics</p></li>
@@ -517,10 +657,10 @@
 </section>
 </section>
 <section id="documentation-standards">
-<h2>Documentation Standards<a class="headerlink" href="#documentation-standards" title="Link to this heading"></a></h2>
+<h2>Documentation Standards<a class="headerlink" href="#documentation-standards" title="Link to this heading">¶</a></h2>
 <p>All RAG implementation work will follow strict documentation standards:</p>
 <section id="technical-documentation">
-<h3>Technical Documentation<a class="headerlink" href="#technical-documentation" title="Link to this heading"></a></h3>
+<h3>Technical Documentation<a class="headerlink" href="#technical-documentation" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Comprehensive API documentation</p></li>
 <li><p>Detailed architecture diagrams</p></li>
@@ -529,7 +669,7 @@
 </ul>
 </section>
 <section id="user-documentation">
-<h3>User Documentation<a class="headerlink" href="#user-documentation" title="Link to this heading"></a></h3>
+<h3>User Documentation<a class="headerlink" href="#user-documentation" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>User guides for all RAG features</p></li>
 <li><p>Tutorial and example documentation</p></li>
@@ -538,7 +678,7 @@
 </ul>
 </section>
 <section id="evaluation-documentation">
-<h3>Evaluation Documentation<a class="headerlink" href="#evaluation-documentation" title="Link to this heading"></a></h3>
+<h3>Evaluation Documentation<a class="headerlink" href="#evaluation-documentation" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Evaluation methodology documentation</p></li>
 <li><p>Test dataset descriptions</p></li>
@@ -548,9 +688,9 @@
 </section>
 </section>
 <section id="quality-assurance">
-<h2>Quality Assurance<a class="headerlink" href="#quality-assurance" title="Link to this heading"></a></h2>
+<h2>Quality Assurance<a class="headerlink" href="#quality-assurance" title="Link to this heading">¶</a></h2>
 <section id="testing-framework">
-<h3>Testing Framework<a class="headerlink" href="#testing-framework" title="Link to this heading"></a></h3>
+<h3>Testing Framework<a class="headerlink" href="#testing-framework" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Comprehensive unit test coverage</p></li>
 <li><p>Integration testing for all components</p></li>
@@ -559,7 +699,7 @@
 </ul>
 </section>
 <section id="code-quality">
-<h3>Code Quality<a class="headerlink" href="#code-quality" title="Link to this heading"></a></h3>
+<h3>Code Quality<a class="headerlink" href="#code-quality" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Code review processes</p></li>
 <li><p>Static analysis and linting</p></li>
@@ -568,7 +708,7 @@
 </ul>
 </section>
 <section id="continuous-integration">
-<h3>Continuous Integration<a class="headerlink" href="#continuous-integration" title="Link to this heading"></a></h3>
+<h3>Continuous Integration<a class="headerlink" href="#continuous-integration" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Automated testing pipelines</p></li>
 <li><p>Code quality gates</p></li>
@@ -578,9 +718,9 @@
 </section>
 </section>
 <section id="risk-management">
-<h2>Risk Management<a class="headerlink" href="#risk-management" title="Link to this heading"></a></h2>
+<h2>Risk Management<a class="headerlink" href="#risk-management" title="Link to this heading">¶</a></h2>
 <section id="technical-risks">
-<h3>Technical Risks<a class="headerlink" href="#technical-risks" title="Link to this heading"></a></h3>
+<h3>Technical Risks<a class="headerlink" href="#technical-risks" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Model performance limitations</p></li>
 <li><p>Scalability challenges</p></li>
@@ -589,7 +729,7 @@
 </ul>
 </section>
 <section id="mitigation-strategies">
-<h3>Mitigation Strategies<a class="headerlink" href="#mitigation-strategies" title="Link to this heading"></a></h3>
+<h3>Mitigation Strategies<a class="headerlink" href="#mitigation-strategies" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Progressive implementation approach</p></li>
 <li><p>Comprehensive testing and evaluation</p></li>
@@ -599,9 +739,9 @@
 </section>
 </section>
 <section id="timeline-and-milestones">
-<h2>Timeline and Milestones<a class="headerlink" href="#timeline-and-milestones" title="Link to this heading"></a></h2>
+<h2>Timeline and Milestones<a class="headerlink" href="#timeline-and-milestones" title="Link to this heading">¶</a></h2>
 <section id="week-3-document-processing-pipeline">
-<h3>Week 3: Document Processing Pipeline<a class="headerlink" href="#week-3-document-processing-pipeline" title="Link to this heading"></a></h3>
+<h3>Week 3: Document Processing Pipeline<a class="headerlink" href="#week-3-document-processing-pipeline" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Complete document chunking implementation</p></li>
 <li><p>Finish preprocessing pipeline</p></li>
@@ -610,7 +750,7 @@
 </ul>
 </section>
 <section id="week-4-similarity-search-system">
-<h3>Week 4: Similarity Search System<a class="headerlink" href="#week-4-similarity-search-system" title="Link to this heading"></a></h3>
+<h3>Week 4: Similarity Search System<a class="headerlink" href="#week-4-similarity-search-system" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Implement similarity search algorithms</p></li>
 <li><p>Complete search ranking and filtering</p></li>
@@ -619,7 +759,7 @@
 </ul>
 </section>
 <section id="week-5-basic-generation-system">
-<h3>Week 5: Basic Generation System<a class="headerlink" href="#week-5-basic-generation-system" title="Link to this heading"></a></h3>
+<h3>Week 5: Basic Generation System<a class="headerlink" href="#week-5-basic-generation-system" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Implement generation pipeline</p></li>
 <li><p>Complete response formatting</p></li>
@@ -628,7 +768,7 @@
 </ul>
 </section>
 <section id="week-6-comprehensive-rag-system">
-<h3>Week 6: Comprehensive RAG System<a class="headerlink" href="#week-6-comprehensive-rag-system" title="Link to this heading"></a></h3>
+<h3>Week 6: Comprehensive RAG System<a class="headerlink" href="#week-6-comprehensive-rag-system" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Implement advanced retrieval techniques</p></li>
 <li><p>Complete query understanding components</p></li>
@@ -638,9 +778,9 @@
 </section>
 </section>
 <section id="success-criteria">
-<h2>Success Criteria<a class="headerlink" href="#success-criteria" title="Link to this heading"></a></h2>
+<h2>Success Criteria<a class="headerlink" href="#success-criteria" title="Link to this heading">¶</a></h2>
 <section id="technical-success-metrics">
-<h3>Technical Success Metrics<a class="headerlink" href="#technical-success-metrics" title="Link to this heading"></a></h3>
+<h3>Technical Success Metrics<a class="headerlink" href="#technical-success-metrics" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>95%+ retrieval accuracy for relevant documents</p></li>
 <li><p>Sub-2-second response time for 95% of queries</p></li>
@@ -649,7 +789,7 @@
 </ul>
 </section>
 <section id="business-success-metrics">
-<h3>Business Success Metrics<a class="headerlink" href="#business-success-metrics" title="Link to this heading"></a></h3>
+<h3>Business Success Metrics<a class="headerlink" href="#business-success-metrics" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Positive user feedback scores (&gt;4.0/5.0)</p></li>
 <li><p>Successful handling of diverse Thai medical queries</p></li>
@@ -658,7 +798,7 @@
 </ul>
 </section>
 <section id="documentation-success-metrics">
-<h3>Documentation Success Metrics<a class="headerlink" href="#documentation-success-metrics" title="Link to this heading"></a></h3>
+<h3>Documentation Success Metrics<a class="headerlink" href="#documentation-success-metrics" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>100% code documentation coverage</p></li>
 <li><p>Comprehensive user and administrator guides</p></li>
@@ -670,35 +810,154 @@
 </section>
 </section>
 
-
-           </div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="rag_implementation_summary.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">RAG Implementation Summary - August 29, 2025</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="api_practices.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">1. Understanding APIs</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Tobias Hoffmann
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="development_setup.html" class="btn btn-neutral float-left" title="Development Environment Setup Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rag_kickoff_summary.html" class="btn btn-neutral float-right" title="RAG Implementation Kickoff Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
     </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">RAG Implementation Plan</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#phase-1-document-processing-pipeline-week-3">Phase 1: Document Processing Pipeline (Week 3)</a><ul>
+<li><a class="reference internal" href="#objective">Objective</a></li>
+<li><a class="reference internal" href="#tasks">Tasks</a></li>
+<li><a class="reference internal" href="#evaluation-metrics">Evaluation Metrics</a></li>
+<li><a class="reference internal" href="#testing-approach">Testing Approach</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#phase-2-similarity-search-system-week-4">Phase 2: Similarity Search System (Week 4)</a><ul>
+<li><a class="reference internal" href="#id1">Objective</a></li>
+<li><a class="reference internal" href="#id2">Tasks</a></li>
+<li><a class="reference internal" href="#id3">Evaluation Metrics</a></li>
+<li><a class="reference internal" href="#id4">Testing Approach</a></li>
+<li><a class="reference internal" href="#id5">Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#phase-3-basic-generation-system-week-5">Phase 3: Basic Generation System (Week 5)</a><ul>
+<li><a class="reference internal" href="#id6">Objective</a></li>
+<li><a class="reference internal" href="#id7">Tasks</a></li>
+<li><a class="reference internal" href="#id8">Evaluation Metrics</a></li>
+<li><a class="reference internal" href="#id9">Testing Approach</a></li>
+<li><a class="reference internal" href="#id10">Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#phase-4-comprehensive-rag-system-week-6">Phase 4: Comprehensive RAG System (Week 6)</a><ul>
+<li><a class="reference internal" href="#id11">Objective</a></li>
+<li><a class="reference internal" href="#id12">Tasks</a></li>
+<li><a class="reference internal" href="#id13">Evaluation Metrics</a></li>
+<li><a class="reference internal" href="#id14">Testing Approach</a></li>
+<li><a class="reference internal" href="#id15">Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#monitoring-and-analytics">Monitoring and Analytics</a><ul>
+<li><a class="reference internal" href="#real-time-monitoring">Real-time Monitoring</a></li>
+<li><a class="reference internal" href="#analytics-and-reporting">Analytics and Reporting</a></li>
+<li><a class="reference internal" href="#continuous-improvement">Continuous Improvement</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#dashboard-integration">Dashboard Integration</a><ul>
+<li><a class="reference internal" href="#rag-pipeline-monitoring">RAG Pipeline Monitoring</a></li>
+<li><a class="reference internal" href="#performance-analytics">Performance Analytics</a></li>
+<li><a class="reference internal" href="#evaluation-and-testing">Evaluation and Testing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#documentation-standards">Documentation Standards</a><ul>
+<li><a class="reference internal" href="#technical-documentation">Technical Documentation</a></li>
+<li><a class="reference internal" href="#user-documentation">User Documentation</a></li>
+<li><a class="reference internal" href="#evaluation-documentation">Evaluation Documentation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#quality-assurance">Quality Assurance</a><ul>
+<li><a class="reference internal" href="#testing-framework">Testing Framework</a></li>
+<li><a class="reference internal" href="#code-quality">Code Quality</a></li>
+<li><a class="reference internal" href="#continuous-integration">Continuous Integration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#risk-management">Risk Management</a><ul>
+<li><a class="reference internal" href="#technical-risks">Technical Risks</a></li>
+<li><a class="reference internal" href="#mitigation-strategies">Mitigation Strategies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#timeline-and-milestones">Timeline and Milestones</a><ul>
+<li><a class="reference internal" href="#week-3-document-processing-pipeline">Week 3: Document Processing Pipeline</a></li>
+<li><a class="reference internal" href="#week-4-similarity-search-system">Week 4: Similarity Search System</a></li>
+<li><a class="reference internal" href="#week-5-basic-generation-system">Week 5: Basic Generation System</a></li>
+<li><a class="reference internal" href="#week-6-comprehensive-rag-system">Week 6: Comprehensive RAG System</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#success-criteria">Success Criteria</a><ul>
+<li><a class="reference internal" href="#technical-success-metrics">Technical Success Metrics</a></li>
+<li><a class="reference internal" href="#business-success-metrics">Business Success Metrics</a></li>
+<li><a class="reference internal" href="#documentation-success-metrics">Documentation Success Metrics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2025, Tobias Hoffmann.</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+          </div>
         </div>
       </div>
-    </section>
+      
+      
+    </aside>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+</div><script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    </body>
 </html>

@@ -83,3 +83,5 @@ Production-grade, joyful, cookbook-first documentation for a high-stakes RAG sys
    reference/index
    explanations/index
    api/index
+   final_summary
+   rag_implementation_plan

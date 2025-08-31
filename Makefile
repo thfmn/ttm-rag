@@ -208,5 +208,4 @@ rag-test:
 thai-setup:
 	@echo "🇹🇭 Setting up Thai language resources..."
 	python -c "import pythainlp; pythainlp.corpus.download('thai2fit_wv')"
-	python -c "import pythainlp; pythainlp.corpus.download('thai2vec')"
 	python -m spacy download th_core_news_sm || echo "Thai model not available"

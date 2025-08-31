@@ -1,4 +1,9 @@
+```{note}
+Sync policy: This page mirrors docs/explanations/project_lifecycle.md. Update the lifecycle first, then reflect changes here.
+```
+
 # Current State
+
 
 This section describes the current state of our project, including what we've accomplished and what's working.
 

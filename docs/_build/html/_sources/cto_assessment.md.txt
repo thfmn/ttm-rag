@@ -1,4 +1,12 @@
+```{note}
+Sync policy: This page mirrors docs/explanations/project_lifecycle.md. Update the lifecycle first, then reflect changes here.
+```
+
 # CTO Assessment Report
+
+```{note}
+Sync policy: This page mirrors docs/explanations/project_lifecycle.md. Update the lifecycle first, then reflect changes here.
+```
 
 **Date**: 29.08.2025  
 **Version**: 1.0  

@@ -219,7 +219,7 @@ make thai-setup
 
 This command installs:
 - Thai word vectors (thai2fit_wv)
-- Thai embeddings (thai2vec)
+- Optional: Large Thai word vectors (LTW2V) (optional; large download)
 - Thai spaCy model (if available)
 
 ## Testing the Setup

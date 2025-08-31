@@ -1,0 +1,620 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Project Lifecycle and Status" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://example.com/ttm-rag-docs/explanations/project_lifecycle.html" />
+<meta property="og:site_name" content="Thai Traditional Medicine RAG Bot" />
+<meta property="og:description" content="Authoritative source of truth for the current status, roadmap, and key decisions of the Thai Traditional Medicine RAG Bot project. Keep this file updated as part of any significant change (feature,..." />
+<meta name="description" content="Authoritative source of truth for the current status, roadmap, and key decisions of the Thai Traditional Medicine RAG Bot project. Keep this file updated as part of any significant change (feature,..." />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Multi-Agent Ingestion &amp; Curation Overview (Phase 2)" href="../architecture/multi_agent_overview.html" /><link rel="prev" title="Explanations" href="index.html" />
+        <link rel="canonical" href="https://example.com/ttm-rag-docs/explanations/project_lifecycle.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
+        <title>Project Lifecycle and Status - Thai Traditional Medicine RAG Bot</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Thai Traditional Medicine RAG Bot</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">Thai Traditional Medicine RAG Bot</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../project_overview.html">Project Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development_setup.html">Development Environment Setup Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onboarding.html">Internal Onboarding Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onboarding_summary.html">Internal Onboarding Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/ttm_mcp_quickstart.html">Tutorial — TTM‑MCP Expert Agent Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database_tutorial.html">Database Interaction Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rag_api_tutorial.html">RAG API Usage and Testing Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../how-to/index.html">How-to Guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of How-to Guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/mcp_readiness_checks.html">How‑to — MCP Readiness Checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deploy.html">Stack deployment (Docker Compose + Makefile)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment.html">Deployment Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operations/dagster_deploy.html">Dagster Deployment Guide (Phase 2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../firecrawl_mcp_add_key.html">How to add FIRECRAWL_API_KEY to cline_mcp_settings.json</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">Reference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/mcp_contracts.html">Reference — MCP Contracts (Tools and Resources)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Explanations</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Explanations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Project Lifecycle and Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture/multi_agent_overview.html">Multi-Agent Ingestion &amp; Curation Overview (Phase 2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html">1. Understanding APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#api-styles">2. API Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#api-design-principles">3. API Design Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#protocols-their-influence">4. Protocols &amp; Their Influence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#api-design-process">5. API Design Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#restful-api-design">6. RESTful API Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#graphql-api-design">7. GraphQL API Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#authentication-authorization">8. Authentication &amp; Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#security-best-practices">9. Security Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#protocols-transport-layer">10. Protocols &amp; Transport Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#summary-next-steps">11. Summary &amp; Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#additional-resources">12. Additional Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rag_implementation_plan.html">RAG Implementation Plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rag_implementation_summary.html">RAG Implementation Summary - August 29, 2025</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../today_rag_plan.html">Today’s RAG Implementation Plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../final_summary.html">Project Status Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../implementation.html">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cto_assessment.html">CTO Assessment Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../project_status.html">Project Status Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../current_state.html">Current State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../future_steps.html">Future Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mcp_adapter_philosophy.html">MCP Adapter Philosophy — Thin, Auditable, and Safe</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/explanations/project_lifecycle.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="project-lifecycle-and-status">
+<h1>Project Lifecycle and Status<a class="headerlink" href="#project-lifecycle-and-status" title="Link to this heading">¶</a></h1>
+<p>Authoritative source of truth for the current status, roadmap, and key decisions of the Thai Traditional Medicine RAG Bot project. Keep this file updated as part of any significant change (feature, architecture, security, or deployment).</p>
+<p>Sync policy:</p>
+<ul class="simple">
+<li><p>This file is authoritative for status and roadmap.</p></li>
+<li><p>The following must remain consistent with this document at all times:</p>
+<ul>
+<li><p>docs/current_state.md</p></li>
+<li><p>docs/future_steps.md</p></li>
+<li><p>docs/cto_assessment.md</p></li>
+</ul>
+</li>
+<li><p>When updating any of the above, update this file first, then reflect changes in those documents.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="executive-summary">
+<h2>1) Executive Summary<a class="headerlink" href="#executive-summary" title="Link to this heading">¶</a></h2>
+<p>Purpose: Build a production-grade, auditable, Thai-first Retrieval-Augmented Generation (RAG) system that unifies fragmented TTM knowledge and serves credible, cited answers. The system emphasizes evaluation-first (“no citation → no answer”), determinism, and security-by-default.</p>
+<p>Business outlook (from CTO assessment): Strong buy recommendation (4.25/5). Clear market need, solid architecture, professional engineering practices, and first-mover advantage in a specialized domain. Immediate focus: close security gaps and achieve MVP completeness.</p>
+</section>
+<hr class="docutils" />
+<section id="evidence-from-tests-ttd-lens">
+<h2>2) Evidence From Tests (TTD Lens)<a class="headerlink" href="#evidence-from-tests-ttd-lens" title="Link to this heading">¶</a></h2>
+<p>What the test suites tell us is stable and expected to work:</p>
+<ul class="simple">
+<li><p>Unit tests cover:</p>
+<ul>
+<li><p>API contracts, model and schema validation (Pydantic v2 idioms), rate limiting, retry/backoff utilities</p></li>
+<li><p>PubMed connector (search, fetch, parsing), query builder, exceptions</p></li>
+<li><p>RAG pipeline interfaces (chunking, embeddings, retrieval glue)</p></li>
+<li><p>Dashboard endpoints and basic database operations</p></li>
+</ul>
+</li>
+<li><p>Integration tests validate end-to-end behavior across:</p>
+<ul>
+<li><p>PubMed and PMC integration (ethical limits and rate-limiting respected)</p></li>
+<li><p>Database integration paths (pg/SQLite)</p></li>
+<li><p>Open-WebUI model selection surface</p></li>
+<li><p>Rate limiting in realistic flows</p></li>
+</ul>
+</li>
+</ul>
+<p>Implication: The following are suitable to document as “working” features and reliable usage paths:</p>
+<ul class="simple">
+<li><p>PubMed search → fetch → parse</p></li>
+<li><p>RAG ingest and retrieval prototype (chunking, embedding, pgvector similarity)</p></li>
+<li><p>REST API endpoints for RAG and health/metrics</p></li>
+<li><p>Basic dashboard metrics</p></li>
+<li><p>Error handling, retry, and rate limiting patterns</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="current-state-developer-focused">
+<h2>3) Current State (Developer-Focused)<a class="headerlink" href="#current-state-developer-focused" title="Link to this heading">¶</a></h2>
+<p>Core capabilities:</p>
+<ul class="simple">
+<li><p>PubMed connector with TTM-specific query builder, robust error handling, rate limiting</p></li>
+<li><p>RAG prototype:</p>
+<ul>
+<li><p>Chunking, embeddings, vector storage (PostgreSQL + pgvector), semantic retrieval</p></li>
+<li><p>REST API: /api/v1/rag/documents, /api/v1/rag/query, /api/v1/rag/statistics, /api/v1/rag/health</p></li>
+</ul>
+</li>
+<li><p>Security &amp; Ops:</p>
+<ul>
+<li><p>Input sanitization, HTTPS enforcement, CORS controls, audit logging</p></li>
+<li><p>Prometheus metrics and health checks</p></li>
+<li><p>Dockerized PostgreSQL setup; Makefile orchestration; deployment docs</p></li>
+</ul>
+</li>
+<li><p>Observability &amp; Control:</p>
+<ul>
+<li><p>Simple dashboard with real-time UI updates</p></li>
+</ul>
+</li>
+<li><p>Quality Engineering:</p>
+<ul>
+<li><p>20+ tests across unit/integration; CI guidance; clear Makefile targets for test/lint/docs</p></li>
+</ul>
+</li>
+</ul>
+<p>Known limitations:</p>
+<ul class="simple">
+<li><p>Generation component not yet integrated (RAG is retrieval-only prototype)</p></li>
+<li><p>Data validation pipeline not implemented</p></li>
+<li><p>Single-source dependency risk (PubMed); PMC connector integration is planned but not yet finalized for production</p></li>
+<li><p>Authentication layer missing for production-grade API hardening</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="roadmap-diataxis-aligned-execution-ready">
+<h2>4) Roadmap (Diátaxis-aligned, execution-ready)<a class="headerlink" href="#roadmap-diataxis-aligned-execution-ready" title="Link to this heading">¶</a></h2>
+<p>We use Diátaxis to structure docs and development: Tutorials (from zero to success), How-to (task recipes), Reference (contracts/config), Explanations (design/why). This roadmap tracks work items that must be reflected across docs and tests.</p>
+<p>Phase 1 — MVP Readiness (immediate)</p>
+<ul class="simple">
+<li><p>Security gap closure (Critical)</p>
+<ul>
+<li><p>Implement OAuth2 auth (FastAPI security) and enforce endpoint protection</p></li>
+<li><p>Confirm CORS constraints for prod; preserve permissive dev defaults</p></li>
+<li><p>Extend audit logging where missing; verify no secrets in logs</p></li>
+</ul>
+</li>
+<li><p>Generation integration (High)</p>
+<ul>
+<li><p>Add generation adapter (e.g., Typhoon/OpenAI/Qwen adapters already designed under adapter_registry patterns)</p></li>
+<li><p>Policy gates: “≥3 citations” and confidence threshold τ enforced on answerability</p></li>
+<li><p>Evaluation: Create minimal answer evaluation harness (factuality sampling and regression tracking)</p></li>
+</ul>
+</li>
+<li><p>Data quality (Medium)</p>
+<ul>
+<li><p>Implement data validation pipeline (normalization, deduplication, quality scores)</p></li>
+</ul>
+</li>
+<li><p>Data sources (High)</p>
+<ul>
+<li><p>Add PMC Open Access connector to mitigate single-source risk</p></li>
+<li><p>Add at least one Thai journal connector (Tier-1)</p></li>
+</ul>
+</li>
+</ul>
+<p>Success criteria:</p>
+<ul class="simple">
+<li><p>All API endpoints authenticated in production</p></li>
+<li><p>Generation answers respect “no citation → no answer,” include ≥3 citations when available</p></li>
+<li><p>Second source live (PMC OA), with validation pipeline demonstrating ≥95% acceptance</p></li>
+<li><p>All new features covered by unit + integration tests; docs updated</p></li>
+</ul>
+<p>Phase 2 — RAG Enhancement &amp; Optimization</p>
+<ul class="simple">
+<li><p>Retrieval quality and performance</p>
+<ul>
+<li><p>Hybrid search (BM25 + vectors), Thai-first embeddings with cross-lingual fallback</p></li>
+<li><p>Embedding model fine-tuning on TTM corpora (where permitted)</p></li>
+</ul>
+</li>
+<li><p>Production ops</p>
+<ul>
+<li><p>Grafana dashboards on top of Prometheus metrics</p></li>
+<li><p>Structured logging for debugging</p></li>
+<li><p>Caching strategies (Redis) for hot paths</p></li>
+</ul>
+</li>
+</ul>
+<p>Phase 3 — Scale &amp; UX</p>
+<ul class="simple">
+<li><p>Distributed ingest (Celery or equivalent)</p></li>
+<li><p>Admin dashboard and comprehensive web UI for end users</p></li>
+<li><p>Horizontal scaling, improved DB pooling, performance tuning</p></li>
+<li><p>Advanced features: query rewriting, multi-hop retrieval, summarization workflows</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="architecture-patterns-why-it-works">
+<h2>5) Architecture &amp; Patterns (Why it works)<a class="headerlink" href="#architecture-patterns-why-it-works" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Modular and testable: connectors, pipelines, API, DB layers separated, interfaces are explicit</p></li>
+<li><p>Patterns:</p>
+<ul>
+<li><p>Builder (query construction for PubMed/PMC)</p></li>
+<li><p>Strategy (pluggable adapters for generation models)</p></li>
+<li><p>Repository (DB abstractions)</p></li>
+<li><p>Policy gates (centralized answerability logic)</p></li>
+</ul>
+</li>
+<li><p>Determinism &amp; audit: hash in/out, seed control; latency tracking; “no secrets in logs”</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="risks-mitigations">
+<h2>6) Risks &amp; Mitigations<a class="headerlink" href="#risks-mitigations" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Single-source dependency (High) → Add PMC and Thai journal connectors; cache/replication buffers</p></li>
+<li><p>Missing auth (Critical) → OAuth2 now; short-term IP allowlists if necessary; harden CORS</p></li>
+<li><p>Scaling constraints (Medium) → Redis caching, DB pooling; profiling and performance budgets</p></li>
+<li><p>Cross-lingual retrieval drift (Medium) → Curated bilingual eval sets; tune top-k and τ</p></li>
+<li><p>Schema drift risk between docs and implementation (Medium) → TTD discipline; contract tests; docs sync policy below</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="documentation-operations-diataxis-sync-policy">
+<h2>7) Documentation Operations (Diátaxis + Sync Policy)<a class="headerlink" href="#documentation-operations-diataxis-sync-policy" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Authoritative status/roadmap lives here. The three status docs must match:</p>
+<ul>
+<li><p>docs/current_state.md (developer-facing current state)</p></li>
+<li><p>docs/future_steps.md (execution plan and next steps)</p></li>
+<li><p>docs/cto_assessment.md (stakeholder snapshot)</p></li>
+</ul>
+</li>
+<li><p>Workflow (required):</p>
+<ol class="arabic simple">
+<li><p>Update this file first (status + roadmap)</p></li>
+<li><p>Update current_state.md, future_steps.md, cto_assessment.md to match</p></li>
+<li><p>Run “make docs-rebuild” and visually verify</p></li>
+<li><p>Update tests or plans if status changed (TTD loop)</p></li>
+</ol>
+</li>
+<li><p>Structure standards:</p>
+<ul>
+<li><p>Tutorials: start at docs/tutorials/ (e.g., ttm_mcp_quickstart.md)</p></li>
+<li><p>How-to: repeatable task guides (e.g., development_setup.md, <a class="reference external" href="http://deploy.md">deploy.md</a>)</p></li>
+<li><p>Reference: contracts/config/API (e.g., mcp_contracts.md)</p></li>
+<li><p>Explanations: design rationale (e.g., mcp_adapter_philosophy.md, this doc)</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="pointers-entry-points">
+<h2>8) Pointers &amp; Entry Points<a class="headerlink" href="#pointers-entry-points" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>API docs (local): <a class="reference external" href="http://localhost:8005/docs">http://localhost:8005/docs</a></p></li>
+<li><p>Health: /health; Metrics: /metrics</p></li>
+<li><p>Local docs server: make docs-serve → <a class="reference external" href="http://localhost:8081">http://localhost:8081</a></p></li>
+<li><p>Deployment stack (Compose + Makefile): see docs/deploy.md</p></li>
+<li><p>Open-WebUI integration: adapter registry + endpoints; see docs/adapter_registry.md</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="change-log-status-level">
+<h2>9) Change Log (Status-level)<a class="headerlink" href="#change-log-status-level" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>2025-08-31: Introduced authoritative lifecycle doc with TTD-aligned sync policy; planned security and MVP-complete generation integration</p></li>
+<li><p>2025-08-29: CTO assessment (4.25/5); RAG prototype validated; detailed recommendations recorded</p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../architecture/multi_agent_overview.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Multi-Agent Ingestion &amp; Curation Overview (Phase 2)</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Explanations</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Tobias Hoffmann
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Project Lifecycle and Status</a><ul>
+<li><a class="reference internal" href="#executive-summary">1) Executive Summary</a></li>
+<li><a class="reference internal" href="#evidence-from-tests-ttd-lens">2) Evidence From Tests (TTD Lens)</a></li>
+<li><a class="reference internal" href="#current-state-developer-focused">3) Current State (Developer-Focused)</a></li>
+<li><a class="reference internal" href="#roadmap-diataxis-aligned-execution-ready">4) Roadmap (Diátaxis-aligned, execution-ready)</a></li>
+<li><a class="reference internal" href="#architecture-patterns-why-it-works">5) Architecture &amp; Patterns (Why it works)</a></li>
+<li><a class="reference internal" href="#risks-mitigations">6) Risks &amp; Mitigations</a></li>
+<li><a class="reference internal" href="#documentation-operations-diataxis-sync-policy">7) Documentation Operations (Diátaxis + Sync Policy)</a></li>
+<li><a class="reference internal" href="#pointers-entry-points">8) Pointers &amp; Entry Points</a></li>
+<li><a class="reference internal" href="#change-log-status-level">9) Change Log (Status-level)</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    </body>
+</html>

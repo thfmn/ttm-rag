@@ -1,4 +1,12 @@
+```{note}
+Sync policy: This page mirrors docs/explanations/project_lifecycle.md. Update the lifecycle first, then reflect changes here.
+```
+
 # Future Steps
+
+```{note}
+Sync policy: This page mirrors docs/explanations/project_lifecycle.md. Update the lifecycle first, then reflect changes here.
+```
 
 This section outlines our plans for future development of the project.
 

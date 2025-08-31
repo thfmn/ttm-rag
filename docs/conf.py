@@ -107,12 +107,12 @@ napoleon_attr_annotations = True
 # -- Intersphinx -------------------------------------------------------------
 
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/3", {}),
-    "sphinx": ("https://www.sphinx-doc.org/en/master", {}),
-    "pydantic": ("https://docs.pydantic.dev/latest/", {}),
-    "fastapi": ("https://fastapi.tiangolo.com/", {}),
+    "python": ("https://docs.python.org/3", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master", None),
+    "pydantic": ("https://docs.pydantic.dev/latest/", None),
+    "fastapi": ("https://fastapi.tiangolo.com/", None),
     # Uncomment if/when a public intersphinx inventory exists:
-    # "pydantic_ai": ("https://ai.pydantic.dev/", {}),
+    # "pydantic_ai": ("https://ai.pydantic.dev/", None),
 }
 
 # Make section labels unique by prefixing with document path

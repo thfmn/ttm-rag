@@ -38,7 +38,6 @@ echo "🇹🇭 Installing Thai language models..."
 python -c "
 import pythainlp
 pythainlp.corpus.download('thai2fit_wv')
-pythainlp.corpus.download('thai2vec')
 "
 
 # Install spaCy Thai model (if available)

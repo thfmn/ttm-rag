@@ -1,0 +1,614 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Lightpanda Browser MCP integration for Cline (VS Code)" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://example.com/ttm-rag-docs/how-to/lightpanda_mcp_setup.html" />
+<meta property="og:site_name" content="Thai Traditional Medicine RAG Bot" />
+<meta property="og:description" content="This guide adds Lightpanda (a fast, headless browser with JS execution and CDP) to your Cline workflow via a local MCP server. You’ll be able to: Fetch dynamic pages with JS ( lightpanda_fetch_dump..." />
+<meta name="description" content="This guide adds Lightpanda (a fast, headless browser with JS execution and CDP) to your Cline workflow via a local MCP server. You’ll be able to: Fetch dynamic pages with JS ( lightpanda_fetch_dump..." />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" />
+        <link rel="canonical" href="https://example.com/ttm-rag-docs/how-to/lightpanda_mcp_setup.html" />
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
+        <title>Lightpanda Browser MCP integration for Cline (VS Code) - Thai Traditional Medicine RAG Bot</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #2b2b2b;
+  --color-code-foreground: #f8f8f2;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Thai Traditional Medicine RAG Bot</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  <span class="sidebar-brand-text">Thai Traditional Medicine RAG Bot</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting-started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../project_overview.html">Project Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../development_setup.html">Development Environment Setup Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onboarding.html">Internal Onboarding Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../onboarding_summary.html">Internal Onboarding Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/ttm_mcp_quickstart.html">Tutorial — TTM‑MCP Expert Agent Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database_tutorial.html">Database Interaction Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rag_api_tutorial.html">RAG API Usage and Testing Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="index.html">How-to Guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of How-to Guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="mcp_readiness_checks.html">How‑to — MCP Readiness Checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deploy.html">Stack deployment (Docker Compose + Makefile)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deployment.html">Deployment Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../postgresql_setup.html">Dockerized PostgreSQL Setup Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operations/dagster_deploy.html">Dagster Deployment Guide (Phase 2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../firecrawl_mcp_add_key.html">How to add FIRECRAWL_API_KEY to cline_mcp_settings.json</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">Reference</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/mcp_contracts.html">Reference — MCP Contracts (Tools and Resources)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../explanations/index.html">Explanations</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Explanations</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanations/project_lifecycle.html">Project Lifecycle and Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../architecture/multi_agent_overview.html">Multi-Agent Ingestion &amp; Curation Overview (Phase 2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html">1. Understanding APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#api-styles">2. API Styles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#api-design-principles">3. API Design Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#protocols-their-influence">4. Protocols &amp; Their Influence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#api-design-process">5. API Design Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#restful-api-design">6. RESTful API Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#graphql-api-design">7. GraphQL API Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#authentication-authorization">8. Authentication &amp; Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#security-best-practices">9. Security Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#protocols-transport-layer">10. Protocols &amp; Transport Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#summary-next-steps">11. Summary &amp; Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api_practices.html#additional-resources">12. Additional Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rag_implementation_plan.html">RAG Implementation Plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rag_implementation_summary.html">RAG Implementation Summary - August 29, 2025</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../today_rag_plan.html">Today’s RAG Implementation Plan</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../final_summary.html">Project Status Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../implementation.html">Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cto_assessment.html">CTO Assessment Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../project_status.html">Project Status Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../current_state.html">Current State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../future_steps.html">Future Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../explanations/mcp_adapter_philosophy.html">MCP Adapter Philosophy — Thin, Auditable, and Safe</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/how-to/lightpanda_mcp_setup.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="lightpanda-browser-mcp-integration-for-cline-vs-code">
+<h1>Lightpanda Browser MCP integration for Cline (VS Code)<a class="headerlink" href="#lightpanda-browser-mcp-integration-for-cline-vs-code" title="Link to this heading">¶</a></h1>
+<p>This guide adds Lightpanda (a fast, headless browser with JS execution and CDP) to your Cline workflow via a local MCP server. You’ll be able to:</p>
+<ul class="simple">
+<li><p>Fetch dynamic pages with JS (<code class="docutils literal notranslate"><span class="pre">lightpanda_fetch_dump</span></code>, <code class="docutils literal notranslate"><span class="pre">lightpanda_fetch_text</span></code>)</p></li>
+<li><p>Extract links quickly (<code class="docutils literal notranslate"><span class="pre">lightpanda_fetch_links</span></code>)</p></li>
+<li><p>Choose runtime: local Lightpanda binary or Docker (no persistent container required)</p></li>
+<li><p>Keep telemetry disabled by default</p></li>
+</ul>
+<p>The MCP server is implemented in this repo at:</p>
+<ul class="simple">
+<li><p>tools/lightpanda-mcp/index.js (Node, stdio transport)</p></li>
+<li><p>tools/lightpanda-mcp/package.json</p></li>
+</ul>
+<p>Important project rules respected:</p>
+<ul class="simple">
+<li><p>No automatic installs or global changes</p></li>
+<li><p>Provide clear manual commands</p></li>
+<li><p>Document config and verification steps</p></li>
+</ul>
+<section id="requirements">
+<h2>1) Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Node.js 18+ (for running the MCP server script)</p></li>
+<li><p>EITHER:</p>
+<ul>
+<li><p>Lightpanda binary available on your PATH (or specify LIGHTPANDA_BIN), OR</p></li>
+<li><p>Docker installed (the MCP server can call <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span></code> per request)</p></li>
+</ul>
+</li>
+<li><p>Cline in VS Code (MCP-enabled)</p></li>
+</ul>
+</section>
+<section id="install-dependencies-manual">
+<h2>2) Install dependencies (manual)<a class="headerlink" href="#install-dependencies-manual" title="Link to this heading">¶</a></h2>
+<p>Install the MCP SDK dependency for the server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">akr</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">thai</span><span class="o">-</span><span class="n">traditional</span><span class="o">-</span><span class="n">medicine</span><span class="o">-</span><span class="n">rag</span><span class="o">-</span><span class="n">bot</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">lightpanda</span><span class="o">-</span><span class="n">mcp</span>
+<span class="n">npm</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>This installs:</p>
+<ul class="simple">
+<li><p>&#64;modelcontextprotocol/sdk</p></li>
+</ul>
+</section>
+<section id="install-lightpanda-runtime-choose-one">
+<h2>3) Install Lightpanda runtime (choose one)<a class="headerlink" href="#install-lightpanda-runtime-choose-one" title="Link to this heading">¶</a></h2>
+<p>A) Local binary (Linux example)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Download nightly binary (Linux x86_64)</span>
+<span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="o">-</span><span class="n">o</span> <span class="n">lightpanda</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">lightpanda</span><span class="o">-</span><span class="n">io</span><span class="o">/</span><span class="n">browser</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">nightly</span><span class="o">/</span><span class="n">lightpanda</span><span class="o">-</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span>
+
+<span class="c1"># Make executable and move to a directory on PATH (example)</span>
+<span class="n">chmod</span> <span class="n">a</span><span class="o">+</span><span class="n">x</span> <span class="o">./</span><span class="n">lightpanda</span>
+<span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">akr</span><span class="o">/</span><span class="nb">bin</span>
+<span class="n">mv</span> <span class="o">./</span><span class="n">lightpanda</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">akr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">lightpanda</span>
+
+<span class="c1"># Optionally add /var/home/akr/bin to PATH in your shell profile</span>
+<span class="c1"># export PATH=&quot;/var/home/akr/bin:$PATH&quot;</span>
+</pre></div>
+</div>
+<p>B) Docker (no local binary)</p>
+<p>You don’t need to run a daemonized container. The MCP server will invoke <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">--rm</span> <span class="pre">lightpanda/browser:nightly</span> <span class="pre">fetch</span> <span class="pre">--dump</span> <span class="pre">&lt;url&gt;</span></code> on demand.</p>
+</section>
+<section id="telemetry">
+<h2>4) Telemetry<a class="headerlink" href="#telemetry" title="Link to this heading">¶</a></h2>
+<p>Lightpanda collects telemetry by default. The MCP server sets <code class="docutils literal notranslate"><span class="pre">LIGHTPANDA_DISABLE_TELEMETRY=true</span></code> by default for all subprocesses. You can override via env if needed.</p>
+</section>
+<section id="add-mcp-server-entry-cline-settings">
+<h2>5) Add MCP server entry (Cline settings)<a class="headerlink" href="#add-mcp-server-entry-cline-settings" title="Link to this heading">¶</a></h2>
+<p>Edit your Cline MCP settings (VS Code global):</p>
+<ul class="simple">
+<li><p>/var/home/akr/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json</p></li>
+</ul>
+<p>Add a new entry under <code class="docutils literal notranslate"><span class="pre">mcpServers</span></code>:</p>
+<p>Option 1: Use local Lightpanda binary</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;lightpanda-mcp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;node&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;/var/home/akr/dev/thai-traditional-medicine-rag-bot/tools/lightpanda-mcp/index.js&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;LIGHTPANDA_DISABLE_TELEMETRY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;LIGHTPANDA_BIN&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/var/home/akr/bin/lightpanda&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stdio&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;disabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;autoApprove&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Option 2: Use Docker</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;lightpanda-mcp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;node&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;/var/home/akr/dev/thai-traditional-medicine-rag-bot/tools/lightpanda-mcp/index.js&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;LIGHTPANDA_DISABLE_TELEMETRY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;LIGHTPANDA_USE_DOCKER&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;LIGHTPANDA_DOCKER_IMAGE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lightpanda/browser:nightly&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;stdio&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;timeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;disabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;autoApprove&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Keep <code class="docutils literal notranslate"><span class="pre">disabled=false</span></code> and <code class="docutils literal notranslate"><span class="pre">autoApprove=[]</span></code> (per Cline’s MCP defaults).</p></li>
+<li><p>Ensure Node 18+ is available on PATH for VS Code/Cline.</p></li>
+</ul>
+</section>
+<section id="what-tools-are-exposed">
+<h2>6) What tools are exposed<a class="headerlink" href="#what-tools-are-exposed" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>lightpanda_fetch_dump</p>
+<ul>
+<li><p>Input: { “url”: string, “timeout”?: number(ms) }</p></li>
+<li><p>Output: HTML as text (with Lightpanda info lines removed when possible)</p></li>
+</ul>
+</li>
+<li><p>lightpanda_fetch_text</p>
+<ul>
+<li><p>Input: { “url”: string, “timeout”?: number(ms) }</p></li>
+<li><p>Output: Plain text extracted from HTML</p></li>
+</ul>
+</li>
+<li><p>lightpanda_fetch_links</p>
+<ul>
+<li><p>Input: { “url”: string, “timeout”?: number(ms) }</p></li>
+<li><p>Output: JSON array of unique anchor hrefs</p></li>
+</ul>
+</li>
+</ul>
+<p>Timeout default = 30000ms, max = 180000ms</p>
+</section>
+<section id="verify-in-cline">
+<h2>7) Verify in Cline<a class="headerlink" href="#verify-in-cline" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>In VS Code, open Cline panel → menu (⋮) → MCP Servers</p></li>
+<li><p>Find server: lightpanda-mcp</p></li>
+<li><p>If not connected, click “Restart Server”. If still not visible, click “Advanced MCP Settings” and verify the JSON, then reload the window.</p></li>
+</ul>
+<p>Quick test from a Cline conversation:</p>
+<p>Example 1: Fetch text</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">use_mcp_tool</span>
+<span class="n">server_name</span><span class="p">:</span> <span class="s2">&quot;lightpanda-mcp&quot;</span>
+<span class="n">tool_name</span><span class="p">:</span> <span class="s2">&quot;lightpanda_fetch_text&quot;</span>
+<span class="n">arguments</span><span class="p">:</span>
+<span class="p">{</span>
+  <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://example.com&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="mi">20000</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example 2: Fetch links</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">use_mcp_tool</span>
+<span class="n">server_name</span><span class="p">:</span> <span class="s2">&quot;lightpanda-mcp&quot;</span>
+<span class="n">tool_name</span><span class="p">:</span> <span class="s2">&quot;lightpanda_fetch_links&quot;</span>
+<span class="n">arguments</span><span class="p">:</span>
+<span class="p">{</span>
+  <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://wikipedia.org&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example 3: Full HTML</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">use_mcp_tool</span>
+<span class="n">server_name</span><span class="p">:</span> <span class="s2">&quot;lightpanda-mcp&quot;</span>
+<span class="n">tool_name</span><span class="p">:</span> <span class="s2">&quot;lightpanda_fetch_dump&quot;</span>
+<span class="n">arguments</span><span class="p">:</span>
+<span class="p">{</span>
+  <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://lightpanda.io&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="optional-agentic-use-via-cdp-puppeteer">
+<h2>8) Optional: Agentic use via CDP (Puppeteer)<a class="headerlink" href="#optional-agentic-use-via-cdp-puppeteer" title="Link to this heading">¶</a></h2>
+<p>If you want full agentic control (click, form, evaluate JS), run Lightpanda’s CDP server and connect with Puppeteer:</p>
+<p>Start Lightpanda CDP:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Local binary</span>
+<span class="n">lightpanda</span> <span class="n">serve</span> <span class="o">--</span><span class="n">host</span> <span class="mf">127.0.0.1</span> <span class="o">--</span><span class="n">port</span> <span class="mi">9222</span>
+</pre></div>
+</div>
+<p>Puppeteer (Node) connect example:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">puppeteer</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">&quot;puppeteer-core&quot;</span><span class="p">;</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">browser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">puppeteer</span><span class="p">.</span><span class="nx">connect</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">browserWSEndpoint</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ws://127.0.0.1:9222&quot;</span>
+<span class="p">});</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">browser</span><span class="p">.</span><span class="nx">createBrowserContext</span><span class="p">();</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">newPage</span><span class="p">();</span>
+
+<span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="kr">goto</span><span class="p">(</span><span class="s2">&quot;https://wikipedia.com/&quot;</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">links</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="nx">evaluate</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Array</span><span class="p">.</span><span class="kr">from</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)).</span><span class="nx">map</span><span class="p">(</span><span class="nx">a</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">a</span><span class="p">.</span><span class="nx">href</span><span class="p">));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">links</span><span class="p">);</span>
+
+<span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+<span class="k">await</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+<span class="k">await</span><span class="w"> </span><span class="nx">browser</span><span class="p">.</span><span class="nx">disconnect</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Note:</p>
+<ul class="simple">
+<li><p>Playwright generally works but may select different code paths as Web API coverage changes (see Lightpanda README disclaimer).</p></li>
+</ul>
+</section>
+<section id="troubleshooting">
+<h2>9) Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Node not found: Install Node.js 18+ and ensure <code class="docutils literal notranslate"><span class="pre">node</span></code> is on PATH for VS Code.</p></li>
+<li><p>Docker errors: Make sure you can run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">run</span> <span class="pre">hello-world</span></code>. On Linux, ensure your user is in the <code class="docutils literal notranslate"><span class="pre">docker</span></code> group.</p></li>
+<li><p>Binary not found: Set <code class="docutils literal notranslate"><span class="pre">LIGHTPANDA_BIN</span></code> to the absolute path of <code class="docutils literal notranslate"><span class="pre">lightpanda</span></code> or use the Docker option.</p></li>
+<li><p>Timeouts: Increase <code class="docutils literal notranslate"><span class="pre">arguments.timeout</span></code> as needed; some dynamic sites may take longer to settle.</p></li>
+<li><p>HTML includes log lines: The server tries to strip prolog logs. If parsing fails, it returns raw output (best effort).</p></li>
+<li><p>Telemetry: Default disabled via env. Remove env if you wish to enable per Lightpanda’s policy.</p></li>
+</ul>
+</section>
+<section id="uninstall-removal">
+<h2>10) Uninstall / removal<a class="headerlink" href="#uninstall-removal" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Remove the <code class="docutils literal notranslate"><span class="pre">lightpanda-mcp</span></code> server entry from:
+/var/home/akr/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json</p></li>
+<li><p>Optionally remove tools/lightpanda-mcp directory</p></li>
+</ul>
+</section>
+<section id="change-log-for-this-integration">
+<h2>11) Change log (for this integration)<a class="headerlink" href="#change-log-for-this-integration" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Added tools/lightpanda-mcp/index.js and package.json (local MCP server)</p></li>
+<li><p>Documented setup with binary and Docker runtime options</p></li>
+<li><p>Provided MCP settings JSON snippets and verification steps</p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Tobias Hoffmann
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Lightpanda Browser MCP integration for Cline (VS Code)</a><ul>
+<li><a class="reference internal" href="#requirements">1) Requirements</a></li>
+<li><a class="reference internal" href="#install-dependencies-manual">2) Install dependencies (manual)</a></li>
+<li><a class="reference internal" href="#install-lightpanda-runtime-choose-one">3) Install Lightpanda runtime (choose one)</a></li>
+<li><a class="reference internal" href="#telemetry">4) Telemetry</a></li>
+<li><a class="reference internal" href="#add-mcp-server-entry-cline-settings">5) Add MCP server entry (Cline settings)</a></li>
+<li><a class="reference internal" href="#what-tools-are-exposed">6) What tools are exposed</a></li>
+<li><a class="reference internal" href="#verify-in-cline">7) Verify in Cline</a></li>
+<li><a class="reference internal" href="#optional-agentic-use-via-cdp-puppeteer">8) Optional: Agentic use via CDP (Puppeteer)</a></li>
+<li><a class="reference internal" href="#troubleshooting">9) Troubleshooting</a></li>
+<li><a class="reference internal" href="#uninstall-removal">10) Uninstall / removal</a></li>
+<li><a class="reference internal" href="#change-log-for-this-integration">11) Change log (for this integration)</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    </body>
+</html>
